@@ -8,6 +8,8 @@ authors = ["Caio Pereira Oliveira <caiopoliveira@gmail.com>"]
 python = "^3.7"
 pony = "^0.7.9"
 flask = "^1.0"
+firebase_admin = "^2.16"
+dynaconf = "^1.2"
 
 [tool.poetry.dev-dependencies]
 

@@ -69,6 +69,10 @@ class AuthScreen extends HookWidget {
     final user = useState<FirebaseUser>(null);
     final theme = useTheme();
 
+    user.value.getIdToken(refresh: true)
+
+    _auth.currentUser();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),

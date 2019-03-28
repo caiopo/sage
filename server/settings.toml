@@ -1,0 +1,15 @@
+[default]
+host = "localhost"
+port = 5000
+
+database_uri = "sqlite:///:memory:"
+
+firebase_certificate = "gaia/config/gaia-survey-firebase-adminsdk.json"
+
+    [default.db]
+    provider = "sqlite"
+    filename = ":memory:"
+
+[development]
+
+[production]
