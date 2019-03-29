@@ -1,15 +1,19 @@
-from firebase_admin.auth import get_user
-from flask import Blueprint, jsonify
+from datetime import datetime
+
+from flask import Blueprint, jsonify, request
+
+from routes.utils import get_user
 
 bp = Blueprint('users', __name__)
 
 
 @bp.route('/')
-def hello():
-    user = get_user('fAQ1W5XEutZP7k0w0K4MmFF7juk1')
+def root():
+    token = request.args.get('token')
 
-    print(user.display_name)
+    user = get_user(token)
 
     return jsonify({
-        'teste': user.photo_url,
+        'teste': f'{datetime.now().isoformat()}',
+        'oi': user.email,
     })
