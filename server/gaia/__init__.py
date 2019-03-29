@@ -2,7 +2,7 @@ from dynaconf import FlaskDynaconf, settings
 from firebase_admin import credentials, initialize_app
 from flask import Flask, jsonify
 
-from exceptions import GaiaException
+from gaia.utils.exceptions import GaiaException
 
 app = Flask(__name__)
 
@@ -12,22 +12,23 @@ initialize_app(
     credentials.Certificate(settings.FIREBASE_CERTIFICATE)
 )
 
+if app.env != 'development':
+    @app.errorhandler(Exception)
+    def error_handler(error):
+        if isinstance(error, GaiaException):
+            return jsonify({
+                'code': error.status_code,
+                'type': type(error).__name__,
+                'message': error.message,
+            }), error.status_code
 
-@app.errorhandler(Exception)
-def error_handler(error):
-    if isinstance(error, GaiaException):
+        print(type(error).__name__, error.args)
+
         return jsonify({
-            'code': error.status_code,
-            'type': type(error).__name__,
-            'message': error.message,
-        }), error.status_code
-
-    return jsonify({
-        'code': 500,
-        'type': 'Internal Server Error',
-        'message': error.args
-    }), 500
-
+            'code': 500,
+            'type': 'Internal Server Error',
+            'message': error.args
+        }), 500
 
 from gaia.routes import blueprints
 

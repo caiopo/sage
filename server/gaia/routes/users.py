@@ -1,19 +1,17 @@
 from datetime import datetime
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify
 
-from routes.utils import get_user
+from .utils import verify_user
 
 bp = Blueprint('users', __name__)
 
 
 @bp.route('/')
 def root():
-    token = request.args.get('token')
-
-    user = get_user(token)
+    user = verify_user()
 
     return jsonify({
         'teste': f'{datetime.now().isoformat()}',
-        'oi': user.email,
+        'oi': user.uid,
     })

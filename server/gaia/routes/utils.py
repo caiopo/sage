@@ -1,9 +1,13 @@
-from firebase_admin.auth import AuthError, get_user as firebase_get_user, verify_id_token
+from firebase_admin.auth import AuthError, verify_id_token
+from flask import request
 
-from exceptions import BadRequest, Unauthorized
+from gaia.models.db import User
+from gaia.utils.exceptions import BadRequest, Unauthorized
 
 
-def get_user(token):
+def verify_user() -> User:
+    token = request.args.get('token')
+
     if token is None:
         raise BadRequest('Missing token')
 
@@ -12,4 +16,13 @@ def get_user(token):
     except AuthError:
         raise Unauthorized()
 
-    return firebase_get_user(data['uid'])
+    uid = data['uid']
+
+    user = User.get(uid=uid)
+
+    if user is not None:
+        return user
+
+    return User(
+        uid=uid
+    )
