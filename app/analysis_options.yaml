@@ -1,7 +1,10 @@
 analyzer:
   strong-mode:
     implicit-casts: false
-    implicit-dynamic: false
+    implicit-dynamic: true
+
+  exclude:
+  - lib/models/models.g.dart
 
 linter:
   rules:
