@@ -1,11 +1,11 @@
 from dynaconf import FlaskDynaconf, settings
 from firebase_admin import credentials, initialize_app
 from flask import Flask, jsonify
-
-from gaia.utils.exceptions import GaiaException
+from pony.flask import Pony
 
 app = Flask(__name__)
 
+Pony(app)
 FlaskDynaconf(app)
 
 initialize_app(
@@ -15,6 +15,7 @@ initialize_app(
 if app.env != 'development':
     @app.errorhandler(Exception)
     def error_handler(error):
+        from gaia.utils.exceptions import GaiaException
         if isinstance(error, GaiaException):
             return jsonify({
                 'code': error.status_code,
