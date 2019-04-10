@@ -22,6 +22,12 @@ class Survey(db.Entity):
     questions = Set(lambda: SurveyQuestion)
     answers = Set(lambda: Answer)
 
+    def as_dict(self):
+        d = self.to_dict(related_objects=True, with_collections=True)
+        d['owner'] = d['owner'].to_dict()
+        d['answers'] = len(self.answers)
+        return d
+
 
 class SurveyQuestion(db.Entity):
     survey = Required(Survey)
@@ -49,8 +55,6 @@ class QuestionAnswer(db.Entity):
     question = Required(SurveyQuestion)
     extras = Required(Json)
 
-
-print(settings.DB)
 
 db.bind(**settings.DB)
 db.generate_mapping(create_tables=True)

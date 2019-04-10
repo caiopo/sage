@@ -8,7 +8,7 @@ firebase_certificate = "gaia/config/gaia-survey-firebase-admin.json"
 
     [default.db]
     provider = "sqlite"
-    filename = "data.db"
+    filename = "../../data.db"
     create_db = true
 
 [development]

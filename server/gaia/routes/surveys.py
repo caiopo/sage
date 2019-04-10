@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify
+from pony.orm import select
 
 from gaia.models.db import Survey, SurveyQuestion
 from gaia.models.utils import QuestionType
@@ -46,12 +47,11 @@ def survey_create():
 def survey_list():
     user = verify_user()
 
-    survey = Survey(
-        title='Banana',
-        owner=user
-    )
+    surveys = select(s for s in Survey if s.owner == user)
 
-    return jsonify(survey.to_dict())
+    return jsonify({
+        'content': [s.as_dict() for s in surveys]
+    })
 
 
 @bp.route("/<id>")
@@ -60,8 +60,4 @@ def survey_detail(id):
 
     survey = Survey.get(id=id)
 
-    survey_d = survey.to_dict(exclude='answers', related_objects=True, with_collections=True)
-
-    survey_d['owner'] = survey_d['owner'].to_dict()
-
-    return jsonify(survey_d)
+    return jsonify(survey.as_dict())
