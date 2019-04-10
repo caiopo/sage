@@ -6,7 +6,7 @@ part 'models.g.dart';
 class User {
   final String uid;
 
-  User({this.uid});
+  const User({this.uid});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
@@ -19,12 +19,14 @@ class Survey {
   final String title;
   final User owner;
   final List<SurveyQuestion> questions;
+  final int answers;
 
-  Survey({
+  const Survey({
     this.id,
     this.title,
     this.owner,
     this.questions,
+    this.answers,
   });
 
   factory Survey.fromJson(Map<String, dynamic> json) => _$SurveyFromJson(json);
@@ -41,7 +43,7 @@ class SurveyQuestion {
 
   final Map<String, dynamic> extras;
 
-  SurveyQuestion({
+  const SurveyQuestion({
     this.id,
     this.type,
     this.title,

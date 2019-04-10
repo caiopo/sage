@@ -24,14 +24,16 @@ Survey _$SurveyFromJson(Map<String, dynamic> json) {
           ?.map((e) => e == null
               ? null
               : SurveyQuestion.fromJson(e as Map<String, dynamic>))
-          ?.toList());
+          ?.toList(),
+      answers: json['answers'] as int);
 }
 
 Map<String, dynamic> _$SurveyToJson(Survey instance) => <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'owner': instance.owner,
-      'questions': instance.questions
+      'questions': instance.questions,
+      'answers': instance.answers
     };
 
 SurveyQuestion _$SurveyQuestionFromJson(Map<String, dynamic> json) {

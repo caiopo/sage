@@ -1,47 +1,42 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gaia/api/surveys.dart';
 import 'package:gaia/components/snapshot_builder.dart';
-import 'package:http/http.dart';
+import 'package:gaia/models/models.dart';
+import 'package:gaia/screens/home/survey_list.dart';
+import 'package:gaia/utils/hooks.dart';
 
 class HomeScreen extends HookWidget {
   final Future<FirebaseUser> user = FirebaseAuth.instance.currentUser();
 
   @override
   Widget build(BuildContext context) {
-    final snapshot = useFuture(user);
+    final snapshot = useCurrentUser();
+    final surveyList = useState(<Survey>[]);
 
-    final callApi = () async {
-      if (snapshot.hasData) {
-        final user = snapshot.data;
-
-        final token = await user.getIdToken(refresh: true);
-
-        final url = 'http://10.0.2.2:5000/surveys/1?token=$token';
-
-        print(url);
-
-        final response = await get(url);
-
-        debugPrint(response.body);
-      }
+    final refreshSurveys = () async {
+      final newSurveyList = await fetchSurveyList();
+      surveyList.value = newSurveyList;
     };
+
+    useAsyncEffect(refreshSurveys, []);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
         actions: snapshot.hasData
             ? <Widget>[
-          IconButton(
-            icon: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.network(
-                snapshot.data.providerData.first.photoUrl,
-              ),
-            ),
-            onPressed: () {},
-          )
-        ]
+                IconButton(
+                  icon: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      snapshot.data.providerData.first.photoUrl,
+                    ),
+                  ),
+                  onPressed: () {},
+                )
+              ]
             : null,
       ),
       body: SnapshotBuilder<FirebaseUser>(
@@ -49,18 +44,9 @@ class HomeScreen extends HookWidget {
         success: (context, user) {
           return Stack(
             children: <Widget>[
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Oi, ${user.displayName}'),
-                    RaisedButton(
-                      child: Text('Oi'),
-                      onPressed: callApi,
-                    ),
-                  ],
-                ),
+              SurveyList(
+                data: surveyList.value,
+                onRefresh: refreshSurveys,
               ),
               Positioned(
                 bottom: 16,
@@ -78,14 +64,5 @@ class HomeScreen extends HookWidget {
         },
       ),
     );
-  }
-}
-
-class SurveyList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(itemBuilder: (context, i) {
-
-    });
   }
 }

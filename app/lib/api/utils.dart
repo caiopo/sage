@@ -37,3 +37,14 @@ Future<Map<String, dynamic>> getWithAuth(dynamic url) async {
 
   return json.decode(response.body) as Map<String, dynamic>;
 }
+
+Future<Map<String, dynamic>> postWithAuth(
+    dynamic url, Map<String, dynamic> body) async {
+  final uri = await addToken(toUri(url));
+
+  final jsonBody = json.encode(body);
+
+  final response = await http.post(uri, body: jsonBody);
+
+  return json.decode(response.body) as Map<String, dynamic>;
+}
