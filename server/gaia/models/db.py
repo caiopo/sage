@@ -23,9 +23,10 @@ class Survey(db.Entity):
     answers = Set(lambda: Answer)
 
     def as_dict(self):
-        d = self.to_dict(related_objects=True, with_collections=True)
+        d = self.to_dict(related_objects=True)
         d['owner'] = d['owner'].to_dict()
         d['answers'] = len(self.answers)
+        d['questions'] = [q.as_dict() for q in self.questions]
         return d
 
 
@@ -36,9 +37,12 @@ class SurveyQuestion(db.Entity):
     title = Required(str)
     description = Required(str)
 
-    extras = Required(Json)
+    extras = Required(Json, default=dict)
 
     answers = Set(lambda: QuestionAnswer)
+
+    def as_dict(self):
+        return self.to_dict(exclude='answers survey')
 
 
 class Answer(db.Entity):

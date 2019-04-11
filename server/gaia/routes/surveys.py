@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from pony.orm import select
 
 from gaia.models.db import Survey, SurveyQuestion
@@ -8,12 +8,34 @@ from .utils import verify_user
 bp = Blueprint('surveys', __name__)
 
 
-@bp.route("/create", methods=['POST'])
+@bp.route("/list")
+def survey_list():
+    user = verify_user()
+
+    surveys = select(s for s in Survey if s.owner == user)
+
+    return jsonify({
+        'content': [s.as_dict() for s in surveys]
+    })
+
+
+@bp.route("/<id>")
+def survey_detail(id):
+    user = verify_user()
+
+    survey = Survey.get(id=id)
+
+    return jsonify(survey.as_dict())
+
+
+@bp.route("/", methods=['POST'])
 def survey_create():
     user = verify_user()
 
+    data = request.get_json()
+
     survey = Survey(
-        title='Banana',
+        title=data.get('title', 'Banana'),
         owner=user
     )
 
@@ -39,25 +61,5 @@ def survey_create():
             description='Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             type=QuestionType.MULTI_CHOICE
         )
-
-    return jsonify(survey.to_dict())
-
-
-@bp.route("/list")
-def survey_list():
-    user = verify_user()
-
-    surveys = select(s for s in Survey if s.owner == user)
-
-    return jsonify({
-        'content': [s.as_dict() for s in surveys]
-    })
-
-
-@bp.route("/<id>")
-def survey_detail(id):
-    user = verify_user()
-
-    survey = Survey.get(id=id)
 
     return jsonify(survey.as_dict())
