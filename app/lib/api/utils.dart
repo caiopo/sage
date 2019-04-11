@@ -35,6 +35,10 @@ Future<Map<String, dynamic>> getWithAuth(dynamic url) async {
 
   final response = await http.get(uri);
 
+  if (!_ok(response)) {
+    throw RequestFailed(response.statusCode);
+  }
+
   return json.decode(response.body) as Map<String, dynamic>;
 }
 
@@ -44,7 +48,32 @@ Future<Map<String, dynamic>> postWithAuth(
 
   final jsonBody = json.encode(body);
 
-  final response = await http.post(uri, body: jsonBody);
+  final response = await http.post(
+    uri,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonBody,
+  );
+
+  if (!_ok(response)) {
+    throw RequestFailed(response.statusCode);
+  }
 
   return json.decode(response.body) as Map<String, dynamic>;
+}
+
+bool _ok(http.Response resp) {
+  return 200 <= resp.statusCode && resp.statusCode < 300;
+}
+
+class RequestFailed extends Error {
+  final int statusCode;
+
+  RequestFailed(this.statusCode);
+
+  @override
+  String toString() {
+    return "Request failed <${statusCode}>";
+  }
 }

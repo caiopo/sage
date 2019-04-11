@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/api/surveys.dart';
-import 'package:gaia/components/snapshot_builder.dart';
 import 'package:gaia/models/models.dart';
 import 'package:gaia/screens/home/survey_list.dart';
 import 'package:gaia/utils/hooks.dart';
@@ -14,13 +13,15 @@ class HomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     final snapshot = useCurrentUser();
     final surveyList = useState(<Survey>[]);
+    final selectedItem = useState<Survey>(null);
 
     final refreshSurveys = () async {
-      final newSurveyList = await fetchSurveyList();
-      surveyList.value = newSurveyList;
+      surveyList.value = await fetchSurveyList();
     };
 
     useAsyncEffect(refreshSurveys, []);
+
+    final onSurveyPressed = (Survey survey) {};
 
     return Scaffold(
       appBar: AppBar(
@@ -34,34 +35,15 @@ class HomeScreen extends HookWidget {
                       snapshot.data.providerData.first.photoUrl,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {},
                 )
               ]
             : null,
       ),
-      body: SnapshotBuilder<FirebaseUser>(
-        snapshot: snapshot,
-        success: (context, user) {
-          return Stack(
-            children: <Widget>[
-              SurveyList(
-                data: surveyList.value,
-                onRefresh: refreshSurveys,
-              ),
-              Positioned(
-                bottom: 16,
-                right: 16,
-                child: FloatingActionButton(
-                  tooltip: 'Create Survey',
-                  child: Icon(
-                    Icons.add,
-                  ),
-                  onPressed: () {},
-                ),
-              )
-            ],
-          );
-        },
+      body: SurveyList(
+        data: surveyList.value,
+        onRefresh: refreshSurveys,
+        onSurveyPressed: onSurveyPressed,
       ),
     );
   }
