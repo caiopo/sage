@@ -13,10 +13,16 @@ void useAsyncEffect(Future<dynamic> Function() effect, [List keys]) {
   }, keys);
 }
 
-AsyncSnapshot<FirebaseUser> useCurrentUser() {
+FirebaseUser useCurrentUser() {
   final future = useMemoized(() => FirebaseAuth.instance.currentUser(), []);
 
-  return useFuture(future);
+  final snapshot = useFuture(future);
+
+  if (snapshot.hasData) {
+    return snapshot.data;
+  }
+
+  return null;
 }
 
 T useArguments<T>() {
