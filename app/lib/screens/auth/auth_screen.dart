@@ -12,6 +12,7 @@ class AuthScreen extends HookWidget {
     useAsyncEffect(() async {
       if (await hasSavedTokens()) {
         await handleSignIn();
+        await Navigator.pushReplacementNamed(context, '/home');
       } else {
         loading.value = false;
       }

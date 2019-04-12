@@ -33,7 +33,7 @@ Future<List<String>> getUserTokens() async {
   return [googleAuth.accessToken, googleAuth.idToken];
 }
 
-Future<void> handleSignIn() async {
+Future<FirebaseUser> handleSignIn() async {
   var credentials = await getSavedTokens();
 
   if (credentials == null) {
@@ -46,5 +46,5 @@ Future<void> handleSignIn() async {
     idToken: credentials[1],
   );
 
-  await FirebaseAuth.instance.signInWithCredential(credential);
+  return await FirebaseAuth.instance.signInWithCredential(credential);
 }
