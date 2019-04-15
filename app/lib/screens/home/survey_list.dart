@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gaia/api/surveys.dart';
 import 'package:gaia/models/models.dart';
 
 typedef OnPressedCallback<T> = void Function(T itemPressed);
@@ -18,42 +17,26 @@ class SurveyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        RefreshIndicator(
-          child: ListView.builder(
-            itemBuilder: (context, i) {
-              final survey = data[i];
+    return RefreshIndicator(
+      child: ListView.builder(
+        padding: EdgeInsets.only(bottom: 80),
+        itemBuilder: (context, i) {
+          final survey = data[i];
 
-              return ListTile(
-                key: Key(survey.id.toString()),
-                title: Text(survey.title),
-                subtitle: Text(
-                  "${survey.questions.length.toString()} questions, "
-                      "${survey.answers} answers",
-                ),
-                onTap: () => onSurveyPressed(survey),
-              );
-            },
-            itemCount: data?.length ?? 0,
-          ),
-          onRefresh: onRefresh,
-          displacement: 20,
-        ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton(
-            tooltip: 'Create Survey',
-            child: Icon(
-              Icons.add,
+          return ListTile(
+            key: Key(survey.id.toString()),
+            title: Text(survey.title),
+            subtitle: Text(
+              "${survey.questions.length.toString()} questions, "
+                  "${survey.answers} answers",
             ),
-            onPressed: () async {
-              await createSurvey("Teste");
-            },
-          ),
-        )
-      ],
+            onTap: () => onSurveyPressed(survey),
+          );
+        },
+        itemCount: data?.length ?? 0,
+      ),
+      onRefresh: onRefresh,
+      displacement: 20,
     );
   }
 }
