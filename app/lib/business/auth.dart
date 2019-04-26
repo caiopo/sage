@@ -19,6 +19,11 @@ Future<List<String>> getSavedTokens() async {
   return prefs.getStringList(_SIGN_IN_TOKENS_KEY);
 }
 
+Future<void> clearTokens() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove(_SIGN_IN_TOKENS_KEY);
+}
+
 Future<bool> hasSavedTokens() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.containsKey(_SIGN_IN_TOKENS_KEY);
@@ -33,18 +38,32 @@ Future<List<String>> getUserTokens() async {
   return [googleAuth.accessToken, googleAuth.idToken];
 }
 
-Future<FirebaseUser> handleSignIn() async {
-  var credentials = await getSavedTokens();
-
-  if (credentials == null) {
-    credentials = await getUserTokens();
-    await saveTokens(credentials);
-  }
-
+Future<FirebaseUser> signInWith(List<String> tokens) async {
   final AuthCredential credential = GoogleAuthProvider.getCredential(
-    accessToken: credentials[0],
-    idToken: credentials[1],
+    accessToken: tokens[0],
+    idToken: tokens[1],
   );
 
   return await FirebaseAuth.instance.signInWithCredential(credential);
+}
+
+Future<FirebaseUser> handleSignIn({bool retrying = false}) async {
+  var tokens = await getSavedTokens();
+
+  if (tokens == null) {
+    tokens = await getUserTokens();
+    await saveTokens(tokens);
+  }
+
+  try {
+    return await signInWith(tokens);
+  } on Exception {
+    await clearTokens();
+
+    if (retrying) {
+      return handleSignIn(retrying: true);
+    }
+
+    return null;
+  }
 }

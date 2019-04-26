@@ -4,11 +4,11 @@ import 'package:gaia/api/surveys.dart';
 import 'package:gaia/components/sync_button.dart';
 import 'package:gaia/components/user_profile_button.dart';
 import 'package:gaia/models/models.dart';
-import 'package:gaia/screens/home/survey_list.dart';
 import 'package:gaia/screens/routes.dart';
+import 'package:gaia/screens/survey_list/survey_list.dart';
 import 'package:gaia/utils/hooks.dart';
 
-class HomeScreen extends HookWidget {
+class SurveyListScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final surveyList = useState(<Survey>[]);
@@ -43,8 +43,8 @@ class HomeScreen extends HookWidget {
             child: Icon(
               Icons.add,
             ),
-            onPressed: () async {
-              await createSurvey("Teste");
+            onPressed: () {
+              Navigator.push(context, Routes.surveyCreate());
             },
           ),
         )

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/business/auth.dart';
-import 'package:gaia/screens/auth/google_sign_in_button.dart';
+import 'package:gaia/screens/login/google_sign_in_button.dart';
+import 'package:gaia/screens/routes.dart';
 import 'package:gaia/utils/hooks.dart';
 
-class AuthScreen extends HookWidget {
+class LoginScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final loading = useState(true);
@@ -12,7 +13,7 @@ class AuthScreen extends HookWidget {
     useAsyncEffect(() async {
       if (await hasSavedTokens()) {
         await handleSignIn();
-        await Navigator.pushReplacementNamed(context, '/home');
+        await Navigator.pushReplacement(context, Routes.surveyList());
       } else {
         loading.value = false;
       }
@@ -33,7 +34,7 @@ class AuthScreen extends HookWidget {
                       onPressed: () async {
                         loading.value = true;
                         await handleSignIn();
-                        await Navigator.pushReplacementNamed(context, '/home');
+                        await Navigator.pushReplacement(context, Routes.surveyList());
                       },
                     )
                   ],
