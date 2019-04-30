@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/business/auth.dart';
 import 'package:gaia/screens/login/google_sign_in_button.dart';
 import 'package:gaia/screens/routes.dart';
-import 'package:gaia/utils/hooks.dart';
+import 'package:gaia/utils/hooks/misc.dart';
 
 class LoginScreen extends HookWidget {
   @override

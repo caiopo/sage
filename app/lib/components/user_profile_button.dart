@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gaia/utils/hooks.dart';
+import 'package:gaia/utils/hooks/misc.dart';
 
 class UserProfileButton extends StatelessWidget {
   @override

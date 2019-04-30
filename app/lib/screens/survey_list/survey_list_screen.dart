@@ -6,7 +6,7 @@ import 'package:gaia/components/user_profile_button.dart';
 import 'package:gaia/models/models.dart';
 import 'package:gaia/screens/routes.dart';
 import 'package:gaia/screens/survey_list/survey_list.dart';
-import 'package:gaia/utils/hooks.dart';
+import 'package:gaia/utils/hooks/misc.dart';
 
 class SurveyListScreen extends HookWidget {
   @override

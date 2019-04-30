@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:gaia/utils/hooks.dart';
+import 'package:gaia/utils/hooks/misc.dart';
 
 class SyncScreenArguments {
   final bool goToHome;
