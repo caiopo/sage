@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/utils/hooks/misc.dart';
 
-class UserProfileButton extends StatelessWidget {
+class UserProfileButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final user = useCurrentUser();

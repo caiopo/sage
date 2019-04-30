@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/api/surveys.dart';
-import 'package:gaia/components/sync_button.dart';
-import 'package:gaia/components/user_profile_button.dart';
+import 'package:gaia/components/presentational/sync_button.dart';
+import 'package:gaia/components/presentational/user_profile_button.dart';
 import 'package:gaia/models/models.dart';
 import 'package:gaia/screens/routes.dart';
 import 'package:gaia/screens/survey_list/survey_list.dart';

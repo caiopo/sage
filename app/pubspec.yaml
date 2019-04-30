@@ -24,6 +24,8 @@ dependencies:
 
   font_awesome_flutter: ^8.4.0
 
+  jdenticon_dart: ^1.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
