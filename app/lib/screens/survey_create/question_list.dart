@@ -11,14 +11,15 @@ class QuestionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableListView(
-      children: questions.map((question) {
+    return ListView.builder(
+      itemCount: questions.length,
+      itemBuilder: (context, index) {
+        final question = questions[index];
         return ListTile(
           key: Key(question.id.toString()),
           title: Text(question.title),
         );
-      }).toList(),
-      onReorder: (int oldIndex, int newIndex) {},
+      },
     );
   }
 }

@@ -48,7 +48,10 @@ class SurveyCreateScreen extends HookWidget {
               QuestionList(
                 questions: List.generate(
                   100,
-                  (i) => SurveyQuestion(id: i, title: 'oi $i'),
+                  (i) => SurveyQuestion(
+                        id: i,
+                        title: 'Lorem ipsum dolor sit amet $i',
+                      ),
                 ),
               ),
             ],

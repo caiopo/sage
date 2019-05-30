@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/business/auth.dart';
-import 'package:gaia/screens/login/google_sign_in_button.dart';
 import 'package:gaia/screens/routes.dart';
 import 'package:gaia/utils/hooks/misc.dart';
 
@@ -20,9 +20,6 @@ class LoginScreen extends HookWidget {
     }, []);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
       body: Container(
         child: Center(
           child: loading.value
@@ -30,11 +27,16 @@ class LoginScreen extends HookWidget {
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    Text(
+                      'Gaia',
+                      style: TextStyle(fontFamily: 'Arvo Bold', fontSize: 40),
+                    ),
                     GoogleSignInButton(
                       onPressed: () async {
                         loading.value = true;
                         await handleSignIn();
-                        await Navigator.pushReplacement(context, Routes.surveyList());
+                        await Navigator.pushReplacement(
+                            context, Routes.surveyList());
                       },
                     )
                   ],
