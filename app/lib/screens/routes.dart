@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:gaia/models/models.dart';
+import 'package:gaia/screens/login/login_screen.dart';
 import 'package:gaia/screens/survey_create/survey_create_screen.dart';
 import 'package:gaia/screens/survey_detail/survey_detail_screen.dart';
 import 'package:gaia/screens/survey_list/survey_list_screen.dart';
+import 'package:gaia/screens/sync/sync_screen.dart';
 
 class Routes {
+  static MaterialPageRoute login() {
+    return MaterialPageRoute(
+      builder: (BuildContext context) => LoginScreen(),
+    );
+  }
+
+  static MaterialPageRoute sync() {
+    return MaterialPageRoute(
+      builder: (BuildContext context) => SyncScreen(),
+    );
+  }
+
   static MaterialPageRoute surveyList() {
     return MaterialPageRoute(
       builder: (BuildContext context) => SurveyListScreen(),

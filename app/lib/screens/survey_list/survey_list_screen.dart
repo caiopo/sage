@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/api/surveys.dart';
+import 'package:gaia/components/presentational/empty_list.dart';
+import 'package:gaia/components/presentational/gaia_wordmark.dart';
 import 'package:gaia/components/presentational/sync_button.dart';
 import 'package:gaia/components/presentational/user_profile_button.dart';
 import 'package:gaia/models/models.dart';
 import 'package:gaia/screens/routes.dart';
 import 'package:gaia/screens/survey_list/survey_list.dart';
-import 'package:gaia/utils/hooks/misc.dart';
 
 class SurveyListScreen extends HookWidget {
   @override
@@ -17,38 +18,35 @@ class SurveyListScreen extends HookWidget {
       surveyList.value = await fetchSurveyList();
     };
 
-    useAsyncEffect(refreshSurveys, []);
+//    useAsyncEffect(refreshSurveys, []);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: GaiaWordmark(size: 28),
         actions: <Widget>[
           SyncButton(),
           UserProfileButton(),
         ],
       ),
-      body: Stack(children: <Widget>[
-        SurveyList(
-          data: surveyList.value,
-          onRefresh: refreshSurveys,
-          onSurveyPressed: (Survey survey) {
-            Navigator.push(context, Routes.surveyDetail(survey));
-          },
-        ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton(
-            tooltip: 'Create Survey',
-            child: Icon(
-              Icons.add,
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Create Survey',
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context, Routes.surveyCreate());
+        },
+      ),
+      body: surveyList.value.isEmpty
+          ? EmptyList(
+              text: 'You have no surveys',
+              paddingBottom: 80,
+            )
+          : SurveyList(
+              data: surveyList.value,
+              onRefresh: refreshSurveys,
+              onSurveyPressed: (Survey survey) {
+                Navigator.push(context, Routes.surveyDetail(survey));
+              },
             ),
-            onPressed: () {
-              Navigator.push(context, Routes.surveyCreate());
-            },
-          ),
-        )
-      ]),
     );
   }
 }

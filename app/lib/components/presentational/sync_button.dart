@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gaia/screens/routes.dart';
 
 class SyncButton extends StatelessWidget {
   @override
@@ -9,10 +10,12 @@ class SyncButton extends StatelessWidget {
         color: Colors.white,
       ),
       label: Text(
-        'SYNCHRONIZE',
+        'SYNC',
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.push(context, Routes.sync());
+      },
     );
   }
 }

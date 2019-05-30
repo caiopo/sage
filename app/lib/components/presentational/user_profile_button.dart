@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gaia/screens/routes.dart';
 import 'package:gaia/utils/hooks/misc.dart';
 
 class UserProfileButton extends HookWidget {
@@ -18,7 +19,9 @@ class UserProfileButton extends HookWidget {
           user.providerData.first.photoUrl,
         ),
       ),
-      onPressed: () async {},
+      onPressed: () {
+        Navigator.pushReplacement(context, Routes.login());
+      },
     );
   }
 }

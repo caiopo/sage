@@ -35,9 +35,10 @@ flutter:
   uses-material-design: true
 
   assets:
-  - assets/images/
+    - assets/images/
+    - assets/images/ginger-cat/
 
   fonts:
-    - family: Arvo Bold
+    - family: Mali SemiBold
       fonts:
-        - asset: assets/fonts/Arvo-Bold.ttf
+        - asset: assets/fonts/Mali-SemiBold.ttf
