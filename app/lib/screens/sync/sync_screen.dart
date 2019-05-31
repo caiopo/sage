@@ -38,7 +38,7 @@ class RotatingCat extends HookWidget {
     }, []);
 
     return Transform.rotate(
-      angle: left.value ? -pi / 32 : pi / 32,
+      angle: left.value ? -pi / 16 : pi / 16,
       child: Image.asset('assets/images/ginger-cat/uploading.png'),
     );
   }

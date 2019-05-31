@@ -21,7 +21,7 @@ class App extends HookWidget {
       title: 'Gaia',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-//        primarySwatch: Colors.deepOrange,
+        primarySwatch: Colors.lightGreen,
 //        primaryColor: _primaryColor,
 //        accentColor: _accentColor,
         primaryColor: _primaryColor,
