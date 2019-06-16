@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
 
+enum QuestionType { multiple, single, number, text, scale }
+
 @JsonSerializable()
 class User {
   final String uid;
@@ -37,7 +39,7 @@ class Survey {
 @JsonSerializable()
 class SurveyQuestion {
   final int id;
-  final String type;
+  final QuestionType type;
   final String title;
   final String description;
 

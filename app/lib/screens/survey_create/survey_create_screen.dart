@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gaia/screens/routes.dart';
 import 'package:gaia/screens/survey_create/discard_dialog.dart';
 import 'package:gaia/screens/survey_create/survey_stepper.dart';
 
@@ -7,6 +8,7 @@ class SurveyCreateScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final title = useState('');
+    final showFab = useState(false);
 
     return WillPopScope(
       child: Scaffold(
@@ -24,7 +26,19 @@ class SurveyCreateScreen extends HookWidget {
             )
           ],
         ),
-        body: SurveyStepper(title: title),
+        floatingActionButton: showFab.value
+            ? FloatingActionButton(
+                tooltip: 'Add Question',
+                child: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.push(context, Routes.questionCreate());
+                },
+              )
+            : null,
+        body: SurveyStepper(
+          title: title,
+          onStepChanged: (step) => showFab.value = step == 1,
+        ),
       ),
       onWillPop: () async {
         final quit = await showDialog<bool>(

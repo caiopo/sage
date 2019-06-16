@@ -48,7 +48,6 @@ class SurveyInfo extends HookWidget {
                         .textTheme
                         .subhead
                         .copyWith(fontSize: 18),
-                    autofocus: true,
                   ),
                 ),
               ),

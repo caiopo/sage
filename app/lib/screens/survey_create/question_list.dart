@@ -12,12 +12,18 @@ class QuestionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: questions.length,
+      itemCount: questions.length * 2 - 1,
       itemBuilder: (context, index) {
-        final question = questions[index];
+        if (index % 2 != 0) {
+          return Divider(height: 0);
+        }
+
+        final question = questions[index ~/ 2];
         return ListTile(
           key: Key(question.id.toString()),
           title: Text(question.title),
+          subtitle: Text(question.title),
+          onTap: () {},
         );
       },
     );

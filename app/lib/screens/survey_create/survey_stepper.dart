@@ -4,84 +4,67 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/components/presentational/identicon.dart';
 import 'package:gaia/models/models.dart';
 import 'package:gaia/screens/survey_create/question_list.dart';
-import 'package:gaia/utils/math.dart';
 
-class SurveyStepper extends HookWidget {
+const _numSteps = 2;
+
+class SurveyStepper extends StatefulWidget {
   final ValueNotifier<String> title;
+  final ValueChanged<int> onStepChanged;
 
-  SurveyStepper({Key key, this.title}) : super(key: key);
+  SurveyStepper({
+    Key key,
+    this.title,
+    this.onStepChanged,
+  }) : super(key: key);
+
+  @override
+  _SurveyStepperState createState() => _SurveyStepperState();
+}
+
+class _SurveyStepperState extends State<SurveyStepper> {
+  int currentStep = 0;
 
   @override
   Widget build(BuildContext context) {
-    final currentStep = useState(0);
-
-    final steps = buildSteps(currentStep.value);
-
-    return Stepper(
-      type: StepperType.horizontal,
-      steps: steps,
-      currentStep: currentStep.value,
-      controlsBuilder: (context, {onStepContinue, onStepCancel}) {
-        return buildControls(
-          context,
-          currentStep.value,
-          onStepContinue,
-          onStepCancel,
-        );
-      },
-      onStepContinue: () {
-        currentStep.value = clamp(currentStep.value + 1, 0, steps.length - 1);
-      },
-      onStepCancel: () {
-        currentStep.value = clamp(currentStep.value - 1, 0, steps.length - 1);
-      },
-      onStepTapped: (step) {
-        currentStep.value = step;
-      },
+    return Column(
+      children: <Widget>[
+        StepperBar(
+          currentStep: currentStep,
+          onStepPressed: setStep,
+        ),
+        Expanded(child: buildStep(currentStep)),
+      ],
     );
   }
 
-  List<Step> buildSteps(int currentStep) {
-    return [
-      Step(
-        title: Text('Title'),
-        content: SingleChildScrollView(
-          child: IdenticonTextField(
-            title: title,
-          ),
-        ),
-        isActive: currentStep == 0,
-      ),
-      Step(
-        title: Text('Questions'),
-        content: QuestionList(
-          questions: List.generate(
-            1,
-            (i) => SurveyQuestion(
-                  title: 'Aaaaaaaaaaa $i',
-                ),
-          ),
-        ),
-        isActive: currentStep == 1,
-      )
-    ];
-  }
-
-  Widget buildControls(BuildContext context, int currentStep,
-      VoidCallback onStepContinue, VoidCallback onStepCancel) {
+  Widget buildStep(int currentStep) {
     if (currentStep == 0) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          OutlineButton(
-            child: Text('NEXT'),
-            onPressed: onStepContinue,
-          )
-        ],
+      return SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: IdenticonTextField(
+            title: widget.title,
+          ),
+        ),
       );
     }
 
-    return Container();
+    return QuestionList(
+      questions: List.generate(
+        100,
+        (i) => SurveyQuestion(
+              title: 'Lorem ipsum dolor sit amet $i',
+            ),
+      ),
+    );
+  }
+
+  void setStep(int step) {
+    setState(() {
+      currentStep = step;
+    });
+
+    widget.onStepChanged(step);
   }
 }
 
@@ -110,12 +93,76 @@ class IdenticonTextField extends HookWidget {
                 hintText: "Pesquisa de Opinião",
                 labelText: "Title",
               ),
-              style: Theme.of(context).textTheme.subhead.copyWith(fontSize: 18),
+              style: Theme.of(context).textTheme.subhead.copyWith(fontSize: 20),
               onChanged: (value) {
                 title.value = value;
               },
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class StepperBar extends StatelessWidget {
+  final int currentStep;
+  final ValueChanged<int> onStepPressed;
+
+  const StepperBar({
+    Key key,
+    @required this.currentStep,
+    this.onStepPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Material(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Expanded(child: buildStep(theme, 0, 'Title')),
+            Expanded(child: buildStep(theme, 1, 'Questions')),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildStep(ThemeData theme, int i, String title) {
+    return InkWell(
+      onTap: () {
+        if (onStepPressed != null) {
+          onStepPressed(i);
+        }
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            decoration: ShapeDecoration(
+              shape: CircleBorder(),
+              color:
+                  currentStep == i ? theme.primaryColor : Colors.grey.shade500,
+            ),
+            height: 54,
+            width: 24,
+            child: Center(
+              child: Text(
+                (i + 1).toString(),
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 12),
+          Text(title),
         ],
       ),
     );

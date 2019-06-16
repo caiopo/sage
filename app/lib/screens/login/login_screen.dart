@@ -11,15 +11,6 @@ class LoginScreen extends HookWidget {
     final loading = useState(false);
     final theme = Theme.of(context);
 
-//    useAsyncEffect(() async {
-//      if (await hasSavedTokens()) {
-//        await handleSignIn();
-//        await Navigator.pushReplacement(context, Routes.surveyList());
-//      } else {
-//        loading.value = false;
-//      }
-//    }, []);
-
     return Scaffold(
       body: Container(
         child: Center(
@@ -45,8 +36,6 @@ class LoginScreen extends HookWidget {
                         SizedBox(height: 8),
                         GoogleSignInButton(
                           onPressed: () async {
-//                        loading.value = true;
-//                        await handleSignIn();
                             await Navigator.pushReplacement(
                                 context, Routes.surveyList());
                           },
