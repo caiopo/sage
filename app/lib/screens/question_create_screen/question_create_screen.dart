@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gaia/components/presentational/collapsing_radio_group.dart';
 import 'package:gaia/models/models.dart';
+import 'package:gaia/screens/question_create_screen/question_type_layouts.dart';
 import 'package:gaia/utils/texts.dart';
 
-class QuestionCreateScreen extends HookWidget {
+class QuestionCreateScreen extends StatefulWidget {
+  @override
+  _QuestionCreateScreenState createState() => _QuestionCreateScreenState();
+}
+
+class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
+  SurveyQuestion question = SurveyQuestion();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -29,23 +36,34 @@ class QuestionCreateScreen extends HookWidget {
               ),
             ),
             SizedBox(height: 16),
-            buildSection('Type'),
-            CollapsingRadioGroup(
-              items: <RadioItem<QuestionType>>[
+            _buildSection('Type'),
+            CollapsingRadioGroup<QuestionType>(
+              onSelected: (type) => setState(() => question.type = type),
+              items: [
                 for (final type in QuestionType.values)
                   RadioItem(
                     key: type,
                     label: questionTypeText(type),
-                  )
+                  ),
               ],
             ),
+            if (question.type != null) ...[
+              SwitchListTile(
+                title: Text('Required'),
+                value: question.required,
+                onChanged: (required) => setState(() {
+                      question.required = required;
+                    }),
+              ),
+              ..._buildTypeSpecific(),
+            ]
           ],
         ),
       ),
     );
   }
 
-  Widget buildSection(String title) {
+  Widget _buildSection(String title) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
@@ -58,5 +76,41 @@ class QuestionCreateScreen extends HookWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildTypeSpecific() {
+    switch (question.type) {
+      case QuestionType.multiple:
+        return [
+          _buildSection('Answers'),
+          CreateMultipleChoiceQuestion(),
+        ];
+
+      case QuestionType.single:
+        return [
+          _buildSection('Answers'),
+          CreateSingleChoiceQuestion(),
+        ];
+
+      case QuestionType.number:
+        return [
+          _buildSection('Options'),
+          CreateNumberQuestion(),
+        ];
+
+      case QuestionType.text:
+        return [
+          _buildSection('Options'),
+          CreateTextQuestion(),
+        ];
+
+      case QuestionType.scale:
+        return [
+          _buildSection('Options'),
+          CreateScaleQuestion(),
+        ];
+    }
+
+    return [];
   }
 }

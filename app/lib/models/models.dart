@@ -38,14 +38,15 @@ class Survey {
 
 @JsonSerializable()
 class SurveyQuestion {
-  final int id;
-  final QuestionType type;
-  final String title;
-  final String description;
+  int id;
+  QuestionType type;
+  String title;
+  String description;
+  bool required;
 
   final Map<String, dynamic> extras;
 
-  const SurveyQuestion({
+  SurveyQuestion({
     this.id,
     this.type,
     this.title,

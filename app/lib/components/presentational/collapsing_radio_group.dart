@@ -15,10 +15,12 @@ class RadioItem<T> {
 
 class CollapsingRadioGroup<T> extends HookWidget {
   final List<RadioItem<T>> items;
+  final ValueChanged<T> onSelected;
 
   CollapsingRadioGroup({
     Key key,
     @required this.items,
+    @required this.onSelected,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class CollapsingRadioGroup<T> extends HookWidget {
 
     final setSelected = (bool s, T v) {
       selected.value = s ? v : null;
+      onSelected(selected.value);
     };
 
     return Column(
