@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 
 Future<String> token() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  return user.getIdToken();
+  final tokenResult = await user.getIdToken();
+
+  return tokenResult.token;
 }
 
 Uri toUri(dynamic url) {
