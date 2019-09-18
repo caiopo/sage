@@ -21,6 +21,11 @@ class Unauthorized(GaiaException):
     default_message = 'Unauthorized'
 
 
+class Forbidden(GaiaException):
+    status_code = 403
+    default_message = 'Forbidden'
+
+
 class NotFound(GaiaException):
     status_code = 404
     default_message = 'Not Found'

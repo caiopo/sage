@@ -1,65 +1,44 @@
 from flask import Blueprint, jsonify, request
 from pony.orm import select
 
-from gaia.models.db import Survey, SurveyQuestion
-from gaia.models.utils import QuestionType
-from .utils import verify_user
+from gaia.business.surveys import create_survey, edit_survey
+from gaia.models.db import Survey
+from gaia.models.validators import survey_schema
+from gaia.utils.exceptions import BadRequest
+from .utils import auth_required, validate_with
 
 bp = Blueprint('surveys', __name__)
 
 
-@bp.route("/list")
-def survey_list():
-    user = verify_user()
-
-    surveys = select(s for s in Survey if s.owner == user)
+@bp.route('/')
+@auth_required
+def survey_list(user):
+    survey_ids = select(s.id for s in Survey if s.owner == user)
 
     return jsonify({
-        'content': [s.as_dict() for s in surveys]
+        'content': [{'id': sid} for sid in survey_ids]
     })
 
 
-@bp.route("/<id>")
-def survey_detail(id):
-    user = verify_user()
+@bp.route('/', methods=['POST'])
+@auth_required
+def survey_create_or_edit(user):
+    survey_data = validate_with(survey_schema, request.get_json())
 
-    survey = Survey.get(id=id)
+    if survey_data['id'] is None:
+        survey = create_survey(survey_data, user)
+    else:
+        survey = edit_survey(survey_data, user)
 
     return jsonify(survey.as_dict())
 
 
-@bp.route("/", methods=['POST'])
-def survey_create():
-    user = verify_user()
+@bp.route('/<int:sid>')
+@auth_required
+def answer_create(user, sid):
+    survey = Survey.get(id=sid)
 
-    data = request.get_json()
-
-    survey = Survey(
-        title=data.get('title', 'Banana'),
-        owner=user
-    )
-
-    for i in range(10):
-        SurveyQuestion(
-            survey=survey,
-            title=f'Single Choice #{i}',
-            description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget '
-                        'sapien eu massa tempus euismod sed quis lectus. Pellentesque augue arcu, '
-                        'auctor ac erat at, pharetra faucibus augue. In lorem ligula, '
-                        'maximus vitae lorem eu, feugiat porttitor elit. Vivamus ut sagittis '
-                        'nulla. Nam fermentum blandit lacus id viverra. Nullam vitae dui ac nunc '
-                        'euismod aliquam. Nam nisi mi, ultricies id nunc eu, faucibus lobortis '
-                        'nibh. Nullam vel porta lorem, quis mollis elit. Vivamus in mauris sit '
-                        'amet massa viverra mollis eu sit amet elit. Maecenas molestie elementum '
-                        'velit nec tempor.',
-            type=QuestionType.SINGLE_CHOICE
-        )
-
-        SurveyQuestion(
-            survey=survey,
-            title=f'Multiple Choice #{i}',
-            description='Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            type=QuestionType.MULTI_CHOICE
-        )
+    if survey is None:
+        raise BadRequest(f'survey with id {sid} not found')
 
     return jsonify(survey.as_dict())

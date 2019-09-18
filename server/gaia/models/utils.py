@@ -3,7 +3,7 @@ from string import ascii_letters, digits
 
 
 class DbEnum:
-    ALL = None
+    ALL = []
 
     @classmethod
     def validate(cls, item):
@@ -11,14 +11,16 @@ class DbEnum:
 
 
 class QuestionType(DbEnum):
-    SINGLE_CHOICE = 'single_choice'
-    MULTI_CHOICE = 'multi_choice'
-    TEXT_FIELD = 'text_field'
+    SINGLE = 'single'
+    MULTI = 'multi'
+    NUMBER = 'number'
+    TEXT = 'text'
 
     ALL = [
-        SINGLE_CHOICE,
-        MULTI_CHOICE,
-        TEXT_FIELD,
+        SINGLE,
+        MULTI,
+        NUMBER,
+        TEXT,
     ]
 
 
