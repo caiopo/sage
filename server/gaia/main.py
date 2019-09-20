@@ -1,15 +1,16 @@
-from dynaconf import FlaskDynaconf, settings
+# from dynaconf import FlaskDynaconf, settings
 from firebase_admin import credentials, initialize_app
 from flask import Flask, jsonify
 from pony.flask import Pony
 
+from gaia.config import PORT, FIREBASE_CERTIFICATE
+
 app = Flask(__name__)
 
 Pony(app)
-FlaskDynaconf(app)
 
 initialize_app(
-    credentials.Certificate(settings.FIREBASE_CERTIFICATE)
+    credentials.Certificate(FIREBASE_CERTIFICATE)
 )
 
 if app.env != 'development':
@@ -35,3 +36,6 @@ from gaia.routes import blueprints
 
 for (bp, prefix) in blueprints:
     app.register_blueprint(bp, url_prefix=prefix)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=PORT)

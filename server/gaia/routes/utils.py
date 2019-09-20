@@ -10,13 +10,11 @@ from gaia.utils.exceptions import BadRequest, Unauthorized
 
 
 def verify_user() -> User:
-    # return User(id=1, uid='xCEmuhAebzSMy7xbDLiqVwH9Kj23')
-    return User[1]
-
     token = request.args.get('token')
 
     if token is None:
-        raise BadRequest('Missing token')
+        return User[1]
+        # raise BadRequest('Missing token')
 
     try:
         data = verify_id_token(token, check_revoked=False)

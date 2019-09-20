@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from dynaconf import settings
 from pony.orm import *
 
+from gaia.config import DATABASE
 from .utils import QuestionType
 
 db = Database()
@@ -24,7 +24,6 @@ class Survey(db.Entity):
 
     def as_dict(self):
         d = self.to_dict(related_objects=True)
-        # d['owner'] = d['owner'].to_dict()
         del d['owner']
         d['answers'] = len(self.answers)
         d['questions'] = [q.as_dict() for q in self.questions]
@@ -61,5 +60,14 @@ class QuestionAnswer(db.Entity):
     extras = Required(Json)
 
 
-db.bind(**settings.DB)
+db.bind(*DATABASE)
 db.generate_mapping(create_tables=True)
+
+
+def _ns():
+    with db_session:
+        if count(u for u in User) == 0:
+            User(uid='testuser')
+
+
+_ns()

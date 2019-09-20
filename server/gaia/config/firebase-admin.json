@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "gaia-survey",
+  "private_key_id": "e7885904e46293ad6a4c8cbc982c7442f98b46c3",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8Lg9cF9xmeuTr\npnmGgM8MK+p7ep6fxKOM+8hKVoXCw2pIluVW4MKPO1ytm0StBcyrCYtgLwR+yKXr\n86GotxZzKfHm7D3XAl2Dcj8P7jEjcxQNlvKcUFdzKevf/O+9wlZNwBJFTAhgW9JE\nEHI5aNBIQSRkl0X7s7Re6FFPYKesCN8KLGfe2tSCIuuP+hiAtgLTSoTGObvBu5hi\n4cFxtaUCUpjB/IlZ/CvHjCKubDJ4mpRofmG29cggCWU/eZZc4SKsf+qH97damH4b\n/8qxdU2+Q0j8agPJL7CtETtDSHJXqDBpmQsTyXfRiI1EnsuSRp9akd5oHQNmOiiH\ngbHcdIEbAgMBAAECggEAGLpkwlFQYRcdJepGZepfStYqhfdjCNOqOkiL1VjxUtqj\nCM7rbDM03eWLFDUnHSV586/ZZNZI3PA4/XySbb1Bcfi9FP9OUQa6ix9kMg+23VWt\n+OsxDmFwXG3R1SlDx8fV13m57OlE4ISwaMlQeULQu+3zflRymdTPivk0Vh35ap21\n+ATuzAzM69RQrsnO2WWwo7xgHz4JqfYLZzSh0KMhawS65oOxzhn9oF4zn9mphEB7\n7sU9gWYe9ejTUUUbb/RIIjLqFDOWwd/eEw+mPukm+c/oV2RN77lGophX6wFcKxoo\nNJwQaRMY2CQzU3VwhNBayceYYKenbOZ+0aCxp5dCQQKBgQDstsSDc7VXG7GVQubn\nfhhG9UCcXUvI0g6861YG65FupLgglVha7UmRUJWW2rLST6rYSh8kcjOMAyggCt9y\nxukA1u5hQjMUu9YjsHddal21gWtAVJlJBVsQivSFizLTUiMvEF1//0m8hmHwM3sc\nrVYQGm0/BIsMnlJL2GC4SPjSAwKBgQDLgwABZuC8CzTrMgJ/CObrB5/3/2XG8RxZ\nOudfhlnlVAb4u14jMbo4p9ZxQCBORHZyihBl2vIGAro7v/HeeJu9wyqtFsBiuawe\npKynWHhTisJUTJjOJTx6NO3n6nYyF4YYkkxltd26Pv3YaPyQgb92z9O0MI86EGFF\nb0q7QxO1CQKBgArBm1hlz52vsngX3Co0vqGqz07Lpn/vm5/WCciyt58ReRRx9Nvc\n4HTr9oAuW+XWnOrLI3MihVkdY5thIxoyE7BoE9jziyKsDmT8xc/G34853EfGEFkT\nFzo/NjFDTAHyP4sJ8VW5of4hFR43GKcK8Vg1+zTb3f2qzA6KPIrjNftFAoGBAIae\nHefPfIMGyrd1Oi973PvE7G0odNN29DCWBSyr+1T2EzJ/BlMzdqI5a2E4cOY05UD4\n0MX/YS7WqQgS/NQTZbnNmrIqJZJojVErzsVXgSiJ1efbTwy1lt6jmmdZMVwLMXmZ\ndI2nEoc7WcDIGaEhIlxeNwSvRl67LQy4BHAAe825AoGBAMfb2NpLc6+fHDP58s6s\nUw0BQFhJBOY7hBMq3AGrF70Z75vK3e/rD9g1ikrFO/6En3WTC9v7ew0+Uj1DyAkc\nd8/+uR6HD9jwVYB10E/SN2DxUcHzSSlcTetpch8VlmtpWIbF//k5kK7X+AQiqdjV\n0pp4mnW5pzV061X9xMnlUEif\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-cpz28@gaia-survey.iam.gserviceaccount.com",
+  "client_id": "107842608096994127867",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-cpz28%40gaia-survey.iam.gserviceaccount.com"
+}
