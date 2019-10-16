@@ -12,6 +12,7 @@ firebase_admin = "^3.0.0"
 schema = "^0.7.1"
 gunicorn = "^19.9"
 psycopg2-binary = "^2.8"
+cryptography = "^2.7"
 
 [tool.poetry.dev-dependencies]
 

@@ -12,6 +12,9 @@ class User(db.Entity):
     uid = Required(str, unique=True)
     active = Required(bool, default=lambda: True)
 
+    public_key = Required(bytes)
+    private_key = Required(bytes)
+
     surveys = Set(lambda: Survey)
 
 
