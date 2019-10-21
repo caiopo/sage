@@ -3,6 +3,7 @@ from datetime import datetime
 from pony.orm import *
 
 from gaia.config import DATABASE
+from gaia.utils.crypto import RSAKey
 from .utils import QuestionType
 
 db = Database()
@@ -12,8 +13,7 @@ class User(db.Entity):
     uid = Required(str, unique=True)
     active = Required(bool, default=lambda: True)
 
-    public_key = Required(bytes)
-    private_key = Required(bytes)
+    private_key = Required(str)
 
     surveys = Set(lambda: Survey)
 
@@ -70,7 +70,10 @@ db.generate_mapping(create_tables=True)
 def _ns():
     with db_session:
         if count(u for u in User) == 0:
-            User(uid='testuser')
+            User(
+                uid='testuser',
+                private_key=RSAKey.generate().to_private_pem(),
+            )
 
 
 _ns()

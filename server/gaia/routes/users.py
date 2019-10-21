@@ -2,7 +2,9 @@ from datetime import datetime
 
 from flask import Blueprint, jsonify
 
-from .utils import verify_user
+from gaia.models.db import User
+from gaia.utils.crypto import RSAKey
+from .utils import verify_user, auth_required
 
 bp = Blueprint('users', __name__)
 
@@ -14,4 +16,14 @@ def root():
     return jsonify({
         'teste': f'{datetime.now().isoformat()}',
         'oi': user.uid,
+    })
+
+
+@bp.route('/login')
+@auth_required
+def user_login(user: User):
+    public_pem = RSAKey.from_pem(user.private_key).to_public_pem()
+
+    return jsonify({
+        'public_key': public_pem,
     })

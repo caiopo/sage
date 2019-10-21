@@ -8,7 +8,8 @@ DEVELOPMENT = environ.get('ENVIRONMENT') != 'production'
 if DEVELOPMENT:
     DATABASE = [
         'sqlite',
-        'db.sqlite',
+        'data.db',
+        True,
     ]
 
 else:
