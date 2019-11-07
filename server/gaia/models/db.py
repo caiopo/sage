@@ -37,6 +37,7 @@ class Survey(db.Entity):
 
 
 class Question(db.Entity):
+    uuid = Required(uuid.UUID, default=uuid.uuid4, index=True, unique=True)
     survey = Required(Survey)
 
     type = Required(str, py_check=QuestionType.validate)
@@ -49,7 +50,7 @@ class Question(db.Entity):
     answers = Set(lambda: QuestionAnswer)
 
     def as_dict(self):
-        return self.to_dict(exclude='answers survey')
+        return self.to_dict(exclude='id answers survey')
 
 
 class Answer(db.Entity):
