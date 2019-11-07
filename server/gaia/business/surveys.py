@@ -14,16 +14,17 @@ def create_survey(survey_data, owner):
             type=question_data['type'],
             title=question_data['title'],
             description=question_data['description'],
+            required=question_data['required'],
             extras=question_data['extras'],
         )
 
     return survey
 
 
-def edit_survey(survey_data, owner):
+def edit_survey(survey_data, user):
     survey = Survey[survey_data['id']]
 
-    if survey.owner != owner:
+    if survey.owner != user:
         raise Forbidden('user is not the owner of this survey')
 
     return survey

@@ -13,13 +13,13 @@ class DbEnum:
 class QuestionType(DbEnum):
     SINGLE = 'single'
     MULTI = 'multi'
-    NUMBER = 'number'
+    NUMERIC = 'numeric'
     TEXT = 'text'
 
     ALL = [
         SINGLE,
         MULTI,
-        NUMBER,
+        NUMERIC,
         TEXT,
     ]
 

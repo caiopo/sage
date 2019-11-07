@@ -54,5 +54,5 @@ def validate_with(schema, data):
     try:
         return schema.validate(data)
     except SchemaError as e:
-        print(e)
-        raise BadRequest()
+        print(str(e))
+        raise BadRequest(str(e))
