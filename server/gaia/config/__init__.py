@@ -8,14 +8,14 @@ DEVELOPMENT = environ.get('ENVIRONMENT') != 'production'
 if DEVELOPMENT:
     DATABASE = [
         'sqlite',
-        'data.db',
+        str(Path(__file__).parent.parent.parent / 'db.sqlite3'),
         True,
     ]
 
 else:
     DATABASE = [
         'postgres',
-        environ['DATABASE_URL']
+        environ['DATABASE_URL'],
     ]
 
 _firebase_cert = environ.get('FIREBASE_ADMIN_KEY')

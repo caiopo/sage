@@ -82,67 +82,64 @@ def _ns():
                 private_key=RSAKey.generate().to_private_pem(),
             )
 
-            survey = Survey(
-                title='Questionário de Preferências',
-                owner=user,
-            )
+            survey = {
+                'title': 'Questionário de Preferências',
+                'questions': [
+                    {
+                        'type': 'single',
+                        'title': 'Qual sua cor preferida?',
+                        'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+                                       'Fusce venenatis ut mauris a dignissim.',
+                        'required': True,
+                        'extras': {
+                            'options': [
+                                'Amarelo',
+                                'Azul',
+                                'Preto',
+                                'Verde',
+                                'Vermelho',
+                            ]
+                        }
+                    },
+                    {
+                        'type': 'multi',
+                        'title': 'Quais comidas você gosta?',
+                        'description': '',
+                        'required': True,
+                        'extras': {
+                            'options': [
+                                'Pizza',
+                                'Sushi',
+                                'Feijoada',
+                                'Churrasco',
+                            ]
+                        }
+                    },
+                    {
+                        'type': 'numeric',
+                        'title': 'Quantos anos você tem?',
+                        'description': 'Em anos',
+                        'required': True,
+                        'extras': {
+                            'min': 0,
+                            'max': 130,
+                        }
+                    },
+                    {
+                        'type': 'text',
+                        'title': 'Qual seu nome?',
+                        'description': 'Nome completo',
+                        'required': True,
+                        'extras': {
+                            'min_length': 10,
+                            'max_length': 25,
+                        }
+                    },
+                ]
+            }
 
-            Question(
-                survey=survey,
-                title='Qual sua cor preferida?',
-                type=QuestionType.SINGLE,
-                required=True,
-                description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce '
-                            'venenatis ut mauris a dignissim.',
-                extras={
-                    'options': [
-                        'Amarelo',
-                        'Azul',
-                        'Preto',
-                        'Verde',
-                        'Vermelho',
-                    ]
-                }
-            )
-
-            Question(
-                survey=survey,
-                title='Quais comidas você gosta?',
-                type=QuestionType.MULTI,
-                required=True,
-                description='',
-                extras={
-                    'options': [
-                        'Pizza',
-                        'Sushi',
-                        'Feijoada',
-                        'Churrasco',
-                    ]
-                }
-            )
-
-            Question(
-                survey=survey,
-                title='Quantos anos você tem?',
-                type=QuestionType.NUMERIC,
-                required=True,
-                description='Em anos',
-                extras={
-                    'min': 0,
-                    'max': 130,
-                }
-            )
-
-            Question(
-                survey=survey,
-                title='Qual seu nome?',
-                type=QuestionType.TEXT,
-                required=True,
-                description='Nome completo',
-                extras={
-                    'max_length': 25,
-                },
-            )
+            from gaia.business.surveys import create_survey
+            create_survey(survey, user)
 
 
 _ns()

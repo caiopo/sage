@@ -48,11 +48,3 @@ def auth_required(decorated):
         return decorated(*args, **kwargs, user=user)
 
     return decorator
-
-
-def validate_with(schema, data):
-    try:
-        return schema.validate(data)
-    except SchemaError as e:
-        print(str(e))
-        raise BadRequest(str(e))

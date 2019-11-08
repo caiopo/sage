@@ -3,9 +3,9 @@ from pony.orm import select
 
 from gaia.business.surveys import create_survey
 from gaia.models.db import Survey
-from gaia.models.schemas import survey_schema
+from gaia.models.schemas import validate_survey
 from gaia.utils.exceptions import NotFound
-from .utils import auth_required, validate_with
+from .utils import auth_required
 
 bp = Blueprint('surveys', __name__)
 
@@ -23,7 +23,7 @@ def survey_list(user):
 @bp.route('/', methods=['POST'])
 @auth_required
 def survey_create(user):
-    survey_data = validate_with(survey_schema, request.get_json())
+    survey_data = validate_survey(request.get_json())
 
     survey = create_survey(survey_data, user)
 
