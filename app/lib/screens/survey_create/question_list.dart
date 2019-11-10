@@ -29,8 +29,8 @@ class QuestionList extends StatelessWidget {
         final question = questions[i];
         return ListTile(
           key: Key(question.id.toString()),
-          title: Text('${i + 1}: ${question.title}'),
-          subtitle: Text(question.title),
+          title: Text('${question.title}'),
+          subtitle: Text('Lorem ipsum dolor sit amet'),
           trailing: _buildPopupMenu(),
           onTap: () {},
         );

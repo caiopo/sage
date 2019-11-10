@@ -49,14 +49,20 @@ class _SurveyStepperState extends State<SurveyStepper> {
       );
     }
 
-    return QuestionList(
-      questions: List.generate(
-        100,
-        (i) => SurveyQuestion(
-              title: 'Lorem ipsum dolor sit amet $i',
-            ),
+    return QuestionList(questions: [
+      SurveyQuestion(
+        title: 'Qual sua idade?',
       ),
-    );
+      SurveyQuestion(
+        title: 'Onde você mora?',
+      ),
+      SurveyQuestion(
+        title: 'Qual sua cor favorita?',
+      ),
+      SurveyQuestion(
+        title: 'Qual seu animal favorito?',
+      ),
+    ]);
   }
 
   void setStep(int step) {
@@ -91,7 +97,7 @@ class IdenticonTextField extends HookWidget {
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: "Pesquisa de Opinião",
-                labelText: "Title",
+                labelText: "Título",
               ),
               style: Theme.of(context).textTheme.subhead.copyWith(fontSize: 20),
               onChanged: (value) {
@@ -125,8 +131,8 @@ class StepperBar extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Expanded(child: buildStep(theme, 0, 'Title')),
-            Expanded(child: buildStep(theme, 1, 'Questions')),
+            Expanded(child: buildStep(theme, 0, 'Título')),
+            Expanded(child: buildStep(theme, 1, 'Perguntas')),
           ],
         ),
       ),

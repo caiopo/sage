@@ -10,7 +10,7 @@ class SyncButton extends StatelessWidget {
         color: Colors.white,
       ),
       label: Text(
-        'SYNC',
+        'SINCRONIZAR',
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {

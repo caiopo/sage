@@ -8,7 +8,7 @@ class GaiaWordmark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Gaia',
+      'Sage',
       style: TextStyle(
         fontFamily: 'Mali SemiBold',
         fontSize: size,

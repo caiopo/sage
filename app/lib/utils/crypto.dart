@@ -29,19 +29,19 @@ String _unsafeEncrypt(Encrypter encrypter, List<int> bytes) {
 }
 
 List<String> encrypt(String publicKey, String data) {
-  final pubKey = RSAKeyParser().parse(pubKeyStr) as RSAPublicKey;
-
-  final encrypter = Encrypter(RSA(
-    publicKey: pubKey,
-    encoding: RSAEncoding.OAEP,
-  ));
-
-  final dataPartitions = partition(utf8.encode(data), _kMaxInputSize);
-
-  return dataPartitions.map((part) {
-    print(part.length);
-    return _unsafeEncrypt(encrypter, part);
-  }).toList();
+//  final pubKey = RSAKeyParser().parse(pubKeyStr) as RSAPublicKey;
+//
+//  final encrypter = Encrypter(RSA(
+//    publicKey: pubKey,
+//    encoding: RSAEncoding.OAEP,
+//  ));
+//
+//  final dataPartitions = partition(utf8.encode(data), _kMaxInputSize);
+//
+//  return dataPartitions.map((part) {
+//    print(part.length);
+//    return _unsafeEncrypt(encrypter, part);
+//  }).toList();
 }
 
 void main() {

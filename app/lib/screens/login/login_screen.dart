@@ -35,6 +35,7 @@ class LoginScreen extends HookWidget {
                         GaiaWordmark(size: 72),
                         SizedBox(height: 8),
                         GoogleSignInButton(
+                          text: 'Entrar com Google',
                           onPressed: () async {
                             await Navigator.pushReplacement(
                                 context, Routes.surveyList());

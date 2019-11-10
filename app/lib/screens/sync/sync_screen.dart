@@ -6,7 +6,7 @@ class SyncScreen extends HookWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sync'),
+        title: Text('Sincronização'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -15,7 +15,7 @@ class SyncScreen extends HookWidget {
           SizedBox(height: 16),
           CircularProgressIndicator(),
           SizedBox(height: 16),
-          Text('Synchronizing', style: TextStyle(fontSize: 24)),
+          Text('Sincronizando...', style: TextStyle(fontSize: 24)),
           SizedBox(height: 32),
         ],
       ),

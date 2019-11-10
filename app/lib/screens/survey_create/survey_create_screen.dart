@@ -13,7 +13,7 @@ class SurveyCreateScreen extends HookWidget {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Creating new survey'),
+          title: Text('Novo questionário'),
           actions: <Widget>[
             IconButton(
               icon: Icon(
@@ -28,7 +28,7 @@ class SurveyCreateScreen extends HookWidget {
         ),
         floatingActionButton: showFab.value
             ? FloatingActionButton(
-                tooltip: 'Add Question',
+                tooltip: 'Adicionar pergunta',
                 child: Icon(Icons.add),
                 onPressed: () {
                   Navigator.push(context, Routes.questionCreate());
