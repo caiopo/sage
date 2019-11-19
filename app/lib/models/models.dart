@@ -17,13 +17,13 @@ class User {
 
 @JsonSerializable()
 class Survey {
-  final int id;
-  final String title;
-  final User owner;
-  final List<SurveyQuestion> questions;
-  final int answers;
+  int id;
+  String title;
+  User owner;
+  List<SurveyQuestion> questions;
+  int answers;
 
-  const Survey({
+  Survey({
     this.id,
     this.title,
     this.owner,

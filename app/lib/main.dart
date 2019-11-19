@@ -18,6 +18,7 @@ class App extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+//      showSemanticsDebugger: true,
       title: 'Gaia',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

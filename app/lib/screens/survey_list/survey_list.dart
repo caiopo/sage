@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gaia/components/presentational/identicon.dart';
 import 'package:gaia/models/models.dart';
 
-typedef OnPressedCallback<T> = void Function(T itemPressed);
 
 class SurveyList extends StatelessWidget {
   final List<Survey> data;
   final RefreshCallback onRefresh;
-  final OnPressedCallback<Survey> onSurveyPressed;
+  final ValueChanged<Survey> onSurveyPressed;
 
   const SurveyList({
     Key key,

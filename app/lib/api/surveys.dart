@@ -17,22 +17,3 @@ Future<Survey> createSurvey(String title) async {
 
   return Survey.fromJson(body);
 }
-
-//
-//import 'dart:async';
-//
-//import 'package:chopper/chopper.dart';
-//import 'package:gaia/models/models.dart';
-//
-//part 'surveys.chopper.dart';
-//
-//@ChopperApi(baseUrl: '/surveys')
-//abstract class SurveyService extends ChopperService {
-//  static SurveyService create([ChopperClient client]) => _$SurveyService(client);
-//
-//  @Post(path: '/')
-//  Future<Response<Survey>> get();
-//
-//  @Get(path: '/list')
-//  Future<Response<Survey>> me(@Query() String token);
-//}
