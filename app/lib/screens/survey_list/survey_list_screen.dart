@@ -14,23 +14,36 @@ class SurveyListScreen extends HookWidget {
     final surveyList = useState(<Survey>[
       Survey(
         title: 'Pesquisa de Opinião',
-        questions: List.generate(15, (i) => SurveyQuestion()),
-        answers: 42,
+        questions: [
+          SurveyQuestion(
+              title: 'Qual sua cor preferida?',
+              description:
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+                  'Fusce venenatis ut mauris a dignissim.',
+              type: QuestionType.single,
+              required: true,
+              extras: {
+                'options': [
+                  'Amarelo',
+                  'Azul',
+                  'Preto',
+                  'Verde',
+                  'Vermelho',
+                ]
+              }),
+        ],
       ),
       Survey(
         title: 'Donec velit turpis',
         questions: List.generate(28, (i) => SurveyQuestion()),
-        answers: 80,
       ),
       Survey(
         title: 'Consectetur adipiscing elit',
         questions: List.generate(54, (i) => SurveyQuestion()),
-        answers: 307,
       ),
       Survey(
         title: 'Aliquam vel euismod purus',
         questions: List.generate(32, (i) => SurveyQuestion()),
-        answers: 12,
       ),
     ]);
 
@@ -64,7 +77,7 @@ class SurveyListScreen extends HookWidget {
               data: surveyList.value,
               onRefresh: refreshSurveys,
               onSurveyPressed: (Survey survey) {
-                Navigator.push(context, Routes.surveyDetail(survey));
+                Navigator.push(context, Routes.answer(survey));
               },
             ),
     );

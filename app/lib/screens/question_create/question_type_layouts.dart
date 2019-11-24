@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CreateMultipleChoiceQuestion extends StatelessWidget {
+class CreateSingleChoiceQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container();
   }
 }
 
-class CreateSingleChoiceQuestion extends StatelessWidget {
+class CreateMultipleChoiceQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container();

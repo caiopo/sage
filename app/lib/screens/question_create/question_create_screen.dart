@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gaia/components/presentational/collapsing_radio_group.dart';
 import 'package:gaia/models/models.dart';
-import 'package:gaia/screens/question_create_screen/question_type_layouts.dart';
+import 'package:gaia/screens/question_create/question_type_layouts.dart';
 import 'package:gaia/utils/texts.dart';
 
 class QuestionCreateScreen extends StatefulWidget {
@@ -52,8 +52,8 @@ class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
                 title: Text('Required'),
                 value: question.required,
                 onChanged: (required) => setState(() {
-                      question.required = required;
-                    }),
+                  question.required = required;
+                }),
               ),
               ..._buildTypeSpecific(),
             ]
@@ -68,12 +68,7 @@ class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 22,
-          ),
-        ),
+        child: Text(title, style: TextStyle(fontSize: 22)),
       ),
     );
   }
@@ -102,12 +97,6 @@ class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
         return [
           _buildSection('Options'),
           CreateTextQuestion(),
-        ];
-
-      case QuestionType.scale:
-        return [
-          _buildSection('Options'),
-          CreateScaleQuestion(),
         ];
     }
 

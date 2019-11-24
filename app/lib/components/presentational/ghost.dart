@@ -9,7 +9,7 @@ class Ghost extends StatelessWidget {
     Key key,
     @required this.show,
     @required this.child,
-    this.duration = const Duration(milliseconds: 200),
+    this.duration = const Duration(milliseconds: 150),
   }) : super(key: key);
 
   @override

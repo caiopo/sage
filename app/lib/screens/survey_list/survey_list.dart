@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gaia/components/presentational/identicon.dart';
 import 'package:gaia/models/models.dart';
 
-
 class SurveyList extends StatelessWidget {
   final List<Survey> data;
   final RefreshCallback onRefresh;
@@ -17,16 +16,13 @@ class SurveyList extends StatelessWidget {
 
   Widget buildItem(Survey survey) {
     return ListTile(
-      key: Key(survey.id.toString()),
+      key: Key(survey.uuid),
       leading: Identicon(
         survey.title,
         size: 50,
       ),
       title: Text(survey.title),
-      subtitle: Text(
-        "${survey.questions.length.toString()} questions, "
-            "${survey.answers} answers",
-      ),
+      subtitle: Text("${survey.questions.length.toString()} perguntas"),
       onTap: () => onSurveyPressed(survey),
     );
   }

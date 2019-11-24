@@ -18,7 +18,7 @@ class QuestionListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      key: Key(question.id.toString()),
+      key: Key(question.uuid),
       title: Text('${question.title}'),
       subtitle: Text('Lorem ipsum dolor sit amet'),
       trailing: _buildPopupMenu(),

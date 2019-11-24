@@ -2,7 +2,12 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'models.g.dart';
 
-enum QuestionType { multiple, single, number, text, scale }
+enum QuestionType {
+  single,
+  multiple,
+  number,
+  text,
+}
 
 @JsonSerializable()
 class User {
@@ -17,14 +22,14 @@ class User {
 
 @JsonSerializable()
 class Survey {
-  int id;
+  String uuid;
   String title;
   User owner;
   List<SurveyQuestion> questions;
   int answers;
 
   Survey({
-    this.id,
+    this.uuid,
     this.title,
     this.owner,
     this.questions,
@@ -38,7 +43,7 @@ class Survey {
 
 @JsonSerializable()
 class SurveyQuestion {
-  int id;
+  String uuid;
   QuestionType type;
   String title;
   String description;
@@ -47,10 +52,11 @@ class SurveyQuestion {
   final Map<String, dynamic> extras;
 
   SurveyQuestion({
-    this.id,
+    this.uuid,
     this.type,
     this.title,
     this.description,
+    this.required,
     this.extras,
   });
 

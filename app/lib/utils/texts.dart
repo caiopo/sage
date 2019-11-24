@@ -10,8 +10,6 @@ String questionTypeText(QuestionType type) {
       return 'Number';
     case QuestionType.text:
       return 'Text';
-    case QuestionType.scale:
-      return 'Scale';
   }
   return null;
 }
