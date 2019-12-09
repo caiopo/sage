@@ -16,21 +16,52 @@ class SurveyListScreen extends HookWidget {
         title: 'Pesquisa de Opinião',
         questions: [
           SurveyQuestion(
-              title: 'Qual sua cor preferida?',
-              description:
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                  'Fusce venenatis ut mauris a dignissim.',
-              type: QuestionType.single,
-              required: true,
-              extras: {
-                'options': [
-                  'Amarelo',
-                  'Azul',
-                  'Preto',
-                  'Verde',
-                  'Vermelho',
-                ]
-              }),
+            uuid: 'aaaaaaaaaaaaaaa',
+            title: 'Qual sua cor preferida?',
+            description:
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+                'Fusce venenatis ut mauris a dignissim.',
+            type: QuestionType.single,
+            required: true,
+            extras: {
+              'options': [
+                'Amarelo',
+                'Azul',
+                'Preto',
+                'Verde',
+                'Vermelho',
+              ]
+            },
+          ),
+          SurveyQuestion(
+            uuid: 'aaaaaaaaaaaaaaab',
+            title: 'Quais comidas você gosta?',
+            description: '',
+            type: QuestionType.multiple,
+            required: true,
+            extras: {
+              'options': [
+                'Pizza',
+                'Sushi',
+                'Macarrão',
+                'Salada',
+              ]
+            },
+          ),
+          SurveyQuestion(
+            uuid: 'aaaaaaaaaaaaaaabc',
+            title: 'Qual sua idade?',
+            type: QuestionType.number,
+            required: true,
+            extras: {},
+          ),
+          SurveyQuestion(
+            uuid: 'aaaaaaaaaaaaaaabcd',
+            title: 'Qual seu nome?',
+            type: QuestionType.text,
+            required: true,
+            extras: {},
+          ),
         ],
       ),
       Survey(
@@ -46,12 +77,6 @@ class SurveyListScreen extends HookWidget {
         questions: List.generate(32, (i) => SurveyQuestion()),
       ),
     ]);
-
-    final refreshSurveys = () async {
-//      surveyList.value = await fetchSurveyList();
-    };
-
-//    useAsyncEffect(refreshSurveys, []);
 
     return Scaffold(
       appBar: AppBar(
@@ -75,7 +100,6 @@ class SurveyListScreen extends HookWidget {
             )
           : SurveyList(
               data: surveyList.value,
-              onRefresh: refreshSurveys,
               onSurveyPressed: (Survey survey) {
                 Navigator.push(context, Routes.answer(survey));
               },

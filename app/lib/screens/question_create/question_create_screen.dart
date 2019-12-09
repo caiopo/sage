@@ -10,7 +10,9 @@ class QuestionCreateScreen extends StatefulWidget {
 }
 
 class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
-  SurveyQuestion question = SurveyQuestion();
+  SurveyQuestion question = SurveyQuestion(
+    required: true,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Question'),
+        title: Text('Nova pergunta'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -29,14 +31,14 @@ class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: "Question",
-                  hintText: "Do you have a pet?",
+                  labelText: 'Pergunta',
+                  hintText: 'Qual sua cor favorita?',
                 ),
                 style: theme.textTheme.subhead.copyWith(fontSize: 20),
               ),
             ),
             SizedBox(height: 16),
-            _buildSection('Type'),
+            _buildSection('Tipo de pergunta'),
             CollapsingRadioGroup<QuestionType>(
               onSelected: (type) => setState(() => question.type = type),
               items: [
@@ -47,16 +49,17 @@ class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
                   ),
               ],
             ),
-            if (question.type != null) ...[
-              SwitchListTile(
-                title: Text('Required'),
-                value: question.required,
-                onChanged: (required) => setState(() {
-                  question.required = required;
-                }),
-              ),
-              ..._buildTypeSpecific(),
-            ]
+            _buildSection('Outras opções'),
+            CheckboxListTile(
+              title: Text('Obrigatória'),
+              activeColor: Theme.of(context).primaryColor,
+              controlAffinity: ListTileControlAffinity.leading,
+              value: question.required,
+              onChanged: (required) => setState(() {
+                question.required = required;
+              }),
+            ),
+            ..._buildTypeSpecific(),
           ],
         ),
       ),
@@ -77,25 +80,23 @@ class _QuestionCreateScreenState extends State<QuestionCreateScreen> {
     switch (question.type) {
       case QuestionType.multiple:
         return [
-          _buildSection('Answers'),
+          _buildSection('Respostas'),
           CreateMultipleChoiceQuestion(),
         ];
 
       case QuestionType.single:
         return [
-          _buildSection('Answers'),
+          _buildSection('Respostas'),
           CreateSingleChoiceQuestion(),
         ];
 
       case QuestionType.number:
         return [
-          _buildSection('Options'),
           CreateNumberQuestion(),
         ];
 
       case QuestionType.text:
         return [
-          _buildSection('Options'),
           CreateTextQuestion(),
         ];
     }

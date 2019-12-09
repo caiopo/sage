@@ -66,9 +66,9 @@ class _Collapsible extends HookWidget {
 
     return AnimatedOpacity(
       opacity: show ? 1 : 0,
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 100),
       child: AnimatedSize(
-        duration: const Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 100),
         child: Container(
           height: show ? null : 0,
           child: child,

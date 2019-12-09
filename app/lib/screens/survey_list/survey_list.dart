@@ -4,13 +4,11 @@ import 'package:gaia/models/models.dart';
 
 class SurveyList extends StatelessWidget {
   final List<Survey> data;
-  final RefreshCallback onRefresh;
   final ValueChanged<Survey> onSurveyPressed;
 
   const SurveyList({
     Key key,
     @required this.data,
-    @required this.onRefresh,
     @required this.onSurveyPressed,
   }) : super(key: key);
 
@@ -29,16 +27,12 @@ class SurveyList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      child: ListView.builder(
-        padding: EdgeInsets.only(bottom: 80),
-        itemBuilder: (context, i) {
-          return buildItem(data[i]);
-        },
-        itemCount: data?.length ?? 0,
-      ),
-      onRefresh: onRefresh,
-      displacement: 20,
+    return ListView.builder(
+      padding: EdgeInsets.only(bottom: 80),
+      itemBuilder: (context, i) {
+        return buildItem(data[i]);
+      },
+      itemCount: data?.length ?? 0,
     );
   }
 }

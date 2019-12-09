@@ -3,13 +3,13 @@ import 'package:gaia/models/models.dart';
 String questionTypeText(QuestionType type) {
   switch (type) {
     case QuestionType.multiple:
-      return 'Multiple choice';
+      return 'Resposta múltipla';
     case QuestionType.single:
-      return 'Single choice';
+      return 'Resposta única';
     case QuestionType.number:
-      return 'Number';
+      return 'Numérica';
     case QuestionType.text:
-      return 'Text';
+      return 'Texto';
   }
   return null;
 }

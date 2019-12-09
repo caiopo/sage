@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gaia/components/presentational/ghost.dart';
 import 'package:gaia/models/models.dart';
@@ -24,58 +26,53 @@ class _AnswerScreenState extends State<AnswerScreen> {
 
   SurveyQuestion get currentQuestion => widget.survey.questions[currentIndex];
 
+  int get surveyLength => widget.survey.questions.length;
+
+  dynamic get currentAnswer => answers[currentQuestion.uuid];
+
   void onAnswerChanged(dynamic answer) {
+    print(answer);
     setState(() {
       answers[currentQuestion.uuid] = answer;
     });
   }
 
+  void onPreviousPressed() {
+    setState(() {
+      currentIndex = max(currentIndex - 1, 0);
+    });
+  }
+
+  void onNextPressed() {
+    setState(() {
+      currentIndex = min(currentIndex + 1, surveyLength - 1);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.survey.title),
       ),
-      bottomNavigationBar: Material(
-        elevation: 8,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            SizedBox(width: 4),
-            Expanded(
-              child: Ghost(
-                show: currentIndex != 0,
-                child: FlatButton(
-                  child: Text('VOLTAR'),
-                  textColor: theme.primaryColor,
-                  onPressed: () {},
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    QuestionHeader(question: currentQuestion),
+                    SizedBox(height: 16),
+                    buildTypeSpecific(currentQuestion),
+                  ],
                 ),
               ),
             ),
-            Expanded(
-              child: FlatButton(
-                child: Text('AVANÇAR'),
-                textColor: theme.primaryColor,
-                onPressed: () {},
-              ),
-            ),
-            SizedBox(width: 4),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              QuestionHeader(question: currentQuestion),
-              SizedBox(height: 16),
-              buildTypeSpecific(currentQuestion),
-            ],
           ),
-        ),
+          buildBottomBar(),
+        ],
       ),
     );
   }
@@ -94,7 +91,7 @@ class _AnswerScreenState extends State<AnswerScreen> {
       case QuestionType.multiple:
         return AnswerMultipleChoiceQuestion(
           question: question,
-          answer: answer as List<String>,
+          answer: answer as List<String> ?? [],
           onAnswerChanged: onAnswerChanged,
         );
 
@@ -115,6 +112,46 @@ class _AnswerScreenState extends State<AnswerScreen> {
 
     throw ArgumentError();
   }
+
+  Widget buildBottomBar() {
+    final theme = Theme.of(context);
+    return Material(
+      elevation: 8,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          SizedBox(width: 4),
+          Expanded(
+            child: Ghost(
+              show: currentIndex != 0,
+              child: FlatButton(
+                child: Text('VOLTAR'),
+                textColor: theme.primaryColor,
+                onPressed: onPreviousPressed,
+              ),
+            ),
+          ),
+          if (currentIndex < (surveyLength - 1))
+            Expanded(
+              child: FlatButton(
+                child: Text('AVANÇAR'),
+                textColor: theme.primaryColor,
+                onPressed: onNextPressed,
+              ),
+            )
+          else
+            Expanded(
+              child: FlatButton(
+                child: Text('FINALIZAR'),
+                textColor: theme.primaryColor,
+                onPressed: () {},
+              ),
+            ),
+          SizedBox(width: 4),
+        ],
+      ),
+    );
+  }
 }
 
 class QuestionHeader extends StatelessWidget {
@@ -133,12 +170,15 @@ class QuestionHeader extends StatelessWidget {
           style: TextStyle(fontSize: 24),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 16),
-        Text(
-          question.description,
-          style: TextStyle(fontSize: 16, color: Color(0xFF606060)),
-          textAlign: TextAlign.center,
-        ),
+        if (question.description != null &&
+            question.description.isNotEmpty) ...[
+          SizedBox(height: 8),
+          Text(
+            question.description,
+            style: TextStyle(fontSize: 16, color: Color(0xFF606060)),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ],
     );
   }

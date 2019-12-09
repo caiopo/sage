@@ -54,7 +54,33 @@ class AnswerMultipleChoiceQuestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final options = question.extras['options'] as List<String>;
+
+    return Column(
+      children: <Widget>[
+        for (final option in options) buildOption(context, option),
+      ],
+    );
+  }
+
+  Widget buildOption(BuildContext context, String option) {
+    return CheckboxListTile(
+      activeColor: Theme.of(context).primaryColor,
+      controlAffinity: ListTileControlAffinity.leading,
+      value: answer.contains(option),
+      title: Text(option),
+      onChanged: (v) {
+        final _answer = List.of(answer);
+
+        if (v) {
+          _answer.add(option);
+        } else {
+          _answer.remove(option);
+        }
+
+        onAnswerChanged(_answer);
+      },
+    );
   }
 }
 
@@ -72,7 +98,22 @@ class AnswerNumberQuestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+      child: TextField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: 'Resposta',
+        ),
+        autofocus: true,
+        style: TextStyle(fontSize: 20),
+        minLines: 1,
+        keyboardType: TextInputType.numberWithOptions(decimal: true),
+        onChanged: (value) {
+          onAnswerChanged(double.tryParse(value));
+        },
+      ),
+    );
   }
 }
 
@@ -90,6 +131,19 @@ class AnswerTextQuestion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+      child: TextField(
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: 'Resposta',
+        ),
+        autofocus: true,
+        style: TextStyle(fontSize: 20),
+        onChanged: (value) {
+          onAnswerChanged(value);
+        },
+      ),
+    );
   }
 }
