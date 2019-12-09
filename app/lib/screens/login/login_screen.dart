@@ -26,7 +26,6 @@ class LoginScreen extends HookWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 8),
                             child: Image.asset(
-//                              'assets/images/ginger-cat/productive-work.png',
                               'assets/images/ginger-cat/track-statistics.png',
                               scale: 0.1,
                             ),

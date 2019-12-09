@@ -6,8 +6,6 @@ import 'package:gaia/models/models.dart';
 import 'package:gaia/screens/answer/answer_type_layouts.dart';
 
 class AnswerScreen extends StatefulWidget {
-//  final String surveyUuid;
-
   final Survey survey;
 
   const AnswerScreen({
