@@ -9,19 +9,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sage/pages/login/login_page.dart';
 import 'package:sage/pages/home/home_page.dart';
-import 'package:sage/pages/survey_detail/survey_detail_page.dart';
 import 'package:sage/pages/sync/sync_page.dart';
+import 'package:sage/pages/survey_detail/survey_detail_page.dart';
+import 'package:sage/pages/survey_create/survey_create_page.dart';
+import 'package:sage/pages/question_create/question_create_page.dart';
 
 abstract class Routes {
   static const login = '/';
   static const home = '/home';
-  static const surveyDetail = '/survey-detail';
   static const sync = '/sync';
+  static const surveyDetail = '/survey-detail';
+  static const surveyCreate = '/survey-create';
+  static const questionCreate = '/question-create';
   static const all = {
     login,
     home,
-    surveyDetail,
     sync,
+    surveyDetail,
+    surveyCreate,
+    questionCreate,
   };
 }
 
@@ -47,6 +53,11 @@ class Router extends RouterBase {
           builder: (context) => HomePage(),
           settings: settings,
         );
+      case Routes.sync:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => SyncPage(),
+          settings: settings,
+        );
       case Routes.surveyDetail:
         if (hasInvalidArgs<SurveyDetailPageArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<SurveyDetailPageArguments>(args);
@@ -57,9 +68,14 @@ class Router extends RouterBase {
               SurveyDetailPage(surveyUuid: typedArgs.surveyUuid),
           settings: settings,
         );
-      case Routes.sync:
+      case Routes.surveyCreate:
         return MaterialPageRoute<dynamic>(
-          builder: (context) => SyncPage(),
+          builder: (context) => SurveyCreatePage(),
+          settings: settings,
+        );
+      case Routes.questionCreate:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => QuestionCreatePage(),
           settings: settings,
         );
       default:
@@ -87,6 +103,8 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
 
   Future pushHome() => pushNamed(Routes.home);
 
+  Future pushSync() => pushNamed(Routes.sync);
+
   Future pushSurveyDetail({
     @required String surveyUuid,
   }) =>
@@ -95,5 +113,7 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
         arguments: SurveyDetailPageArguments(surveyUuid: surveyUuid),
       );
 
-  Future pushSync() => pushNamed(Routes.sync);
+  Future pushSurveyCreate() => pushNamed(Routes.surveyCreate);
+
+  Future pushQuestionCreate() => pushNamed(Routes.questionCreate);
 }

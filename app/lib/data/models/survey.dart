@@ -5,6 +5,8 @@ class Surveys extends Table {
 
   TextColumn get title => text()();
 
+  TextColumn get owner => text()();
+
   IntColumn get uploadedAnswers => integer()();
 
   @override

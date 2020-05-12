@@ -10,10 +10,12 @@ part of 'db.dart';
 class Survey extends DataClass implements Insertable<Survey> {
   final String uuid;
   final String title;
+  final String owner;
   final int uploadedAnswers;
   Survey(
       {@required this.uuid,
       @required this.title,
+      @required this.owner,
       @required this.uploadedAnswers});
   factory Survey.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -24,6 +26,8 @@ class Survey extends DataClass implements Insertable<Survey> {
       uuid: stringType.mapFromDatabaseResponse(data['${effectivePrefix}uuid']),
       title:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
+      owner:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}owner']),
       uploadedAnswers: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}uploaded_answers']),
     );
@@ -37,6 +41,9 @@ class Survey extends DataClass implements Insertable<Survey> {
     if (!nullToAbsent || title != null) {
       map['title'] = Variable<String>(title);
     }
+    if (!nullToAbsent || owner != null) {
+      map['owner'] = Variable<String>(owner);
+    }
     if (!nullToAbsent || uploadedAnswers != null) {
       map['uploaded_answers'] = Variable<int>(uploadedAnswers);
     }
@@ -49,6 +56,7 @@ class Survey extends DataClass implements Insertable<Survey> {
     return Survey(
       uuid: serializer.fromJson<String>(json['uuid']),
       title: serializer.fromJson<String>(json['title']),
+      owner: serializer.fromJson<String>(json['owner']),
       uploadedAnswers: serializer.fromJson<int>(json['uploadedAnswers']),
     );
   }
@@ -58,13 +66,17 @@ class Survey extends DataClass implements Insertable<Survey> {
     return <String, dynamic>{
       'uuid': serializer.toJson<String>(uuid),
       'title': serializer.toJson<String>(title),
+      'owner': serializer.toJson<String>(owner),
       'uploadedAnswers': serializer.toJson<int>(uploadedAnswers),
     };
   }
 
-  Survey copyWith({String uuid, String title, int uploadedAnswers}) => Survey(
+  Survey copyWith(
+          {String uuid, String title, String owner, int uploadedAnswers}) =>
+      Survey(
         uuid: uuid ?? this.uuid,
         title: title ?? this.title,
+        owner: owner ?? this.owner,
         uploadedAnswers: uploadedAnswers ?? this.uploadedAnswers,
       );
   @override
@@ -72,56 +84,68 @@ class Survey extends DataClass implements Insertable<Survey> {
     return (StringBuffer('Survey(')
           ..write('uuid: $uuid, ')
           ..write('title: $title, ')
+          ..write('owner: $owner, ')
           ..write('uploadedAnswers: $uploadedAnswers')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf(
-      $mrjc(uuid.hashCode, $mrjc(title.hashCode, uploadedAnswers.hashCode)));
+  int get hashCode => $mrjf($mrjc(uuid.hashCode,
+      $mrjc(title.hashCode, $mrjc(owner.hashCode, uploadedAnswers.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Survey &&
           other.uuid == this.uuid &&
           other.title == this.title &&
+          other.owner == this.owner &&
           other.uploadedAnswers == this.uploadedAnswers);
 }
 
 class SurveysCompanion extends UpdateCompanion<Survey> {
   final Value<String> uuid;
   final Value<String> title;
+  final Value<String> owner;
   final Value<int> uploadedAnswers;
   const SurveysCompanion({
     this.uuid = const Value.absent(),
     this.title = const Value.absent(),
+    this.owner = const Value.absent(),
     this.uploadedAnswers = const Value.absent(),
   });
   SurveysCompanion.insert({
     @required String uuid,
     @required String title,
+    @required String owner,
     @required int uploadedAnswers,
   })  : uuid = Value(uuid),
         title = Value(title),
+        owner = Value(owner),
         uploadedAnswers = Value(uploadedAnswers);
   static Insertable<Survey> custom({
     Expression<String> uuid,
     Expression<String> title,
+    Expression<String> owner,
     Expression<int> uploadedAnswers,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
       if (title != null) 'title': title,
+      if (owner != null) 'owner': owner,
       if (uploadedAnswers != null) 'uploaded_answers': uploadedAnswers,
     });
   }
 
   SurveysCompanion copyWith(
-      {Value<String> uuid, Value<String> title, Value<int> uploadedAnswers}) {
+      {Value<String> uuid,
+      Value<String> title,
+      Value<String> owner,
+      Value<int> uploadedAnswers}) {
     return SurveysCompanion(
       uuid: uuid ?? this.uuid,
       title: title ?? this.title,
+      owner: owner ?? this.owner,
       uploadedAnswers: uploadedAnswers ?? this.uploadedAnswers,
     );
   }
@@ -134,6 +158,9 @@ class SurveysCompanion extends UpdateCompanion<Survey> {
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
+    }
+    if (owner.present) {
+      map['owner'] = Variable<String>(owner.value);
     }
     if (uploadedAnswers.present) {
       map['uploaded_answers'] = Variable<int>(uploadedAnswers.value);
@@ -170,6 +197,18 @@ class $SurveysTable extends Surveys with TableInfo<$SurveysTable, Survey> {
     );
   }
 
+  final VerificationMeta _ownerMeta = const VerificationMeta('owner');
+  GeneratedTextColumn _owner;
+  @override
+  GeneratedTextColumn get owner => _owner ??= _constructOwner();
+  GeneratedTextColumn _constructOwner() {
+    return GeneratedTextColumn(
+      'owner',
+      $tableName,
+      false,
+    );
+  }
+
   final VerificationMeta _uploadedAnswersMeta =
       const VerificationMeta('uploadedAnswers');
   GeneratedIntColumn _uploadedAnswers;
@@ -185,7 +224,7 @@ class $SurveysTable extends Surveys with TableInfo<$SurveysTable, Survey> {
   }
 
   @override
-  List<GeneratedColumn> get $columns => [uuid, title, uploadedAnswers];
+  List<GeneratedColumn> get $columns => [uuid, title, owner, uploadedAnswers];
   @override
   $SurveysTable get asDslTable => this;
   @override
@@ -208,6 +247,12 @@ class $SurveysTable extends Surveys with TableInfo<$SurveysTable, Survey> {
           _titleMeta, title.isAcceptableOrUnknown(data['title'], _titleMeta));
     } else if (isInserting) {
       context.missing(_titleMeta);
+    }
+    if (data.containsKey('owner')) {
+      context.handle(
+          _ownerMeta, owner.isAcceptableOrUnknown(data['owner'], _ownerMeta));
+    } else if (isInserting) {
+      context.missing(_ownerMeta);
     }
     if (data.containsKey('uploaded_answers')) {
       context.handle(

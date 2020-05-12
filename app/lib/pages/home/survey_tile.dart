@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sage/data/db.dart';
+import 'package:sage/router/router.dart';
 import 'package:sage/widgets/identicon.dart';
 
 class SurveyTile extends StatelessWidget {
@@ -13,14 +14,23 @@ class SurveyTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(survey.title),
-      subtitle: Text('${survey.uploadedAnswers} respostas'),
+      title: Text(
+        survey.title,
+        softWrap: false,
+        overflow: TextOverflow.fade,
+      ),
+      subtitle: Text(
+        '${survey.uploadedAnswers} respostas',
+        softWrap: false,
+        overflow: TextOverflow.fade,
+      ),
       leading: Identicon(
         value: survey.title,
-
-        size: 32,
+        size: 48,
       ),
-      onTap: () {},
+      onTap: () {
+        navigator(context).pushSurveyDetail(surveyUuid: survey.uuid);
+      },
     );
   }
 }

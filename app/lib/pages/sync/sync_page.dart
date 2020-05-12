@@ -10,7 +10,7 @@ class _SyncPageState extends State<SyncPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Synchronization'),
+        title: Text('Sincronização'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
