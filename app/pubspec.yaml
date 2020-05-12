@@ -18,10 +18,12 @@ dependencies:
   firebase_auth: ^0.16.0
   firebase_core: ^0.4.4+3
   flutter_auth_buttons: ^0.8.0
+  flutter_svg: ^0.17.4
   get_it: ^4.0.2
   google_fonts: ^1.1.0
   google_sign_in: ^4.4.6
   injectable: ^0.3.0
+  jdenticon_dart: ^1.2.1+1
   json_annotation: ^3.0.1
   moor: ^3.0.2
   moor_ffi: ^0.5.0
@@ -45,3 +47,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/ginger-cat/
+
+  fonts:
+    - family: Mali SemiBold
+      fonts:
+        - asset: assets/fonts/Mali-SemiBold.ttf

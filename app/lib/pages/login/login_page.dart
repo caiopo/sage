@@ -27,27 +27,29 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildBody() {
     if (loading) return CircularProgressIndicator();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        CircularBackground(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Image.asset(
-              'assets/images/ginger-cat/track-statistics.png',
-              scale: 0.1,
+    return SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          CircularBackground(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Image.asset(
+                'assets/images/ginger-cat/track-statistics.png',
+              ),
             ),
           ),
-        ),
-        SageWordmark(size: 72),
-        SizedBox(height: 8),
-        GoogleSignInButton(
-          text: 'Entrar com Google',
-          onPressed: () {
-            navigator(context).pushHomePage();
-          },
-        )
-      ],
+          SizedBox(height: 8),
+          SageWordmark(size: 72),
+          SizedBox(height: 32),
+          GoogleSignInButton(
+            text: 'Entrar com Google',
+            onPressed: () {
+              navigator(context).pushReplacementNamed(Routes.home);
+            },
+          )
+        ],
+      ),
     );
   }
 }

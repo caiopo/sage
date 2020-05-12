@@ -1,0 +1,241 @@
+PODS:
+  - AppAuth (1.3.0):
+    - AppAuth/Core (= 1.3.0)
+    - AppAuth/ExternalUserAgent (= 1.3.0)
+  - AppAuth/Core (1.3.0)
+  - AppAuth/ExternalUserAgent (1.3.0)
+  - Firebase/Auth (6.16.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (~> 6.4.3)
+  - Firebase/Core (6.16.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 6.2.2)
+  - Firebase/CoreOnly (6.16.0):
+    - FirebaseCore (= 6.6.1)
+  - firebase_auth (0.0.1):
+    - Firebase/Auth (~> 6.3)
+    - Firebase/Core
+    - Flutter
+  - firebase_auth_web (0.1.0):
+    - Flutter
+  - firebase_core (0.0.1):
+    - Firebase/Core
+    - Flutter
+  - firebase_core_web (0.1.0):
+    - Flutter
+  - FirebaseAnalytics (6.2.2):
+    - FirebaseCore (~> 6.6)
+    - FirebaseInstanceID (~> 4.3)
+    - GoogleAppMeasurement (= 6.2.2)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
+    - GoogleUtilities/MethodSwizzler (~> 6.0)
+    - GoogleUtilities/Network (~> 6.0)
+    - "GoogleUtilities/NSData+zlib (~> 6.0)"
+    - nanopb (= 0.3.9011)
+  - FirebaseAuth (6.4.3):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.6)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.5)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - FirebaseAuthInterop (1.0.0)
+  - FirebaseCore (6.6.1):
+    - FirebaseCoreDiagnostics (~> 1.2)
+    - FirebaseCoreDiagnosticsInterop (~> 1.2)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/Logger (~> 6.5)
+  - FirebaseCoreDiagnostics (1.2.0):
+    - FirebaseCoreDiagnosticsInterop (~> 1.2)
+    - GoogleDataTransportCCTSupport (~> 1.3)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/Logger (~> 6.5)
+    - nanopb (~> 0.3.901)
+  - FirebaseCoreDiagnosticsInterop (1.2.0)
+  - FirebaseInstallations (1.1.1):
+    - FirebaseCore (~> 6.6)
+    - GoogleUtilities/UserDefaults (~> 6.5)
+    - PromisesObjC (~> 1.2)
+  - FirebaseInstanceID (4.3.0):
+    - FirebaseCore (~> 6.6)
+    - FirebaseInstallations (~> 1.0)
+    - GoogleUtilities/Environment (~> 6.5)
+    - GoogleUtilities/UserDefaults (~> 6.5)
+  - Flutter (1.0.0)
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - google_sign_in (0.0.1):
+    - Flutter
+    - GoogleSignIn (~> 5.0)
+  - google_sign_in_web (0.8.1):
+    - Flutter
+  - GoogleAppMeasurement (6.2.2):
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
+    - GoogleUtilities/MethodSwizzler (~> 6.0)
+    - GoogleUtilities/Network (~> 6.0)
+    - "GoogleUtilities/NSData+zlib (~> 6.0)"
+    - nanopb (= 0.3.9011)
+  - GoogleDataTransport (3.3.1)
+  - GoogleDataTransportCCTSupport (1.3.1):
+    - GoogleDataTransport (~> 3.3)
+    - nanopb (~> 0.3.901)
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleUtilities/AppDelegateSwizzler (6.5.1):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (6.5.1)
+  - GoogleUtilities/Logger (6.5.1):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (6.5.1):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (6.5.1):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (6.5.1)"
+  - GoogleUtilities/Reachability (6.5.1):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (6.5.1):
+    - GoogleUtilities/Logger
+  - GTMAppAuth (1.0.0):
+    - AppAuth/Core (~> 1.0)
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.3.1):
+    - GTMSessionFetcher/Full (= 1.3.1)
+  - GTMSessionFetcher/Core (1.3.1)
+  - GTMSessionFetcher/Full (1.3.1):
+    - GTMSessionFetcher/Core (= 1.3.1)
+  - moor_ffi (0.0.1):
+    - Flutter
+  - nanopb (0.3.9011):
+    - nanopb/decode (= 0.3.9011)
+    - nanopb/encode (= 0.3.9011)
+  - nanopb/decode (0.3.9011)
+  - nanopb/encode (0.3.9011)
+  - path_provider (0.0.1):
+    - Flutter
+  - path_provider_macos (0.0.1):
+    - Flutter
+  - PromisesObjC (1.2.8)
+  - shared_preferences (0.0.1):
+    - Flutter
+  - shared_preferences_macos (0.0.1):
+    - Flutter
+  - shared_preferences_web (0.0.1):
+    - Flutter
+  - sqflite (0.0.1):
+    - Flutter
+    - FMDB (~> 2.7.2)
+
+DEPENDENCIES:
+  - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
+  - firebase_auth_web (from `.symlinks/plugins/firebase_auth_web/ios`)
+  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_core_web (from `.symlinks/plugins/firebase_core_web/ios`)
+  - Flutter (from `Flutter`)
+  - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - google_sign_in_web (from `.symlinks/plugins/google_sign_in_web/ios`)
+  - moor_ffi (from `.symlinks/plugins/moor_ffi/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
+  - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+
+SPEC REPOS:
+  trunk:
+    - AppAuth
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseAuth
+    - FirebaseAuthInterop
+    - FirebaseCore
+    - FirebaseCoreDiagnostics
+    - FirebaseCoreDiagnosticsInterop
+    - FirebaseInstallations
+    - FirebaseInstanceID
+    - FMDB
+    - GoogleAppMeasurement
+    - GoogleDataTransport
+    - GoogleDataTransportCCTSupport
+    - GoogleSignIn
+    - GoogleUtilities
+    - GTMAppAuth
+    - GTMSessionFetcher
+    - nanopb
+    - PromisesObjC
+
+EXTERNAL SOURCES:
+  firebase_auth:
+    :path: ".symlinks/plugins/firebase_auth/ios"
+  firebase_auth_web:
+    :path: ".symlinks/plugins/firebase_auth_web/ios"
+  firebase_core:
+    :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_core_web:
+    :path: ".symlinks/plugins/firebase_core_web/ios"
+  Flutter:
+    :path: Flutter
+  google_sign_in:
+    :path: ".symlinks/plugins/google_sign_in/ios"
+  google_sign_in_web:
+    :path: ".symlinks/plugins/google_sign_in_web/ios"
+  moor_ffi:
+    :path: ".symlinks/plugins/moor_ffi/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  path_provider_macos:
+    :path: ".symlinks/plugins/path_provider_macos/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  shared_preferences_macos:
+    :path: ".symlinks/plugins/shared_preferences_macos/ios"
+  shared_preferences_web:
+    :path: ".symlinks/plugins/shared_preferences_web/ios"
+  sqflite:
+    :path: ".symlinks/plugins/sqflite/ios"
+
+SPEC CHECKSUMS:
+  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
+  Firebase: 497158b816d0a86fc31babbd05546fcd7e6083ff
+  firebase_auth: f8287325aae894aff045dff38bf0667cbeb49563
+  firebase_auth_web: 0955c07bcc06e84af76b9d4e32e6f31518f2d7de
+  firebase_core: 0d8be0e0d14c4902953aeb5ac5d7316d1fe4b978
+  firebase_core_web: d501d8b946b60c8af265428ce483b0fff5ad52d1
+  FirebaseAnalytics: cf95d3aab897612783020fbd98401d5366f135ee
+  FirebaseAuth: 5ce2b03a3d7fe56b7a6e4c5ec7ff1522890b1d6f
+  FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
+  FirebaseCore: 85064903ed6c28e47fec9c7bd149d94ba1b6b6e7
+  FirebaseCoreDiagnostics: 5e78803ab276bc5b50340e3c539c06c3de35c649
+  FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
+  FirebaseInstallations: acb3216eb9784d3b1d2d2d635ff74fa892cc0c44
+  FirebaseInstanceID: 6668efc1655a4052c083f287a7141f1ead12f9c2
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
+  google_sign_in_web: 52deb24929ac0992baff65c57956031c44ed44c3
+  GoogleAppMeasurement: d0560d915abf15e692e8538ba1d58442217b6aff
+  GoogleDataTransport: 0048df6388dab1c254799f2a30365b1dffe20422
+  GoogleDataTransportCCTSupport: f880d70972efa2ed1be4e9173a0f4c5f3dc2d176
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
+  GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
+  GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
+  moor_ffi: d66c9470c18e9cb333423bbcb493c105c6c774c6
+  nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
+  PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
+  shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
+  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
+
+PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
+
+COCOAPODS: 1.8.4
