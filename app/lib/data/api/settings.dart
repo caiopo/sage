@@ -10,7 +10,7 @@ abstract class DioModule {
         BaseOptions(
           baseUrl: '',
           queryParameters: {
-            'token': inject<IdTokenResult>().token,
+//            'token': inject<IdTokenResult>().token,
           },
         ),
       );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sage/utils/debug.dart';
 import 'package:sage/widgets/delayed.dart';
 
 class DiscardDialog extends StatelessWidget {
@@ -7,11 +8,7 @@ class DiscardDialog extends StatelessWidget {
     return AlertDialog(
       title: Text('Descartar mudanças?'),
       content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text('Se você voltar agora, suas mudanças serão descartadas.'),
-          ],
-        ),
+        child: Text('Se você voltar agora, suas mudanças serão descartadas.'),
       ),
       actions: <Widget>[
         FlatButton(
@@ -23,7 +20,7 @@ class DiscardDialog extends StatelessWidget {
           },
         ),
         Delayed(
-          delay: const Duration(seconds: 5),
+          delay: const Duration(seconds: isRelease ? 3 : 1),
           child: FlatButton(
             child: Text(
               'DESCARTAR',

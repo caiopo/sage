@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage> {
               survey: Survey(
                 title:
                     'Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet $index',
+                owner: 'aaa',
                 uploadedAnswers: index,
                 uuid: 'aa',
               ),
