@@ -22,9 +22,10 @@ class App extends StatelessWidget {
         primaryColor: _primaryColor,
         accentColor: _accentColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: GoogleFonts.ubuntuTextTheme(),
+        textTheme: GoogleFonts.openSansTextTheme(),
       ),
       debugShowCheckedModeBanner: false,
+      showSemanticsDebugger: false,
       builder: ExtendedNavigator<Router>(router: Router()),
     );
   }

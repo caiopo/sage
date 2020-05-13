@@ -9,7 +9,7 @@ import 'package:sage/utils/collections.dart';
 
 @injectable
 class SurveyCreateViewModel extends ViewModel {
-  String _title;
+  String _title = '';
 
   String get title => _title;
 
@@ -32,9 +32,9 @@ class SurveyCreateViewModel extends ViewModel {
 
   List<Question> get questions => UnmodifiableListView(_questions);
 
-  bool reorder(Key draggedItem, Key newPosition) {
-    int draggedIndex = _indexForKey(draggedItem);
-    int newIndex = _indexForKey(newPosition);
+  bool reorder(String draggedItemUuid, String newPositionUuid) {
+    int draggedIndex = _indexForUuid(draggedItemUuid);
+    int newIndex = _indexForUuid(newPositionUuid);
 
     final draggedQuestion = _questions[draggedIndex];
     _questions.removeAt(draggedIndex);
@@ -44,13 +44,18 @@ class SurveyCreateViewModel extends ViewModel {
     return true;
   }
 
-  int _indexForKey(Key key) {
-    final _key = key as ValueKey<String>;
+  void performPopupAction(QuestionAction action, String uuid) {
 
-    return _questions.indexWhere((element) => element.uuid == _key.value);
   }
 
-//  void notifyChanged() {
-//    notifyListeners();
-//  }
+  int _indexForUuid(String uuid) {
+    return _questions.indexWhere((element) => element.uuid == uuid);
+  }
+}
+
+
+enum QuestionAction {
+  edit,
+  copy,
+  delete,
 }

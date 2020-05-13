@@ -74,8 +74,14 @@ class Router extends RouterBase {
           settings: settings,
         );
       case Routes.questionCreate:
+        if (hasInvalidArgs<QuestionCreatePageArguments>(args)) {
+          return misTypedArgsRoute<QuestionCreatePageArguments>(args);
+        }
+        final typedArgs = args as QuestionCreatePageArguments ??
+            QuestionCreatePageArguments();
         return MaterialPageRoute<dynamic>(
-          builder: (context) => QuestionCreatePage(),
+          builder: (context) => QuestionCreatePage(
+              key: typedArgs.key, question: typedArgs.question),
           settings: settings,
         );
       default:
@@ -92,6 +98,13 @@ class Router extends RouterBase {
 class SurveyDetailPageArguments {
   final String surveyUuid;
   SurveyDetailPageArguments({@required this.surveyUuid});
+}
+
+//QuestionCreatePage arguments holder class
+class QuestionCreatePageArguments {
+  final Key key;
+  final dynamic question;
+  QuestionCreatePageArguments({this.key, this.question});
 }
 
 // *************************************************************************
@@ -115,5 +128,12 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
 
   Future pushSurveyCreate() => pushNamed(Routes.surveyCreate);
 
-  Future pushQuestionCreate() => pushNamed(Routes.questionCreate);
+  Future pushQuestionCreate({
+    Key key,
+    dynamic question,
+  }) =>
+      pushNamed(
+        Routes.questionCreate,
+        arguments: QuestionCreatePageArguments(key: key, question: question),
+      );
 }

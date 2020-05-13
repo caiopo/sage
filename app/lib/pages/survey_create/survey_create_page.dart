@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:provider/provider.dart';
 import 'package:sage/data/db.dart';
-import 'package:sage/data/models/question.dart';
 import 'package:sage/di/di.dart';
 import 'package:sage/pages/survey_create/discard_dialog.dart';
+import 'package:sage/pages/survey_create/identicon_text_field.dart';
+import 'package:sage/router/router.dart';
 import 'package:sage/viewmodels/survey_create_viewmodel.dart';
+import 'package:sage/widgets/question_icon.dart';
 
 class SurveyCreatePage extends StatefulWidget {
   @override
@@ -28,7 +30,10 @@ class _SurveyCreatePageState extends State<SurveyCreatePage> {
       onWillPop: onWillPop,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Novo questionário'),
+          title: Text(
+            'Novo questionário',
+//            style: GoogleFonts.ubuntu(fontWeight: FontWeight.w500),
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(
@@ -41,11 +46,12 @@ class _SurveyCreatePageState extends State<SurveyCreatePage> {
             )
           ],
         ),
+        backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
           tooltip: 'Adicionar pergunta',
           child: Icon(Icons.add),
           onPressed: () {
-//            navigator(context).pushAn
+            navigator(context).pushQuestionCreate();
           },
         ),
         body: _buildBody(),
@@ -64,9 +70,13 @@ class _SurveyCreatePageState extends State<SurveyCreatePage> {
 class _SurveyHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Text('hello'),
+    final viewmodel = Provider.of<SurveyCreateViewModel>(context);
+    return Container(
+      color: Colors.white,
+      child: IdenticonTextField(
+        title: viewmodel.title,
+        onChanged: (title) => viewmodel.title = title,
+      ),
     );
   }
 }
@@ -75,39 +85,64 @@ class _SurveyList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewmodel = Provider.of<SurveyCreateViewModel>(context);
+    final focusScope = FocusScope.of(context);
 
     final questions = viewmodel.questions;
 
-    return ReorderableList(
-      onReorder: (Key draggedItem, Key newPosition) {
-        return viewmodel.reorder(draggedItem, newPosition);
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.pixels > 160) {
+          focusScope.unfocus();
+        }
+        return true;
       },
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildListDelegate([
-              _SurveyHeader(),
-            ]),
-          ),
-          SliverPadding(
-            padding: EdgeInsets.only(
-              bottom: 86 /* FAB */ + MediaQuery.of(context).padding.bottom,
-            ),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return _QuestionItem(
-                    data: questions[index],
-                    // first and last attributes affect border drawn during dragging
-                    isFirst: index == 0,
-                    isLast: index == questions.length - 1,
-                  );
-                },
-                childCount: questions.length,
+      child: ReorderableList(
+        onReorder: (Key draggedItem, Key newPosition) {
+          focusScope.unfocus();
+          return viewmodel.reorder(
+            (draggedItem as ValueKey<String>).value,
+            (newPosition as ValueKey<String>).value,
+          );
+        },
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverPadding(
+              padding: const EdgeInsets.only(
+                top: 16,
+                left: 16,
+                right: 16,
+              ),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  _SectionTitle('Título'),
+                  SizedBox(height: 8),
+                  _SurveyHeader(),
+                  SizedBox(height: 32),
+                  _SectionTitle('Perguntas'),
+                  SizedBox(height: 8),
+                ]),
               ),
             ),
-          ),
-        ],
+            SliverPadding(
+              padding: EdgeInsets.only(
+                bottom: 86 /* FAB */ + MediaQuery.of(context).padding.bottom,
+              ),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return _QuestionItem(
+                      question: questions[index],
+                      // first and last attributes affect border drawn during dragging
+                      isFirst: index == 0,
+                      isLast: index == questions.length - 1,
+                    );
+                  },
+                  childCount: questions.length,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -115,14 +150,22 @@ class _SurveyList extends StatelessWidget {
 
 class _QuestionItem extends StatelessWidget {
   _QuestionItem({
-    this.data,
+    this.question,
     this.isFirst,
     this.isLast,
   });
 
-  final Question data;
+  final Question question;
   final bool isFirst;
   final bool isLast;
+
+  @override
+  Widget build(BuildContext context) {
+    return ReorderableItem(
+      key: ValueKey(question.uuid),
+      childBuilder: _buildChild,
+    );
+  }
 
   Widget _buildChild(BuildContext context, ReorderableItemState state) {
     BoxDecoration decoration;
@@ -151,45 +194,46 @@ class _QuestionItem extends StatelessWidget {
       child: Opacity(
         opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
         child: ListTile(
-          leading: Icon(_getIconData()),
-          title: Text(data.title),
-          subtitle: Text(data.description),
+          leading: QuestionIcon(type: question.type),
+          title: Text(question.title),
+          subtitle: Text(question.description),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              _buildMenuButton(),
-              ReorderableListener(
-                child: Container(
-                  width: 48,
-                  decoration: ShapeDecoration(
-                    color: Color(0x0D000000),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
-                  height: 48,
-                  child: Center(
-                    child: Icon(Icons.reorder, color: Color(0xFF888888)),
-                  ),
-                ),
-              ),
+              _QuestionPopupButton(question: question),
+              const _QuestionDraggableHandle(),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class _SectionTitle extends StatelessWidget {
+  final String title;
+
+  const _SectionTitle(this.title, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableItem(
-      key: ValueKey(data.uuid),
-      childBuilder: _buildChild,
-    );
+    return Text(title, style: const TextStyle(fontSize: 20));
   }
+}
 
-  Widget _buildMenuButton() {
-    return PopupMenuButton(
+class _QuestionPopupButton extends StatelessWidget {
+  final Question question;
+
+  const _QuestionPopupButton({Key key, this.question}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<QuestionAction>(
+      tooltip: 'Opções extras',
+      onSelected: (action) {
+        Provider.of<SurveyCreateViewModel>(context)
+            .performPopupAction(action, question.uuid);
+      },
       itemBuilder: (BuildContext context) => [
         PopupMenuItem(
           child: Row(
@@ -199,8 +243,20 @@ class _QuestionItem extends StatelessWidget {
               Text('Editar'),
             ],
           ),
-          value: 0,
+          value: QuestionAction.edit,
         ),
+        PopupMenuDivider(),
+        PopupMenuItem(
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.content_copy),
+              SizedBox(width: 16),
+              Text('Duplicar'),
+            ],
+          ),
+          value: QuestionAction.copy,
+        ),
+        PopupMenuDivider(),
         PopupMenuItem(
           child: Row(
             children: <Widget>[
@@ -209,27 +265,44 @@ class _QuestionItem extends StatelessWidget {
               Text('Remover'),
             ],
           ),
-          value: 1,
+          value: QuestionAction.delete,
         ),
       ],
     );
   }
+}
 
-  IconData _getIconData() {
-    switch (data.type) {
-      case QuestionType.single:
-        return Icons.radio_button_checked;
+class _QuestionDraggableHandle extends StatelessWidget {
+  const _QuestionDraggableHandle({Key key}) : super(key: key);
 
-      case QuestionType.multi:
-        return Icons.check_box;
-
-      case QuestionType.numeric:
-        return Icons.looks_one;
-
-      case QuestionType.text:
-        return Icons.question_answer;
-    }
-
-    return Icons.error_outline;
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: 'Reordenar',
+      child: ReorderableListener(
+        child: GestureDetector(
+          onTap: () {
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Pressione e arraste para reordenar'),
+              ),
+            );
+          },
+          child: Container(
+            height: 48,
+            width: 48,
+            decoration: ShapeDecoration(
+              color: Color(0x0B000000),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+            ),
+            child: Center(
+              child: Icon(Icons.reorder, color: Color(0xFF888888)),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
