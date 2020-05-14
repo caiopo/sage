@@ -55,7 +55,7 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
               final question = await navigator(context).pushQuestionCreate();
 
               Provider.of<SurveyCreateViewModel>(context, listen: false)
-                  .addQuestion(question);
+                  .addQuestion(question as Question);
             },
           ),
           body: _buildBody(),

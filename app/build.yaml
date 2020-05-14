@@ -1,0 +1,90 @@
+#           _______  _______  _______          ______   _______
+# |\     /|(  ____ \(  ____ )(  ____ \        (  ___ \ (  ____ \
+# | )   ( || (    \/| (    )|| (    \/        | (   ) )| (    \/
+# | (___) || (__    | (____)|| (__            | (__/ / | (__
+# |  ___  ||  __)   |     __)|  __)           |  __ (  |  __)
+# | (   ) || (      | (\ (   | (              | (  \ \ | (
+# | )   ( || (____/\| ) \ \__| (____/\        | )___) )| (____/\
+# |/     \|(_______/|/   \__/(_______/        |/ \___/ (_______/
+#
+#  ______   _______  _______  _______  _______  _        _______
+# (  __  \ (  ____ )(  ___  )(  ____ \(  ___  )( (    /|(  ____ \
+# | (  \  )| (    )|| (   ) || (    \/| (   ) ||  \  ( || (    \/
+# | |   ) || (____)|| (___) || |      | |   | ||   \ | || (_____
+# | |   | ||     __)|  ___  || | ____ | |   | || (\ \) |(_____  )
+# | |   ) || (\ (   | (   ) || | \_  )| |   | || | \   |      ) |
+# | (__/  )| ) \ \__| )   ( || (___) || (___) || )  \  |/\____) |
+# (______/ |/   \__/|/     \|(_______)(_______)|/    )_)\_______)
+#
+#
+#                      ___====-_  _-====___
+#                _--^^^#####//      \\#####^^^--_
+#             _-^##########// (    ) \\##########^-_
+#            -############//  |\^^/|  \\############-
+#          _/############//   (@::@)   \\############\_
+#         /#############((     \\//     ))#############\
+#        -###############\\    (oo)    //###############-
+#       -#################\\  / VV \  //#################-
+#      -###################\\/      \//###################-
+#     _#/|##########/\######(   /\   )######/\##########|\#_
+#     |/ |#/\#/\#/\/  \#/\##\  |  |  /##/\#/  \/\#/\#/\#| \|
+#     `  |/  V  V  `   V  \#\| |  | |/#/  V   '  V  V  \|  '
+#        `   `  `      `   / | |  | | \   '      '  '   '
+#                         (  | |  | |  )
+#                        __\ | |  | | /__
+#                       (vvv(VVV)(VVV)vvv)
+#
+# !! Muito cuidado ao editar esse arquivo !!
+#
+# Links úteis pra entender essa bagunça:
+#  - https://pub.dev/packages/build_config
+#  - https://pub.dev/packages/source_gen
+#  - https://pub.dev/packages/build
+#  - https://github.com/dart-lang/build/blob/master/docs/builder_author_faq.md
+#  - https://github.com/simolus3/moor/issues/89
+#  - https://develop--moor.netlify.app/docs/advanced-features/builder_options/#using-moor-classes-in-other-builders
+
+
+targets:
+  $default:
+    builders:
+      # disable the default generator and enable the one emitting a .moor.dart file
+      moor_generator:
+        enabled: false
+      moor_generator|moor_generator_not_shared:
+        enabled: true
+        # If needed, you can configure the builder like this:
+        # options:
+        #   skip_verification_code: true
+        #   use_experimental_inference: true
+
+      auto_route_generator|autoRouteGenerator:
+        enabled: false
+
+      injectable_generator:injectable_builder:
+        enabled: false
+
+      injectable_generator:injectable_config_builder:
+        enabled: false
+
+      json_serializable:json_serializable:
+        enabled: false
+
+  run_others:
+    dependencies: ['sage']
+    builders:
+      # Disable moor builders. By default, those would run on each target
+      moor_generator:
+        enabled: false
+      moor_generator|preparing_builder:
+        enabled: false
+      # we don't need to disable moor_generator_not_shared, because it's disabled by default
+
+      auto_route_generator|autoRouteGenerator:
+        generate_for:
+          - lib/router/router.dart
+          - lib/pages/**_page.dart
+
+      json_serializable:json_serializable:
+        generate_for:
+          - lib/data/**.dart

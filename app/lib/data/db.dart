@@ -9,7 +9,7 @@ import 'package:sage/data/models/answer.dart';
 import 'package:sage/data/models/question.dart';
 import 'package:sage/data/models/survey.dart';
 
-part 'db.g.dart';
+part 'db.moor.dart';
 
 @singleton
 @UseMoor(tables: [

@@ -18,7 +18,7 @@ gen() => _log(
 gen_once() => _log(
       Process.start(
         'flutter',
-        ['pub', 'run', 'build_runner', 'build'],
+        ['pub', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'],
       ),
     );
 

@@ -13,6 +13,7 @@ import 'package:sage/pages/sync/sync_page.dart';
 import 'package:sage/pages/survey_detail/survey_detail_page.dart';
 import 'package:sage/pages/survey_create/survey_create_page.dart';
 import 'package:sage/pages/question_create/question_create_page.dart';
+import 'package:sage/data/db.dart';
 
 abstract class Routes {
   static const login = '/';
@@ -103,7 +104,7 @@ class SurveyDetailPageArguments {
 //QuestionCreatePage arguments holder class
 class QuestionCreatePageArguments {
   final Key key;
-  final dynamic question;
+  final Question question;
   QuestionCreatePageArguments({this.key, this.question});
 }
 
@@ -130,7 +131,7 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
 
   Future pushQuestionCreate({
     Key key,
-    dynamic question,
+    Question question,
   }) =>
       pushNamed(
         Routes.questionCreate,
