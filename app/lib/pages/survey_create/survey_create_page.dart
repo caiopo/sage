@@ -8,13 +8,15 @@ import 'package:sage/pages/survey_create/identicon_text_field.dart';
 import 'package:sage/router/router.dart';
 import 'package:sage/viewmodels/survey_create_viewmodel.dart';
 import 'package:sage/widgets/question_icon.dart';
+import 'package:sage/utils/viewmodels.dart';
 
 class SurveyCreatePage extends StatefulWidget {
   @override
   _SurveyCreatePageState createState() => _SurveyCreatePageState();
 }
 
-class _SurveyCreatePageState extends State<SurveyCreatePage> {
+class _SurveyCreatePageState extends State<SurveyCreatePage>
+    with ViewModelState<SurveyCreateViewModel, SurveyCreatePage> {
   Future<bool> onWillPop() async {
     final quit = await showDialog<bool>(
       context: context,
@@ -26,42 +28,45 @@ class _SurveyCreatePageState extends State<SurveyCreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: onWillPop,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Novo questionário',
-//            style: GoogleFonts.ubuntu(fontWeight: FontWeight.w500),
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => inject<SurveyCreateViewModel>(),
+      child: WillPopScope(
+        onWillPop: onWillPop,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Novo questionário'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.save,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.save,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
+          backgroundColor: Colors.white,
+          floatingActionButton: FloatingActionButton(
+            tooltip: 'Adicionar pergunta',
+            child: Icon(Icons.add),
+            onPressed: () async {
+              final question = await navigator(context).pushQuestionCreate();
+
+              Provider.of<SurveyCreateViewModel>(context, listen: false)
+                  .addQuestion(question);
+            },
+          ),
+          body: _buildBody(),
         ),
-        backgroundColor: Colors.white,
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Adicionar pergunta',
-          child: Icon(Icons.add),
-          onPressed: () {
-            navigator(context).pushQuestionCreate();
-          },
-        ),
-        body: _buildBody(),
       ),
     );
   }
 
   Widget _buildBody() {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => inject<SurveyCreateViewModel>(),
+    return ChangeNotifierProvider.value(
+      value: viewmodel,
       child: _SurveyList(),
     );
   }
@@ -114,12 +119,12 @@ class _SurveyList extends StatelessWidget {
               ),
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
-                  _SectionTitle('Título'),
-                  SizedBox(height: 8),
+                  const _SectionTitle('Título'),
+                  const SizedBox(height: 8),
                   _SurveyHeader(),
-                  SizedBox(height: 32),
-                  _SectionTitle('Perguntas'),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 32),
+                  const _SectionTitle('Perguntas'),
+                  const SizedBox(height: 8),
                 ]),
               ),
             ),
@@ -231,13 +236,13 @@ class _QuestionPopupButton extends StatelessWidget {
     return PopupMenuButton<QuestionAction>(
       tooltip: 'Opções extras',
       onSelected: (action) {
-        Provider.of<SurveyCreateViewModel>(context)
+        Provider.of<SurveyCreateViewModel>(context, listen: false)
             .performPopupAction(action, question.uuid);
       },
       itemBuilder: (BuildContext context) => [
         PopupMenuItem(
           child: Row(
-            children: <Widget>[
+            children: const [
               Icon(Icons.edit),
               SizedBox(width: 16),
               Text('Editar'),
@@ -248,7 +253,7 @@ class _QuestionPopupButton extends StatelessWidget {
         PopupMenuDivider(),
         PopupMenuItem(
           child: Row(
-            children: <Widget>[
+            children: const [
               Icon(Icons.content_copy),
               SizedBox(width: 16),
               Text('Duplicar'),
@@ -259,7 +264,7 @@ class _QuestionPopupButton extends StatelessWidget {
         PopupMenuDivider(),
         PopupMenuItem(
           child: Row(
-            children: <Widget>[
+            children: const [
               Icon(Icons.delete),
               SizedBox(width: 16),
               Text('Remover'),

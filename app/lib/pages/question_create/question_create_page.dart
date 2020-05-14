@@ -1,7 +1,11 @@
+import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/router/router.dart';
 
+@MaterialRoute(
+  returnType: Question,
+)
 class QuestionCreatePage extends StatefulWidget {
   final Question question;
 

@@ -1,11 +1,12 @@
 import 'dart:collection';
 
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sage/business/question_business.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/data/models/question.dart';
-import 'package:sage/viewmodels/viewmodel.dart';
+import 'package:sage/di/di.dart';
 import 'package:sage/utils/collections.dart';
+import 'package:sage/viewmodels/viewmodel.dart';
 
 @injectable
 class SurveyCreateViewModel extends ViewModel {
@@ -20,7 +21,7 @@ class SurveyCreateViewModel extends ViewModel {
 
   List<Question> _questions = List.generate(
     50,
-        (i) => Question(
+    (i) => Question(
       title: 'Question $i',
       description: 'Description $i',
       uuid: '$i',
@@ -44,15 +45,36 @@ class SurveyCreateViewModel extends ViewModel {
     return true;
   }
 
-  void performPopupAction(QuestionAction action, String uuid) {
+  void performPopupAction(QuestionAction action, String uuid) async {
+    int selectedIndex = _indexForUuid(uuid);
 
+    switch (action) {
+      case QuestionAction.edit:
+        break;
+
+      case QuestionAction.copy:
+        final newQuestion =
+            inject<QuestionBusiness>().copy(_questions[selectedIndex]);
+        _questions.insert(selectedIndex + 1, newQuestion);
+        notifyListeners();
+        break;
+
+      case QuestionAction.delete:
+        _questions.removeAt(selectedIndex);
+        notifyListeners();
+        break;
+    }
   }
 
   int _indexForUuid(String uuid) {
     return _questions.indexWhere((element) => element.uuid == uuid);
   }
-}
 
+  void addQuestion(Question question) {
+    _questions.add(question);
+    notifyListeners();
+  }
+}
 
 enum QuestionAction {
   edit,

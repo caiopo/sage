@@ -6,6 +6,8 @@ part 'question_extras.g.dart';
 abstract class QuestionExtras {
   QuestionExtras();
 
+  QuestionType get type;
+
   factory QuestionExtras.fromJson(Map<String, dynamic> json) {
     switch (json['type'] as String) {
       case 'single':
