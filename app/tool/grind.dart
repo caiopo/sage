@@ -7,20 +7,24 @@ import 'package:grinder/grinder.dart';
 void main(List<String> args) => grind(args);
 
 @Task('Generate dart files with build_runner (watch mode)')
-gen() => _log(
-      Process.start(
-        'flutter',
-        ['pub', 'run', 'build_runner', 'watch', '--delete-conflicting-outputs'],
-      ),
-    );
+gen() => flutter([
+      'pub',
+      'run',
+      'build_runner',
+      'watch',
+      '--delete-conflicting-outputs',
+      '--verbose',
+    ]);
 
 @Task('Generate dart files with build_runner (only once)')
-gen_once() => _log(
-      Process.start(
-        'flutter',
-        ['pub', 'run', 'build_runner', 'build', '--delete-conflicting-outputs'],
-      ),
-    );
+gen_once() => flutter([
+      'pub',
+      'run',
+      'build_runner',
+      'build',
+      '--delete-conflicting-outputs',
+      '--verbose',
+    ]);
 
 // TODO
 @Task('Run dart analyzer')
@@ -34,7 +38,7 @@ test() {}
 clean() {
   defaultClean();
   delete(Directory('.dart_tool'));
-  // TODO add gradle clean
+  flutter(['pub', 'get']);
 }
 
 Future<void> _log(Future<Process> proc) async {
@@ -43,4 +47,13 @@ Future<void> _log(Future<Process> proc) async {
   await for (final message in output) {
     log(utf8.decode(message));
   }
+}
+
+Future<void> flutter(List<String> subcommands) {
+  return _log(
+    Process.start(
+      'flutter',
+      subcommands,
+    ),
+  );
 }

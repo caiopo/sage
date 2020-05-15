@@ -1,11 +1,11 @@
-#           _______  _______  _______          ______   _______
-# |\     /|(  ____ \(  ____ )(  ____ \        (  ___ \ (  ____ \
-# | )   ( || (    \/| (    )|| (    \/        | (   ) )| (    \/
-# | (___) || (__    | (____)|| (__            | (__/ / | (__
-# |  ___  ||  __)   |     __)|  __)           |  __ (  |  __)
-# | (   ) || (      | (\ (   | (              | (  \ \ | (
-# | )   ( || (____/\| ) \ \__| (____/\        | )___) )| (____/\
-# |/     \|(_______/|/   \__/(_______/        |/ \___/ (_______/
+#           _______  _______  _______           ______   _______
+# |\     /|(  ____ \(  ____ )(  ____ \         (  ___ \ (  ____ \
+# | )   ( || (    \/| (    )|| (    \/         | (   ) )| (    \/
+# | (___) || (__    | (____)|| (__             | (__/ / | (__
+# |  ___  ||  __)   |     __)|  __)            |  __ (  |  __)
+# | (   ) || (      | (\ (   | (               | (  \ \ | (
+# | )   ( || (____/\| ) \ \__| (____/\         | )___) )| (____/\
+# |/     \|(_______/|/   \__/(_______/         |/ \___/ (_______/
 #
 #  ______   _______  _______  _______  _______  _        _______
 # (  __  \ (  ____ )(  ___  )(  ____ \(  ___  )( (    /|(  ____ \
@@ -34,16 +34,18 @@
 #                        __\ | |  | | /__
 #                       (vvv(VVV)(VVV)vvv)
 #
-# !! Muito cuidado ao editar esse arquivo !!
+#            ------------------------------------------
+#           !!  Muito cuidado ao editar esse arquivo  !!
+#            ------------------------------------------
 #
-# Links úteis pra entender essa bagunça:
+# Links úteis pra (tentar) entender essa bagunça:
 #  - https://pub.dev/packages/build_config
 #  - https://pub.dev/packages/source_gen
 #  - https://pub.dev/packages/build
 #  - https://github.com/dart-lang/build/blob/master/docs/builder_author_faq.md
 #  - https://github.com/simolus3/moor/issues/89
 #  - https://develop--moor.netlify.app/docs/advanced-features/builder_options/#using-moor-classes-in-other-builders
-
+#
 
 targets:
   $default:
@@ -53,10 +55,8 @@ targets:
         enabled: false
       moor_generator|moor_generator_not_shared:
         enabled: true
-        # If needed, you can configure the builder like this:
-        # options:
-        #   skip_verification_code: true
-        #   use_experimental_inference: true
+        options:
+          eagerly_load_dart_ast: true
 
       auto_route_generator|autoRouteGenerator:
         enabled: false
