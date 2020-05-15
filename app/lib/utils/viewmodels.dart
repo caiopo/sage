@@ -4,20 +4,20 @@ import 'package:sage/viewmodels/viewmodel.dart';
 
 mixin ViewModelState<VM extends ViewModel, W extends StatefulWidget>
     on State<W> {
-  VM viewmodel;
+  VM viewModel;
 
   @override
   void initState() {
     super.initState();
-    viewmodel = inject<VM>();
-    viewmodel.addListener(() {
+    viewModel = inject<VM>();
+    viewModel.addListener(() {
       setState(() {});
     });
   }
 
   @override
   void dispose() {
-    viewmodel.dispose();
+    viewModel.dispose();
     super.dispose();
   }
 }

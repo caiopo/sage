@@ -8,6 +8,12 @@ import 'package:sage/di/di.dart';
 import 'package:sage/utils/collections.dart';
 import 'package:sage/viewmodels/viewmodel.dart';
 
+typedef QuestionEventListener = void Function(
+  QuestionEvent event,
+  int index,
+  Question question,
+);
+
 @injectable
 class SurveyCreateViewModel extends ViewModel {
   String _title = '';
@@ -18,6 +24,8 @@ class SurveyCreateViewModel extends ViewModel {
     _title = title;
     notifyListeners();
   }
+
+  QuestionEventListener eventListener;
 
   List<Question> _questions = List.generate(
     50,
@@ -57,11 +65,22 @@ class SurveyCreateViewModel extends ViewModel {
             inject<QuestionBusiness>().copy(_questions[selectedIndex]);
         _questions.insert(selectedIndex + 1, newQuestion);
         notifyListeners();
+        eventListener?.call(
+          QuestionEvent.added,
+          selectedIndex + 1,
+          newQuestion,
+        );
         break;
 
       case QuestionAction.delete:
+        final question = _questions[selectedIndex];
         _questions.removeAt(selectedIndex);
         notifyListeners();
+        eventListener?.call(
+          QuestionEvent.removed,
+          selectedIndex,
+          question,
+        );
         break;
     }
   }
@@ -73,11 +92,19 @@ class SurveyCreateViewModel extends ViewModel {
   void addQuestion(Question question) {
     _questions.add(question);
     notifyListeners();
+    eventListener?.call(QuestionEvent.added, _questions.length - 1, question);
   }
+
+  void removeQuestion(int index) {}
 }
 
 enum QuestionAction {
   edit,
   copy,
   delete,
+}
+
+enum QuestionEvent {
+  added,
+  removed,
 }

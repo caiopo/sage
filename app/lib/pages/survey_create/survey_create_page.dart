@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:provider/provider.dart';
 import 'package:sage/data/db.dart';
-import 'package:sage/di/di.dart';
 import 'package:sage/pages/survey_create/discard_dialog.dart';
 import 'package:sage/pages/survey_create/identicon_text_field.dart';
 import 'package:sage/router/router.dart';
+import 'package:sage/utils/viewmodels.dart';
 import 'package:sage/viewmodels/survey_create_viewmodel.dart';
 import 'package:sage/widgets/question_icon.dart';
-import 'package:sage/utils/viewmodels.dart';
 
 class SurveyCreatePage extends StatefulWidget {
   @override
@@ -17,6 +16,34 @@ class SurveyCreatePage extends StatefulWidget {
 
 class _SurveyCreatePageState extends State<SurveyCreatePage>
     with ViewModelState<SurveyCreateViewModel, SurveyCreatePage> {
+  final GlobalKey<SliverAnimatedListState> _animatedListKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.eventListener = onQuestionEvent;
+  }
+
+  void onQuestionEvent(QuestionEvent event, int index, Question question) {
+    print([event, index]);
+    switch (event) {
+      case QuestionEvent.added:
+        _animatedListKey.currentState?.insertItem(index);
+        break;
+      case QuestionEvent.removed:
+        _animatedListKey.currentState?.removeItem(
+          index,
+          (context, animation) => _QuestionItem(
+            question: question,
+            animation: animation,
+            isFirst: index == 0,
+            isLast: index == viewModel.questions.length - 1,
+          ),
+        );
+        break;
+    }
+  }
+
   Future<bool> onWillPop() async {
     final quit = await showDialog<bool>(
       context: context,
@@ -28,46 +55,44 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => inject<SurveyCreateViewModel>(),
-      child: WillPopScope(
-        onWillPop: onWillPop,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Novo questionário'),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.save,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              )
-            ],
-          ),
-          backgroundColor: Colors.white,
-          floatingActionButton: FloatingActionButton(
-            tooltip: 'Adicionar pergunta',
-            child: Icon(Icons.add),
-            onPressed: () async {
-              final question = await navigator(context).pushQuestionCreate();
-
-              Provider.of<SurveyCreateViewModel>(context, listen: false)
-                  .addQuestion(question as Question);
-            },
-          ),
-          body: _buildBody(),
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Novo questionário'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.save,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
         ),
+        backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Adicionar pergunta',
+          child: Icon(Icons.add),
+          onPressed: () async {
+            final question = await navigator(context).pushQuestionCreate();
+
+            if (question != null) {
+              viewModel.addQuestion(question as Question);
+            }
+          },
+        ),
+        body: _buildBody(),
       ),
     );
   }
 
   Widget _buildBody() {
     return ChangeNotifierProvider.value(
-      value: viewmodel,
-      child: _SurveyList(),
+      value: viewModel,
+      child: _SurveyList(animatedListKey: _animatedListKey),
     );
   }
 }
@@ -87,6 +112,10 @@ class _SurveyHeader extends StatelessWidget {
 }
 
 class _SurveyList extends StatelessWidget {
+  final Key animatedListKey;
+
+  _SurveyList({Key key, this.animatedListKey}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final viewmodel = Provider.of<SurveyCreateViewModel>(context);
@@ -132,18 +161,18 @@ class _SurveyList extends StatelessWidget {
               padding: EdgeInsets.only(
                 bottom: 86 /* FAB */ + MediaQuery.of(context).padding.bottom,
               ),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return _QuestionItem(
-                      question: questions[index],
-                      // first and last attributes affect border drawn during dragging
-                      isFirst: index == 0,
-                      isLast: index == questions.length - 1,
-                    );
-                  },
-                  childCount: questions.length,
-                ),
+              sliver: SliverAnimatedList(
+                key: animatedListKey,
+                itemBuilder: (context, index, animation) {
+                  return _QuestionItem(
+                    question: questions[index],
+                    animation: animation,
+                    // first and last attributes affect border drawn during dragging
+                    isFirst: index == 0,
+                    isLast: index == questions.length - 1,
+                  );
+                },
+                initialItemCount: questions.length,
               ),
             ),
           ],
@@ -155,12 +184,14 @@ class _SurveyList extends StatelessWidget {
 
 class _QuestionItem extends StatelessWidget {
   _QuestionItem({
-    this.question,
-    this.isFirst,
-    this.isLast,
+    @required this.question,
+    @required this.animation,
+    @required this.isFirst,
+    @required this.isLast,
   });
 
   final Question question;
+  final Animation<double> animation;
   final bool isFirst;
   final bool isLast;
 
@@ -194,20 +225,30 @@ class _QuestionItem extends StatelessWidget {
       );
     }
 
-    return Container(
-      decoration: decoration,
-      child: Opacity(
-        opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
-        child: ListTile(
-          leading: QuestionIcon(type: question.type),
-          title: Text(question.title),
-          subtitle: Text(question.description),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _QuestionPopupButton(question: question),
-              const _QuestionDraggableHandle(),
-            ],
+    return SizeTransition(
+      sizeFactor: animation,
+      axisAlignment: 1,
+      child: SlideTransition(
+        position: animation.drive(Tween<Offset>(
+          begin: const Offset(1.5, 0.0),
+          end: Offset.zero,
+        )),
+        child: Container(
+          decoration: decoration,
+          child: Opacity(
+            opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
+            child: ListTile(
+              leading: QuestionIcon(type: question.type),
+              title: Text(question.title),
+              subtitle: Text(question.description),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  _QuestionPopupButton(question: question),
+                  const _QuestionDraggableHandle(),
+                ],
+              ),
+            ),
           ),
         ),
       ),

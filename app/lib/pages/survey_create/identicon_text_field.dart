@@ -29,7 +29,6 @@ class IdenticonTextField extends StatelessWidget {
               hintText: 'Pesquisa de Opinião',
               labelText: 'Título',
             ),
-            style: const TextStyle(fontSize: 18),
             onChanged: onChanged,
           ),
         ),
