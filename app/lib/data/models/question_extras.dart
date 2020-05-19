@@ -34,7 +34,7 @@ class QuestionExtrasSingle extends QuestionExtras {
   final QuestionType type = QuestionType.single;
   final List<String> options;
 
-  QuestionExtrasSingle(QuestionType type, this.options);
+  QuestionExtrasSingle({QuestionType type, this.options});
 
   factory QuestionExtrasSingle.fromJson(Map<String, dynamic> json) =>
       _$QuestionExtrasSingleFromJson(json);
@@ -47,7 +47,7 @@ class QuestionExtrasMulti extends QuestionExtras {
   final QuestionType type = QuestionType.multi;
   final List<String> options;
 
-  QuestionExtrasMulti(QuestionType type, this.options);
+  QuestionExtrasMulti({QuestionType type, this.options});
 
   factory QuestionExtrasMulti.fromJson(Map<String, dynamic> json) =>
       _$QuestionExtrasMultiFromJson(json);
@@ -61,7 +61,7 @@ class QuestionExtrasNumeric extends QuestionExtras {
   final int min;
   final int max;
 
-  QuestionExtrasNumeric(QuestionType type, this.min, this.max);
+  QuestionExtrasNumeric({QuestionType type, this.min, this.max});
 
   factory QuestionExtrasNumeric.fromJson(Map<String, dynamic> json) =>
       _$QuestionExtrasNumericFromJson(json);
@@ -75,7 +75,7 @@ class QuestionExtrasText extends QuestionExtras {
   final int minLength;
   final int maxLength;
 
-  QuestionExtrasText(QuestionType type, this.minLength, this.maxLength);
+  QuestionExtrasText({QuestionType type, this.minLength, this.maxLength});
 
   factory QuestionExtrasText.fromJson(Map<String, dynamic> json) =>
       _$QuestionExtrasTextFromJson(json);

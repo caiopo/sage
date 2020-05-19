@@ -7,7 +7,9 @@ import 'package:sage/pages/survey_create/identicon_text_field.dart';
 import 'package:sage/router/router.dart';
 import 'package:sage/utils/viewmodels.dart';
 import 'package:sage/viewmodels/survey_create_viewmodel.dart';
+import 'package:sage/widgets/draggable_handle.dart';
 import 'package:sage/widgets/question_icon.dart';
+import 'package:sage/widgets/slide_in_animation.dart';
 
 class SurveyCreatePage extends StatefulWidget {
   @override
@@ -163,16 +165,15 @@ class _SurveyList extends StatelessWidget {
               ),
               sliver: SliverAnimatedList(
                 key: animatedListKey,
+                initialItemCount: questions.length,
                 itemBuilder: (context, index, animation) {
                   return _QuestionItem(
                     question: questions[index],
-                    animation: animation,
-                    // first and last attributes affect border drawn during dragging
                     isFirst: index == 0,
                     isLast: index == questions.length - 1,
+                    animation: animation,
                   );
                 },
-                initialItemCount: questions.length,
               ),
             ),
           ],
@@ -183,17 +184,17 @@ class _SurveyList extends StatelessWidget {
 }
 
 class _QuestionItem extends StatelessWidget {
-  _QuestionItem({
-    @required this.question,
-    @required this.animation,
-    @required this.isFirst,
-    @required this.isLast,
-  });
-
   final Question question;
-  final Animation<double> animation;
   final bool isFirst;
   final bool isLast;
+  final Animation<double> animation;
+
+  _QuestionItem({
+    @required this.question,
+    @required this.isFirst,
+    @required this.isLast,
+    @required this.animation,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -225,29 +226,22 @@ class _QuestionItem extends StatelessWidget {
       );
     }
 
-    return SizeTransition(
-      sizeFactor: animation,
-      axisAlignment: 1,
-      child: SlideTransition(
-        position: animation.drive(Tween<Offset>(
-          begin: const Offset(1.5, 0.0),
-          end: Offset.zero,
-        )),
-        child: Container(
-          decoration: decoration,
-          child: Opacity(
-            opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
-            child: ListTile(
-              leading: QuestionIcon(type: question.type),
-              title: Text(question.title),
-              subtitle: Text(question.description),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  _QuestionPopupButton(question: question),
-                  const _QuestionDraggableHandle(),
-                ],
-              ),
+    return Container(
+      decoration: decoration,
+      child: Opacity(
+        opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
+        child: SlideInAnimation(
+          animation: animation,
+          child: ListTile(
+            leading: QuestionIcon(type: question.type),
+            title: Text(question.title),
+            subtitle: Text(question.description),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _QuestionPopupButton(question: question),
+                const DraggableHandle(),
+              ],
             ),
           ),
         ),
@@ -314,41 +308,6 @@ class _QuestionPopupButton extends StatelessWidget {
           value: QuestionAction.delete,
         ),
       ],
-    );
-  }
-}
-
-class _QuestionDraggableHandle extends StatelessWidget {
-  const _QuestionDraggableHandle({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: 'Reordenar',
-      child: ReorderableListener(
-        child: GestureDetector(
-          onTap: () {
-            Scaffold.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Pressione e arraste para reordenar'),
-              ),
-            );
-          },
-          child: Container(
-            height: 48,
-            width: 48,
-            decoration: ShapeDecoration(
-              color: Color(0x0B000000),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-              ),
-            ),
-            child: Center(
-              child: Icon(Icons.reorder, color: Color(0xFF888888)),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

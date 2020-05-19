@@ -13,7 +13,6 @@ gen() => flutter([
       'build_runner',
       'watch',
       '--delete-conflicting-outputs',
-      '--verbose',
     ]);
 
 @Task('Generate dart files with build_runner (only once)')
@@ -23,7 +22,6 @@ gen_once() => flutter([
       'build_runner',
       'build',
       '--delete-conflicting-outputs',
-      '--verbose',
     ]);
 
 // TODO

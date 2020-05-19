@@ -6,7 +6,12 @@ class Enum {
 
   String toJson() => id;
 
- static T fromJson<T extends Enum>(List<T> values, dynamic json) {
+  @override
+  String toString() {
+    return '$runtimeType($id, "$label")';
+  }
+
+  static T fromJson<T extends Enum>(List<T> values, dynamic json) {
     return values.firstWhere((e) => e.id == json, orElse: () => null);
   }
 }

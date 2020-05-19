@@ -25,10 +25,10 @@ class Questions extends Table {
 }
 
 class QuestionType extends Enum {
-  static const single = QuestionType._('single', 'Single choice');
-  static const multi = QuestionType._('multi', 'Multiple choice');
-  static const numeric = QuestionType._('numeric', 'Numeric');
-  static const text = QuestionType._('text', 'Text');
+  static const single = QuestionType._('single', 'Escolha única');
+  static const multi = QuestionType._('multi', 'Escolha múltipla');
+  static const numeric = QuestionType._('numeric', 'Numérica');
+  static const text = QuestionType._('text', 'Textual');
 
   static const values = [single, multi, numeric, text];
 

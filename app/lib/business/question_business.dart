@@ -13,7 +13,7 @@ class QuestionBusiness extends Business {
     QuestionExtras extras,
     bool optional,
   }) {
-    assert(type == extras.type);
+    assert(extras == null || type == extras.type);
 
     return Question(
       uuid: generateUuid(),
@@ -21,7 +21,7 @@ class QuestionBusiness extends Business {
       description: description,
       type: type,
       extras: extras,
-      optional: optional,
+      optional: optional ?? false,
     );
   }
 

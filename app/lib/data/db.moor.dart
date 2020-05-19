@@ -50,6 +50,19 @@ class Survey extends DataClass implements Insertable<Survey> {
     return map;
   }
 
+  SurveysCompanion toCompanion(bool nullToAbsent) {
+    return SurveysCompanion(
+      uuid: uuid == null && nullToAbsent ? const Value.absent() : Value(uuid),
+      title:
+          title == null && nullToAbsent ? const Value.absent() : Value(title),
+      owner:
+          owner == null && nullToAbsent ? const Value.absent() : Value(owner),
+      uploadedAnswers: uploadedAnswers == null && nullToAbsent
+          ? const Value.absent()
+          : Value(uploadedAnswers),
+    );
+  }
+
   factory Survey.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -336,6 +349,23 @@ class Question extends DataClass implements Insertable<Question> {
       map['optional'] = Variable<bool>(optional);
     }
     return map;
+  }
+
+  QuestionsCompanion toCompanion(bool nullToAbsent) {
+    return QuestionsCompanion(
+      uuid: uuid == null && nullToAbsent ? const Value.absent() : Value(uuid),
+      type: type == null && nullToAbsent ? const Value.absent() : Value(type),
+      title:
+          title == null && nullToAbsent ? const Value.absent() : Value(title),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      extras:
+          extras == null && nullToAbsent ? const Value.absent() : Value(extras),
+      optional: optional == null && nullToAbsent
+          ? const Value.absent()
+          : Value(optional),
+    );
   }
 
   factory Question.fromJson(Map<String, dynamic> json,
@@ -680,6 +710,18 @@ class Answer extends DataClass implements Insertable<Answer> {
     return map;
   }
 
+  AnswersCompanion toCompanion(bool nullToAbsent) {
+    return AnswersCompanion(
+      uuid: uuid == null && nullToAbsent ? const Value.absent() : Value(uuid),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      finished: finished == null && nullToAbsent
+          ? const Value.absent()
+          : Value(finished),
+    );
+  }
+
   factory Answer.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -894,6 +936,19 @@ class QuestionAnswer extends DataClass implements Insertable<QuestionAnswer> {
       map['extras'] = Variable<String>(converter.mapToSql(extras));
     }
     return map;
+  }
+
+  QuestionAnswersCompanion toCompanion(bool nullToAbsent) {
+    return QuestionAnswersCompanion(
+      answerUuid: answerUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(answerUuid),
+      questionUuid: questionUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(questionUuid),
+      extras:
+          extras == null && nullToAbsent ? const Value.absent() : Value(extras),
+    );
   }
 
   factory QuestionAnswer.fromJson(Map<String, dynamic> json,

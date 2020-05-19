@@ -8,8 +8,8 @@ part of 'question_extras.dart';
 
 QuestionExtrasSingle _$QuestionExtrasSingleFromJson(Map<String, dynamic> json) {
   return QuestionExtrasSingle(
-    json['type'] == null ? null : QuestionType.fromJson(json['type']),
-    (json['options'] as List)?.map((e) => e as String)?.toList(),
+    type: json['type'] == null ? null : QuestionType.fromJson(json['type']),
+    options: (json['options'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -22,8 +22,8 @@ Map<String, dynamic> _$QuestionExtrasSingleToJson(
 
 QuestionExtrasMulti _$QuestionExtrasMultiFromJson(Map<String, dynamic> json) {
   return QuestionExtrasMulti(
-    json['type'] == null ? null : QuestionType.fromJson(json['type']),
-    (json['options'] as List)?.map((e) => e as String)?.toList(),
+    type: json['type'] == null ? null : QuestionType.fromJson(json['type']),
+    options: (json['options'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -37,9 +37,9 @@ Map<String, dynamic> _$QuestionExtrasMultiToJson(
 QuestionExtrasNumeric _$QuestionExtrasNumericFromJson(
     Map<String, dynamic> json) {
   return QuestionExtrasNumeric(
-    json['type'] == null ? null : QuestionType.fromJson(json['type']),
-    json['min'] as int,
-    json['max'] as int,
+    type: json['type'] == null ? null : QuestionType.fromJson(json['type']),
+    min: json['min'] as int,
+    max: json['max'] as int,
   );
 }
 
@@ -53,9 +53,9 @@ Map<String, dynamic> _$QuestionExtrasNumericToJson(
 
 QuestionExtrasText _$QuestionExtrasTextFromJson(Map<String, dynamic> json) {
   return QuestionExtrasText(
-    json['type'] == null ? null : QuestionType.fromJson(json['type']),
-    json['minLength'] as int,
-    json['maxLength'] as int,
+    type: json['type'] == null ? null : QuestionType.fromJson(json['type']),
+    minLength: json['minLength'] as int,
+    maxLength: json['maxLength'] as int,
   );
 }
 
