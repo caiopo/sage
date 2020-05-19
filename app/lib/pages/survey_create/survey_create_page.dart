@@ -7,9 +7,9 @@ import 'package:sage/pages/survey_create/identicon_text_field.dart';
 import 'package:sage/router/router.dart';
 import 'package:sage/utils/viewmodels.dart';
 import 'package:sage/viewmodels/survey_create_viewmodel.dart';
-import 'package:sage/widgets/draggable_handle.dart';
+import 'package:sage/widgets/draggable_item.dart';
 import 'package:sage/widgets/question_icon.dart';
-import 'package:sage/widgets/slide_in_animation.dart';
+import 'package:sage/widgets/sliver_auto_animated_list.dart';
 
 class SurveyCreatePage extends StatefulWidget {
   @override
@@ -23,28 +23,28 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
   @override
   void initState() {
     super.initState();
-    viewModel.eventListener = onQuestionEvent;
+//    viewModel.eventListener = onQuestionEvent;
   }
 
-  void onQuestionEvent(QuestionEvent event, int index, Question question) {
-    print([event, index]);
-    switch (event) {
-      case QuestionEvent.added:
-        _animatedListKey.currentState?.insertItem(index);
-        break;
-      case QuestionEvent.removed:
-        _animatedListKey.currentState?.removeItem(
-          index,
-          (context, animation) => _QuestionItem(
-            question: question,
-            animation: animation,
-            isFirst: index == 0,
-            isLast: index == viewModel.questions.length - 1,
-          ),
-        );
-        break;
-    }
-  }
+//  void onQuestionEvent(QuestionEvent event, int index, Question question) {
+//    print([event, index]);
+//    switch (event) {
+//      case QuestionEvent.added:
+//        _animatedListKey.currentState?.insertItem(index);
+//        break;
+//      case QuestionEvent.removed:
+//        _animatedListKey.currentState?.removeItem(
+//          index,
+//          (context, animation) => _QuestionItem(
+//            question: question,
+//            animation: animation,
+//            isFirst: index == 0,
+//            isLast: index == viewModel.questions.length - 1,
+//          ),
+//        );
+//        break;
+//    }
+//  }
 
   Future<bool> onWillPop() async {
     final quit = await showDialog<bool>(
@@ -163,15 +163,16 @@ class _SurveyList extends StatelessWidget {
               padding: EdgeInsets.only(
                 bottom: 86 /* FAB */ + MediaQuery.of(context).padding.bottom,
               ),
-              sliver: SliverAnimatedList(
-                key: animatedListKey,
-                initialItemCount: questions.length,
-                itemBuilder: (context, index, animation) {
+              sliver: SliverAutoAnimatedList<Question>(
+//                key: animatedListKey,
+//                initialItemCount: questions.length,
+                items: questions,
+                keyExtractor: (q) => q.uuid,
+                itemBuilder: (context, item) {
                   return _QuestionItem(
-                    question: questions[index],
-                    isFirst: index == 0,
-                    isLast: index == questions.length - 1,
-                    animation: animation,
+                    question: item,
+                    isFirst: item.uuid == questions.first?.uuid,
+                    isLast: item.uuid == questions.last?.uuid,
                   );
                 },
               ),
@@ -187,63 +188,29 @@ class _QuestionItem extends StatelessWidget {
   final Question question;
   final bool isFirst;
   final bool isLast;
-  final Animation<double> animation;
 
   _QuestionItem({
     @required this.question,
     @required this.isFirst,
     @required this.isLast,
-    @required this.animation,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableItem(
+    return DraggableItem(
       key: ValueKey(question.uuid),
-      childBuilder: _buildChild,
-    );
-  }
-
-  Widget _buildChild(BuildContext context, ReorderableItemState state) {
-    BoxDecoration decoration;
-
-    if (state == ReorderableItemState.dragProxy ||
-        state == ReorderableItemState.dragProxyFinished) {
-      // slightly transparent background white dragging (just like on iOS)
-      decoration = BoxDecoration(color: Color(0xD0FFFFFF));
-    } else {
-      bool placeholder = state == ReorderableItemState.placeholder;
-      decoration = BoxDecoration(
-        border: Border(
-          top: isFirst && !placeholder
-              ? Divider.createBorderSide(context)
-              : BorderSide.none,
-          bottom: isLast && placeholder
-              ? BorderSide.none //
-              : Divider.createBorderSide(context),
-        ),
-        color: placeholder ? null : Colors.white,
-      );
-    }
-
-    return Container(
-      decoration: decoration,
-      child: Opacity(
-        opacity: state == ReorderableItemState.placeholder ? 0.0 : 1.0,
-        child: SlideInAnimation(
-          animation: animation,
-          child: ListTile(
-            leading: QuestionIcon(type: question.type),
-            title: Text(question.title),
-            subtitle: Text(question.description),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _QuestionPopupButton(question: question),
-                const DraggableHandle(),
-              ],
-            ),
-          ),
+      isFirst: isFirst,
+      isLast: isLast,
+      child: ListTile(
+        leading: QuestionIcon(type: question.type),
+        title: Text(question.title),
+        subtitle: Text(question.description),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            _QuestionPopupButton(question: question),
+            const DraggableHandle(),
+          ],
         ),
       ),
     );

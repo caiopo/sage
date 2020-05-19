@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:sage/data/models/question.dart';
-import 'package:sage/widgets/draggable_handle.dart';
+import 'package:sage/widgets/draggable_item.dart';
 
 class CreateTypeQuestion extends StatelessWidget {
   final QuestionType type;

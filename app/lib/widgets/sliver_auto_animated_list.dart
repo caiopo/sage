@@ -2,6 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:list_diff/list_diff.dart';
 
+enum AnimationMode {
+  // animates only when [[items]] length changes
+  addRemove,
+
+  // animates all changes (doesn't work with reorderable lists)
+  all,
+}
+
 typedef KeyExtractor<T> = String Function(T item);
 
 typedef ItemBuilder<T> = Widget Function(
@@ -19,12 +27,14 @@ class SliverAutoAnimatedList<T> extends StatefulWidget {
   final List<T> items;
   final ItemBuilder<T> itemBuilder;
   final KeyExtractor<T> keyExtractor;
+  final AnimationMode mode;
 
   const SliverAutoAnimatedList({
     Key key,
     @required this.items,
     @required this.keyExtractor,
     @required this.itemBuilder,
+    this.mode = AnimationMode.addRemove,
   }) : super(key: key);
 
   @override
@@ -35,40 +45,44 @@ class SliverAutoAnimatedList<T> extends StatefulWidget {
 class _SliverAutoAnimatedListState<T> extends State<SliverAutoAnimatedList<T>> {
   final _animatedListKey = GlobalKey<SliverAnimatedListState>();
 
-  List<T> _dataFromWidget;
-  List<T> _dataForBuild = [];
+  List<T> _items;
 
   @override
   void didUpdateWidget(SliverAutoAnimatedList<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (_dataFromWidget != widget.items) {
-      _dataFromWidget = widget.items;
-      _updateData(List.from(_dataForBuild), List.from(_dataFromWidget));
+    if (_items != null) {
+      _updateData(_items, widget.items);
     }
+    _items = widget.items.toList(growable: false);
   }
 
   Future<void> _updateData(List<T> from, List<T> to) async {
-    final operations = await diff(from, to);
-    if (!listEquals(_dataFromWidget, to) || !listEquals(_dataForBuild, from)) {
-      // While we were calculating the operations, another update got in and is
-      // currently being calculated based off the old version, so it doesn't
-      // really make sense to execute what we calculated right here. The new
-      // calculation will take care of the changes.
+    if (widget.mode == AnimationMode.addRemove && from.length == to.length) {
       return;
     }
-    setState(() {
-      final listState = _animatedListKey.currentState;
-      for (final op in operations) {
-        op.applyTo(_dataForBuild);
-        if (op.isInsertion) {
+
+    final operations = diffSync<T>(
+      from,
+      to,
+      areEqual: _areEqual,
+    );
+
+    final listState = _animatedListKey.currentState;
+
+    for (final op in operations) {
+      switch (op.type) {
+        case OperationType.insertion:
           listState?.insertItem(op.index);
-        } else if (op.isDeletion) {
-          listState?.removeItem(op.index, (context, animation) {
-            return _buildAnimation(context, op.item, animation);
-          });
-        }
+          break;
+        case OperationType.deletion:
+          listState?.removeItem(
+            op.index,
+            (context, animation) =>
+                _buildAnimation(context, op.item, animation),
+          );
+          break;
       }
-    });
+    }
   }
 
   @override
