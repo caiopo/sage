@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/data/models/question.dart';
 import 'package:sage/pages/question_create/question_type_layouts.dart';
@@ -24,11 +25,18 @@ class _QuestionCreatePageState extends State<QuestionCreatePage>
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    viewModel.question = widget.question;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Nova pergunta',
+          style: GoogleFonts.openSans(fontWeight: FontWeight.w600),
         ),
         actions: <Widget>[
           IconButton(
@@ -51,11 +59,13 @@ class _QuestionCreatePageState extends State<QuestionCreatePage>
   }
 
   Widget _buildBody() {
+    final question = viewModel.question;
+
     return ConstrainedBox(
       constraints: BoxConstraints.expand(),
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
+      child: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Padding(
@@ -73,6 +83,7 @@ class _QuestionCreatePageState extends State<QuestionCreatePage>
                         hintText: 'Qual sua cor favorita?',
                         helperText: 'Obrigatório',
                       ),
+                      initialValue: question.title,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Obrigatório';
@@ -89,8 +100,10 @@ class _QuestionCreatePageState extends State<QuestionCreatePage>
                         border: OutlineInputBorder(),
                         labelText: 'Texto auxiliar',
                         hintText: 'Qual sua cor favorita?',
-                        helperText: 'Será exibido abaixo da pergunta',
+                        helperText:
+                            '(Opcional) Será exibido abaixo da pergunta',
                       ),
+                      initialValue: question.description,
                       onSaved: (description) => viewModel.mutateQuestion(
                         (question) =>
                             question.copyWith(description: description),
@@ -103,6 +116,7 @@ class _QuestionCreatePageState extends State<QuestionCreatePage>
                         labelText: 'Tipo de pergunta',
                         helperText: 'Obrigatório',
                       ),
+                      value: question.type,
                       validator: (value) {
                         if (value == null) {
                           return 'Obrigatório';
@@ -126,13 +140,21 @@ class _QuestionCreatePageState extends State<QuestionCreatePage>
                 title: Text('Obrigatória'),
                 activeColor: Theme.of(context).primaryColor,
                 controlAffinity: ListTileControlAffinity.leading,
-                value: !viewModel.question.optional,
+                value: !question.optional,
                 onChanged: (required) => viewModel.mutateQuestion(
                   (question) => question.copyWith(optional: !required),
                 ),
               ),
               SizedBox(height: 16),
-              CreateTypeQuestion(type: viewModel.question.type),
+              CreateTypeQuestion(
+                type: question.type,
+                extras: question.extras,
+                onChanged: (extras) {
+                  viewModel.mutateQuestion(
+                    (question) => question.copyWith(extras: extras),
+                  );
+                },
+              ),
               SizedBox(height: 32),
             ],
           ),

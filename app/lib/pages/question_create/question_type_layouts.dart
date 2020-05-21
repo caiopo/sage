@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:sage/data/models/question.dart';
-import 'package:sage/widgets/draggable_item.dart';
+import 'package:sage/pages/question_create/option_list.dart';
 
 class CreateTypeQuestion extends StatelessWidget {
   final QuestionType type;
   final ValueChanged<QuestionExtras> onChanged;
+  final QuestionExtras extras;
 
   const CreateTypeQuestion({
     Key key,
     this.type,
     this.onChanged,
+    this.extras,
   }) : super(key: key);
 
   @override
@@ -24,13 +25,13 @@ class CreateTypeQuestion extends StatelessWidget {
   Widget _buildInternal() {
     switch (type) {
       case QuestionType.single:
-        return CreateSingleQuestion(onChanged: onChanged);
+        return CreateSingleQuestion(onChanged: onChanged, extras: extras);
       case QuestionType.multi:
-        return CreateMultiQuestion(onChanged: onChanged);
+        return CreateMultiQuestion(onChanged: onChanged, extras: extras);
       case QuestionType.numeric:
-        return CreateNumericQuestion(onChanged: onChanged);
+        return CreateNumericQuestion(onChanged: onChanged, extras: extras);
       case QuestionType.text:
-        return CreateTextQuestion(onChanged: onChanged);
+        return CreateTextQuestion(onChanged: onChanged, extras: extras);
     }
 
     return Container();
@@ -39,43 +40,62 @@ class CreateTypeQuestion extends StatelessWidget {
 
 class CreateSingleQuestion extends StatelessWidget {
   final ValueChanged<QuestionExtras> onChanged;
+  final QuestionExtras extras;
 
-  const CreateSingleQuestion({Key key, this.onChanged}) : super(key: key);
+  const CreateSingleQuestion({Key key, this.onChanged, this.extras})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: 50,
-      color: Colors.red,
+    var initialValues = <String>[];
+
+    // autocast only works for local variables
+    final _extras = extras;
+    if (_extras != null && _extras is QuestionExtrasSingle) {
+      initialValues = _extras.options;
+    }
+
+    return OptionList(
+      initialValues: initialValues,
+      onSaved: (values) {
+        onChanged(QuestionExtrasSingle(options: values));
+      },
     );
   }
 }
 
-class CreateMultiQuestion extends StatefulWidget {
+class CreateMultiQuestion extends StatelessWidget {
   final ValueChanged<QuestionExtras> onChanged;
+  final QuestionExtras extras;
 
-  const CreateMultiQuestion({Key key, this.onChanged}) : super(key: key);
+  const CreateMultiQuestion({Key key, this.onChanged, this.extras})
+      : super(key: key);
 
-  @override
-  _CreateMultiQuestionState createState() => _CreateMultiQuestionState();
-}
-
-class _CreateMultiQuestionState extends State<CreateMultiQuestion> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: 50,
-      color: Colors.purple,
+    var initialValues = <String>[];
+
+    // autocast only works for local variables
+    final _extras = extras;
+    if (_extras != null && _extras is QuestionExtrasMulti) {
+      initialValues = _extras.options;
+    }
+
+    return OptionList(
+      initialValues: initialValues,
+      onSaved: (values) {
+        onChanged(QuestionExtrasMulti(options: values));
+      },
     );
   }
 }
 
 class CreateNumericQuestion extends StatefulWidget {
   final ValueChanged<QuestionExtras> onChanged;
+  final QuestionExtras extras;
 
-  const CreateNumericQuestion({Key key, this.onChanged}) : super(key: key);
+  const CreateNumericQuestion({Key key, this.onChanged, this.extras})
+      : super(key: key);
 
   @override
   _CreateNumericQuestionState createState() => _CreateNumericQuestionState();
@@ -84,6 +104,16 @@ class CreateNumericQuestion extends StatefulWidget {
 class _CreateNumericQuestionState extends State<CreateNumericQuestion> {
   int min;
   int max;
+
+  @override
+  void initState() {
+    super.initState();
+    final extras = widget.extras;
+    if (extras != null && extras is QuestionExtrasNumeric) {
+      min = extras.min;
+      max = extras.max;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,8 +166,10 @@ class _CreateNumericQuestionState extends State<CreateNumericQuestion> {
 
 class CreateTextQuestion extends StatefulWidget {
   final ValueChanged<QuestionExtras> onChanged;
+  final QuestionExtras extras;
 
-  const CreateTextQuestion({Key key, this.onChanged}) : super(key: key);
+  const CreateTextQuestion({Key key, this.onChanged, this.extras})
+      : super(key: key);
 
   @override
   _CreateTextQuestionState createState() => _CreateTextQuestionState();
@@ -146,6 +178,16 @@ class CreateTextQuestion extends StatefulWidget {
 class _CreateTextQuestionState extends State<CreateTextQuestion> {
   int minLength;
   int maxLength;
+
+  @override
+  void initState() {
+    super.initState();
+    final extras = widget.extras;
+    if (extras != null && extras is QuestionExtrasText) {
+      minLength = extras.minLength;
+      maxLength = extras.maxLength;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,8 +200,33 @@ class _CreateTextQuestionState extends State<CreateTextQuestion> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Tamanho mínimo',
+              errorMaxLines: 2,
             ),
-            validator: _intValidator,
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                minLength = int.tryParse(value);
+              });
+            },
+            validator: (str) {
+              if (str == null || str.isEmpty) {
+                return null;
+              }
+
+              if (minLength == null) {
+                return 'Número inválido';
+              }
+
+              if (minLength < 0) {
+                return 'Deve ser positivo';
+              }
+
+              if (maxLength != null && minLength > maxLength) {
+                return 'Deve ser menor que o tamanho máximo';
+              }
+
+              return null;
+            },
             onSaved: (min) {
               setState(() {
                 minLength = int.tryParse(min);
@@ -177,12 +244,34 @@ class _CreateTextQuestionState extends State<CreateTextQuestion> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Tamanho máximo',
+              errorMaxLines: 2,
             ),
-            validator: _intValidator,
-            onSaved: (max) {
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
               setState(() {
-                maxLength = int.tryParse(max);
+                maxLength = int.tryParse(value);
               });
+            },
+            validator: (str) {
+              if (str == null || str.isEmpty) {
+                return null;
+              }
+
+              if (maxLength == null) {
+                return 'Número inválido';
+              }
+
+              if (maxLength < 0) {
+                return 'Deve ser positivo';
+              }
+
+              if (minLength != null && minLength > maxLength) {
+                return 'Deve ser maior que o tamanho mínimo';
+              }
+
+              return null;
+            },
+            onSaved: (max) {
               widget.onChanged(QuestionExtrasText(
                 minLength: minLength,
                 maxLength: maxLength,
@@ -208,66 +297,4 @@ String _intValidator(String str) {
   }
 
   return null;
-}
-
-class OptionList extends StatefulWidget {
-  final List<String> initialValues;
-
-  const OptionList({Key key, this.initialValues}) : super(key: key);
-
-  @override
-  _OptionListState createState() => _OptionListState();
-}
-
-class _OptionListState extends State<OptionList> {
-  List<String> _values;
-
-  @override
-  void initState() {
-    super.initState();
-    _values = widget.initialValues;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ReorderableList(
-      onReorder: (Key draggedItem, Key newPosition) {
-        final draggedValue = (draggedItem as ValueKey<String>).value;
-        final newPositionValue = (draggedItem as ValueKey<String>).value;
-
-        final draggedPosition = _values.indexOf(draggedValue);
-        final newPosition = _values.indexOf(newPositionValue);
-
-        _values.removeAt(draggedPosition);
-        _values.insert(newPosition, draggedValue);
-
-        return true;
-      },
-      child: Column(
-        children: <Widget>[
-          for (final s in _values) _OptionItem(title: s),
-        ],
-      ),
-    );
-  }
-}
-
-class _OptionItem extends StatelessWidget {
-  final String title;
-
-  const _OptionItem({Key key, this.title}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-//          _QuestionPopupButton(question: question),
-          const DraggableHandle(),
-        ],
-      ),
-    );
-  }
 }

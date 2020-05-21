@@ -1,21 +1,20 @@
 import 'dart:collection';
 
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sage/business/question_business.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/data/models/question.dart';
-import 'package:sage/di/di.dart';
+import 'package:sage/router/router.dart';
 import 'package:sage/utils/collections.dart';
 import 'package:sage/viewmodels/viewmodel.dart';
 
-typedef QuestionEventListener = void Function(
-  QuestionEvent event,
-  int index,
-  Question question,
-);
-
 @injectable
 class SurveyCreateViewModel extends ViewModel {
+  final QuestionBusiness _questionBusiness;
+
+  SurveyCreateViewModel(this._questionBusiness);
+
   String _title = '';
 
   String get title => _title;
@@ -24,8 +23,6 @@ class SurveyCreateViewModel extends ViewModel {
     _title = title;
     notifyListeners();
   }
-
-  QuestionEventListener eventListener;
 
   List<Question> _questions = List.generate(
     50,
@@ -53,34 +50,31 @@ class SurveyCreateViewModel extends ViewModel {
     return true;
   }
 
-  void performPopupAction(QuestionAction action, String uuid) async {
+  Future<void> performPopupAction(
+      BuildContext context, QuestionAction action, String uuid) async {
     int selectedIndex = _indexForUuid(uuid);
 
     switch (action) {
       case QuestionAction.edit:
+        final question = await navigator(context).pushQuestionCreate(
+          question: _questions[selectedIndex],
+        ) as Question;
+
+        if (question != null) {
+          _questions[selectedIndex] = question;
+        }
+        notifyListeners();
         break;
 
       case QuestionAction.copy:
-        final newQuestion =
-            inject<QuestionBusiness>().copy(_questions[selectedIndex]);
+        final newQuestion = _questionBusiness.copy(_questions[selectedIndex]);
         _questions.insert(selectedIndex + 1, newQuestion);
         notifyListeners();
-        eventListener?.call(
-          QuestionEvent.added,
-          selectedIndex + 1,
-          newQuestion,
-        );
         break;
 
       case QuestionAction.delete:
-        final question = _questions[selectedIndex];
         _questions.removeAt(selectedIndex);
         notifyListeners();
-        eventListener?.call(
-          QuestionEvent.removed,
-          selectedIndex,
-          question,
-        );
         break;
     }
   }
@@ -92,10 +86,7 @@ class SurveyCreateViewModel extends ViewModel {
   void addQuestion(Question question) {
     _questions.add(question);
     notifyListeners();
-    eventListener?.call(QuestionEvent.added, _questions.length - 1, question);
   }
-
-  void removeQuestion(int index) {}
 }
 
 enum QuestionAction {

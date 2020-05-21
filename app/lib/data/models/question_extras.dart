@@ -27,6 +27,13 @@ abstract class QuestionExtras {
   }
 
   Map<String, dynamic> toJson();
+
+  @override
+  String toString() {
+    final json = toJson();
+    json.remove('type');
+    return '$runtimeType($json)';
+  }
 }
 
 @JsonSerializable()

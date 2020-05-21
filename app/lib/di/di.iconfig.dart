@@ -21,7 +21,8 @@ void $initGetIt(GetIt g, {String environment}) {
   g.registerFactory<QuestionBusiness>(() => QuestionBusiness());
   g.registerFactory<QuestionCreateViewModel>(
       () => QuestionCreateViewModel(g<QuestionBusiness>()));
-  g.registerFactory<SurveyCreateViewModel>(() => SurveyCreateViewModel());
+  g.registerFactory<SurveyCreateViewModel>(
+      () => SurveyCreateViewModel(g<QuestionBusiness>()));
   g.registerFactory<SurveyDao>(() => SurveyDao(g<AppDatabase>()));
   g.registerFactory<SurveyService>(() => SurveyService(g<Dio>()));
   g.registerFactory<AnswerService>(() => AnswerService(g<Dio>()));

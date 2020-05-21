@@ -74,13 +74,12 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
             )
           ],
         ),
-        backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
           tooltip: 'Adicionar pergunta',
           child: Icon(Icons.add),
           onPressed: () async {
             final question = await navigator(context).pushQuestionCreate();
-
+            print(question);
             if (question != null) {
               viewModel.addQuestion(question as Question);
             }
@@ -203,8 +202,16 @@ class _QuestionItem extends StatelessWidget {
       isLast: isLast,
       child: ListTile(
         leading: QuestionIcon(type: question.type),
-        title: Text(question.title),
-        subtitle: Text(question.description),
+        title: Text(
+          question.title,
+          softWrap: false,
+          overflow: TextOverflow.fade,
+        ),
+        subtitle: Text(
+          question.description,
+          softWrap: false,
+          overflow: TextOverflow.fade,
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
@@ -239,7 +246,7 @@ class _QuestionPopupButton extends StatelessWidget {
       tooltip: 'Opções extras',
       onSelected: (action) {
         Provider.of<SurveyCreateViewModel>(context, listen: false)
-            .performPopupAction(action, question.uuid);
+            .performPopupAction(context, action, question.uuid);
       },
       itemBuilder: (BuildContext context) => [
         PopupMenuItem(

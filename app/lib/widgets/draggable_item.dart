@@ -41,7 +41,7 @@ class DraggableItem extends StatelessWidget {
               ? BorderSide.none //
               : Divider.createBorderSide(context),
         ),
-        color: placeholder ? null : Colors.white,
+//        color: placeholder ? null : Colors.white,
       );
     }
 

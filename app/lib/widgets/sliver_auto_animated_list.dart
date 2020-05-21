@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:list_diff/list_diff.dart';
+import 'package:sage/widgets/slide_in_animation.dart';
 
 enum AnimationMode {
   // animates only when [[items]] length changes
@@ -50,13 +51,14 @@ class _SliverAutoAnimatedListState<T> extends State<SliverAutoAnimatedList<T>> {
   @override
   void didUpdateWidget(SliverAutoAnimatedList<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
+    final newItems = widget.items.toList(growable: false);
     if (_items != null) {
       _updateData(_items, widget.items);
     }
-    _items = widget.items.toList(growable: false);
+    _items = newItems;
   }
 
-  Future<void> _updateData(List<T> from, List<T> to) async {
+  void _updateData(List<T> from, List<T> to) {
     if (widget.mode == AnimationMode.addRemove && from.length == to.length) {
       return;
     }
@@ -109,16 +111,9 @@ class _SliverAutoAnimatedListState<T> extends State<SliverAutoAnimatedList<T>> {
   ) {
     final child = widget.itemBuilder(context, item);
 
-    return SizeTransition(
-      sizeFactor: animation,
-      axisAlignment: 1,
-      child: SlideTransition(
-        position: animation.drive(Tween<Offset>(
-          begin: const Offset(1.5, 0.0),
-          end: Offset.zero,
-        )),
-        child: child,
-      ),
+    return SlideInTransition(
+      animation: animation,
+      child: child,
     );
   }
 

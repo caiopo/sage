@@ -18,6 +18,11 @@ class QuestionCreateViewModel extends ViewModel {
 
   Question get question => _question;
 
+  set question(Question newQuestion) {
+    _question = newQuestion;
+    notifyListeners();
+  }
+
   void mutateQuestion(QuestionMutator mutator) {
     _question = mutator(_question);
     notifyListeners();

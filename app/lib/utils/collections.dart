@@ -35,4 +35,10 @@ extension ListExtensions<T> on List<T> {
 
     return this[_random.nextInt(length)];
   }
+
+  Iterable<int> get indices sync* {
+    for (int i = 0; i < this.length; i++) {
+      yield i;
+    }
+  }
 }
