@@ -63,4 +63,6 @@ flutter:
         - asset: assets/fonts/Mali-SemiBold.ttf
 
 flutter_icons:
+  android: true
+  ios: true
   image_path: "assets/images/launcher-icon/icon.png"
