@@ -112,6 +112,7 @@ class _SliverAutoAnimatedListState<T> extends State<SliverAutoAnimatedList<T>> {
     final child = widget.itemBuilder(context, item);
 
     return SlideInTransition(
+      key: ValueKey(widget.keyExtractor(item)),
       animation: animation,
       child: child,
     );

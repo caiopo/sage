@@ -6,7 +6,7 @@ import 'package:sage/business/question_business.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/data/models/question.dart';
 import 'package:sage/router/router.dart';
-import 'package:sage/utils/collections.dart';
+import 'package:sage/utils/random.dart';
 import 'package:sage/viewmodels/viewmodel.dart';
 
 @injectable
@@ -24,17 +24,90 @@ class SurveyCreateViewModel extends ViewModel {
     notifyListeners();
   }
 
-  List<Question> _questions = List.generate(
-    50,
-    (i) => Question(
-      title: 'Question $i',
-      description: 'Description $i',
-      uuid: '$i',
-      type: QuestionType.values.choice(),
-      extras: null,
+  List<Question> _questions = [
+    Question(
+      uuid: generateUuid(),
+      title: 'Qual seu cômodo preferido?',
+      description: null,
       optional: false,
+      type: QuestionType.single,
+      extras: QuestionExtrasSingle(
+        options: [
+          'Quarto',
+          'Cozinha',
+          'Sala',
+          'Garagem',
+        ],
+      ),
     ),
-  );
+    Question(
+      uuid: generateUuid(),
+      title: 'Quais frutas você gosta?',
+      description: null,
+      optional: false,
+      type: QuestionType.multi,
+      extras: QuestionExtrasMulti(
+        options: [
+          'Maçã',
+          'Banana',
+          'Goiaba',
+          'Pêra',
+          'Melancia label grande teste'
+        ],
+      ),
+    ),
+    Question(
+      uuid: generateUuid(),
+      title: 'Qual sua cor preferida?',
+      description:
+          'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
+      optional: true,
+      type: QuestionType.single,
+      extras: QuestionExtrasSingle(
+        options: [
+          'Azul',
+          'Amarelo',
+          'Vermelho',
+          'Verde',
+          'Preto',
+        ],
+      ),
+    ),
+    Question(
+      uuid: generateUuid(),
+      title: 'Qual sua idade?',
+      description: null,
+      type: QuestionType.numeric,
+      optional: false,
+      extras: QuestionExtrasNumeric(
+        min: 1,
+        max: 130,
+      ),
+    ),
+    Question(
+      uuid: generateUuid(),
+      title: 'Qual seu nome?',
+      description: null,
+      type: QuestionType.text,
+      optional: false,
+      extras: QuestionExtrasNumeric(
+        min: 3,
+        max: 10,
+      ),
+    ),
+  ];
+
+//  List<Question> _questions = List.generate(
+//    50,
+//    (i) => Question(
+//      title: 'Question $i',
+//      description: 'Description $i',
+//      uuid: '$i',
+//      type: QuestionType.values.choice(),
+//      extras: null,
+//      optional: false,
+//    ),
+//  );
 
   List<Question> get questions => UnmodifiableListView(_questions);
 
@@ -59,6 +132,8 @@ class SurveyCreateViewModel extends ViewModel {
         final question = await navigator(context).pushQuestionCreate(
           question: _questions[selectedIndex],
         ) as Question;
+
+        print(question);
 
         if (question != null) {
           _questions[selectedIndex] = question;
@@ -86,6 +161,11 @@ class SurveyCreateViewModel extends ViewModel {
   void addQuestion(Question question) {
     _questions.add(question);
     notifyListeners();
+  }
+
+  Future<void> save() async {
+    print(_title);
+    print(_questions.length);
   }
 }
 

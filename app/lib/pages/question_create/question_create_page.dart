@@ -27,7 +27,9 @@ class _QuestionCreatePageState extends State<QuestionCreatePage>
   @override
   void initState() {
     super.initState();
-    viewModel.question = widget.question;
+    if (widget.question != null) {
+      viewModel.question = widget.question;
+    }
   }
 
   @override

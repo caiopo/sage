@@ -26,11 +26,19 @@ class OptionList extends StatefulWidget {
 
 class _OptionListState extends State<OptionList> {
   List<String> _values;
+  FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _values = widget.initialValues.toList();
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focusNode?.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,6 +90,7 @@ class _OptionListState extends State<OptionList> {
               ),
             const SizedBox(height: 16),
             OutlineButton.icon(
+              focusNode: _focusNode,
               icon: const Icon(Icons.add),
               label: const Text('ADICIONAR OPÇÃO'),
               textColor: Theme.of(context).primaryColor,
@@ -136,6 +145,8 @@ class _OptionListState extends State<OptionList> {
       barrierDismissible: false,
       builder: (context) => _AddOptionDialog(),
     );
+
+    _focusNode.requestFocus();
 
     if (value != null && value.isNotEmpty && !_containsValue(value)) {
       setState(() {

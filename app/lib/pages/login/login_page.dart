@@ -17,10 +17,8 @@ class _LoginPageState extends State<LoginPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: Container(
-        color: theme.primaryColor,
-        child: _buildBody(),
-      ),
+      backgroundColor: theme.primaryColor,
+      body: _buildBody(),
     );
   }
 
@@ -28,27 +26,30 @@ class _LoginPageState extends State<LoginPage> {
     if (loading) return CircularProgressIndicator();
 
     return SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          CircularBackground(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Image.asset(
-                'assets/images/ginger-cat/track-statistics.png',
+      child: ConstrainedBox(
+        constraints: BoxConstraints.expand(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CircularBackground(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Image.asset(
+                  'assets/images/ginger-cat/track-statistics.png',
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 8),
-          SageWordmark(size: 72),
-          SizedBox(height: 32),
-          GoogleSignInButton(
-            text: 'Entrar com Google',
-            onPressed: () {
-              navigator(context).pushReplacementNamed(Routes.home);
-            },
-          )
-        ],
+            SizedBox(height: 8),
+            SageWordmark(size: 72),
+            SizedBox(height: 32),
+            GoogleSignInButton(
+              text: 'Entrar com Google',
+              onPressed: () {
+                navigator(context).pushReplacementNamed(Routes.home);
+              },
+            )
+          ],
+        ),
       ),
     );
   }

@@ -109,6 +109,7 @@ class _CreateNumericQuestionState extends State<CreateNumericQuestion> {
   void initState() {
     super.initState();
     final extras = widget.extras;
+    print(extras);
     if (extras != null && extras is QuestionExtrasNumeric) {
       min = extras.min;
       max = extras.max;
@@ -126,12 +127,31 @@ class _CreateNumericQuestionState extends State<CreateNumericQuestion> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Valor mínimo',
+              errorMaxLines: 2,
             ),
-            validator: _intValidator,
-            onSaved: (_min) {
+            initialValue: min?.toString(),
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
               setState(() {
-                min = int.tryParse(_min);
+                min = int.tryParse(value);
               });
+            },
+            validator: (str) {
+              if (str == null || str.isEmpty) {
+                return null;
+              }
+
+              if (min == null) {
+                return 'Número inválido';
+              }
+
+              if (max != null && min > max) {
+                return 'Deve ser menor que o valor máximo';
+              }
+
+              return null;
+            },
+            onSaved: (_) {
               widget.onChanged(QuestionExtrasNumeric(
                 min: min,
                 max: max,
@@ -145,12 +165,31 @@ class _CreateNumericQuestionState extends State<CreateNumericQuestion> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Valor máximo',
+              errorMaxLines: 2,
             ),
-            validator: _intValidator,
-            onSaved: (_max) {
+            keyboardType: TextInputType.number,
+            initialValue: max?.toString(),
+            onChanged: (value) {
               setState(() {
-                max = int.tryParse(_max);
+                max = int.tryParse(value);
               });
+            },
+            validator: (str) {
+              if (str == null || str.isEmpty) {
+                return null;
+              }
+
+              if (max == null) {
+                return 'Número inválido';
+              }
+
+              if (min != null && min > max) {
+                return 'Deve ser maior que o valor mínimo';
+              }
+
+              return null;
+            },
+            onSaved: (_) {
               widget.onChanged(QuestionExtrasNumeric(
                 min: min,
                 max: max,
@@ -183,6 +222,7 @@ class _CreateTextQuestionState extends State<CreateTextQuestion> {
   void initState() {
     super.initState();
     final extras = widget.extras;
+    print(extras);
     if (extras != null && extras is QuestionExtrasText) {
       minLength = extras.minLength;
       maxLength = extras.maxLength;
@@ -202,6 +242,7 @@ class _CreateTextQuestionState extends State<CreateTextQuestion> {
               labelText: 'Tamanho mínimo',
               errorMaxLines: 2,
             ),
+            initialValue: minLength?.toString(),
             keyboardType: TextInputType.number,
             onChanged: (value) {
               setState(() {
@@ -228,9 +269,6 @@ class _CreateTextQuestionState extends State<CreateTextQuestion> {
               return null;
             },
             onSaved: (min) {
-              setState(() {
-                minLength = int.tryParse(min);
-              });
               widget.onChanged(QuestionExtrasText(
                 minLength: minLength,
                 maxLength: maxLength,
@@ -247,6 +285,7 @@ class _CreateTextQuestionState extends State<CreateTextQuestion> {
               errorMaxLines: 2,
             ),
             keyboardType: TextInputType.number,
+            initialValue: maxLength?.toString(),
             onChanged: (value) {
               setState(() {
                 maxLength = int.tryParse(value);

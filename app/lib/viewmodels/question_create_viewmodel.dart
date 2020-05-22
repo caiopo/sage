@@ -14,12 +14,15 @@ class QuestionCreateViewModel extends ViewModel {
     _question = _questionBusiness.create();
   }
 
+  bool editing = false;
+
   Question _question;
 
   Question get question => _question;
 
   set question(Question newQuestion) {
     _question = newQuestion;
+    editing = true;
     notifyListeners();
   }
 

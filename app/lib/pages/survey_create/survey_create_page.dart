@@ -18,33 +18,8 @@ class SurveyCreatePage extends StatefulWidget {
 
 class _SurveyCreatePageState extends State<SurveyCreatePage>
     with ViewModelState<SurveyCreateViewModel, SurveyCreatePage> {
-  final GlobalKey<SliverAnimatedListState> _animatedListKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-//    viewModel.eventListener = onQuestionEvent;
-  }
-
-//  void onQuestionEvent(QuestionEvent event, int index, Question question) {
-//    print([event, index]);
-//    switch (event) {
-//      case QuestionEvent.added:
-//        _animatedListKey.currentState?.insertItem(index);
-//        break;
-//      case QuestionEvent.removed:
-//        _animatedListKey.currentState?.removeItem(
-//          index,
-//          (context, animation) => _QuestionItem(
-//            question: question,
-//            animation: animation,
-//            isFirst: index == 0,
-//            isLast: index == viewModel.questions.length - 1,
-//          ),
-//        );
-//        break;
-//    }
-//  }
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<bool> onWillPop() async {
     final quit = await showDialog<bool>(
@@ -60,6 +35,7 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: const Text('Novo questionário'),
           actions: <Widget>[
@@ -68,8 +44,14 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
                 Icons.save,
                 color: Colors.white,
               ),
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                final form = _formKey.currentState;
+                validateQuestions();
+                if (form.validate()) {
+                  form.save();
+                  await viewModel.save();
+                  Navigator.pop(context);
+                }
               },
             )
           ],
@@ -85,7 +67,10 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
             }
           },
         ),
-        body: _buildBody(),
+        body: Form(
+          key: _formKey,
+          child: _buildBody(),
+        ),
       ),
     );
   }
@@ -93,8 +78,16 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
   Widget _buildBody() {
     return ChangeNotifierProvider.value(
       value: viewModel,
-      child: _SurveyList(animatedListKey: _animatedListKey),
+      child: _SurveyList(),
     );
+  }
+
+  void validateQuestions() {
+    if (viewModel.questions.isEmpty) {
+      _scaffoldKey.currentState?.showSnackBar(SnackBar(
+        content: Text('Você deve adicionar uma pergunta'),
+      ));
+    }
   }
 }
 
@@ -102,21 +95,14 @@ class _SurveyHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewmodel = Provider.of<SurveyCreateViewModel>(context);
-    return Container(
-      color: Colors.white,
-      child: IdenticonTextField(
-        title: viewmodel.title,
-        onChanged: (title) => viewmodel.title = title,
-      ),
+    return IdenticonTextField(
+      title: viewmodel.title,
+      onSaved: (title) => viewmodel.title = title,
     );
   }
 }
 
 class _SurveyList extends StatelessWidget {
-  final Key animatedListKey;
-
-  _SurveyList({Key key, this.animatedListKey}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final viewmodel = Provider.of<SurveyCreateViewModel>(context);
@@ -158,24 +144,48 @@ class _SurveyList extends StatelessWidget {
                 ]),
               ),
             ),
-            SliverPadding(
-              padding: EdgeInsets.only(
-                bottom: 86 /* FAB */ + MediaQuery.of(context).padding.bottom,
+            if (viewmodel.questions.isEmpty)
+              SliverToBoxAdapter(
+                child: Center(
+                    child: Column(
+                  children: <Widget>[
+                    FractionallySizedBox(
+                      widthFactor: 0.9,
+                      child: Image.asset(
+                        'assets/images/ginger-cat/page-not-found.png',
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const Text(
+                          'Adicione perguntas pressionando o ',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        const Icon(Icons.add),
+                      ],
+                    ),
+                  ],
+                )),
+              )
+            else
+              SliverPadding(
+                padding: EdgeInsets.only(
+                  bottom: 86 /* FAB */ + MediaQuery.of(context).padding.bottom,
+                ),
+                sliver: SliverAutoAnimatedList<Question>(
+                  items: questions,
+                  keyExtractor: (q) => q.uuid,
+                  itemBuilder: (context, item) {
+                    return _QuestionItem(
+                      key: ValueKey(item.uuid),
+                      question: item,
+                      isFirst: item.uuid == questions.first?.uuid,
+                      isLast: item.uuid == questions.last?.uuid,
+                    );
+                  },
+                ),
               ),
-              sliver: SliverAutoAnimatedList<Question>(
-//                key: animatedListKey,
-//                initialItemCount: questions.length,
-                items: questions,
-                keyExtractor: (q) => q.uuid,
-                itemBuilder: (context, item) {
-                  return _QuestionItem(
-                    question: item,
-                    isFirst: item.uuid == questions.first?.uuid,
-                    isLast: item.uuid == questions.last?.uuid,
-                  );
-                },
-              ),
-            ),
           ],
         ),
       ),
@@ -189,10 +199,11 @@ class _QuestionItem extends StatelessWidget {
   final bool isLast;
 
   _QuestionItem({
+    Key key,
     @required this.question,
     @required this.isFirst,
     @required this.isLast,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -201,14 +212,19 @@ class _QuestionItem extends StatelessWidget {
       isFirst: isFirst,
       isLast: isLast,
       child: ListTile(
-        leading: QuestionIcon(type: question.type),
+        leading: SizedBox(
+          width: 0, // minimum width the parent allows
+          child: Center(
+            child: QuestionIcon(type: question.type),
+          ),
+        ),
         title: Text(
           question.title,
           softWrap: false,
           overflow: TextOverflow.fade,
         ),
         subtitle: Text(
-          question.description,
+          question.type.label,
           softWrap: false,
           overflow: TextOverflow.fade,
         ),

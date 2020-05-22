@@ -12,9 +12,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context);
-    print(media.size);
-
     return Scaffold(
       appBar: AppBar(
         title: SageWordmark(size: 26),

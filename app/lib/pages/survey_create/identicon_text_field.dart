@@ -3,19 +3,21 @@ import 'package:sage/widgets/identicon.dart';
 
 class IdenticonTextField extends StatelessWidget {
   final String title;
-  final ValueChanged<String> onChanged;
+  final String error;
+  final ValueChanged<String> onSaved;
 
   IdenticonTextField({
     Key key,
     this.title,
-    this.onChanged,
+    this.error,
+    this.onSaved,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Identicon(
           value: title,
@@ -23,13 +25,21 @@ class IdenticonTextField extends StatelessWidget {
         ),
         SizedBox(width: 16),
         Expanded(
-          child: TextField(
+          child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'Pesquisa de Opinião',
-              labelText: 'Título',
+              labelText: 'Título do questionário',
+              helperText: 'Obrigatório',
             ),
-            onChanged: onChanged,
+            validator: (title) {
+              if (title == null || title.isEmpty) {
+                return 'Obrigatório';
+              }
+
+              return null;
+            },
+            onSaved: onSaved,
           ),
         ),
       ],
