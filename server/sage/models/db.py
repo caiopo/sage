@@ -3,8 +3,8 @@ from datetime import datetime
 
 from pony.orm import *
 
-from gaia.config import DATABASE
-from gaia.utils.crypto import RSAKey
+from sage.config import DATABASE
+from sage.utils.crypto import RSAKey
 from .utils import QuestionType
 
 db = Database()
@@ -13,10 +13,11 @@ db = Database()
 class User(db.Entity):
     uid = Required(str, unique=True)
     active = Required(bool, default=lambda: True)
-
     private_key = Required(str)
 
     surveys = Set(lambda: Survey)
+
+    created_at = Required(datetime, default=datetime.now)
 
 
 class Survey(db.Entity):
@@ -26,6 +27,9 @@ class Survey(db.Entity):
 
     questions = Set(lambda: Question)
     answers = Set(lambda: Answer)
+
+    created_at = Required(datetime, default=datetime.now)
+    updated_at = Required(datetime, default=datetime.now)
 
     def as_dict(self):
         d = self.to_dict(related_objects=True)
@@ -49,6 +53,9 @@ class Question(db.Entity):
 
     answers = Set(lambda: QuestionAnswer)
 
+    created_at = Required(datetime, default=datetime.now)
+    updated_at = Required(datetime, default=datetime.now)
+
     def as_dict(self):
         return self.to_dict(exclude='id answers survey')
 
@@ -58,10 +65,10 @@ class Answer(db.Entity):
 
     uuid = Required(uuid.UUID, index=True, unique=True)
 
+    question_answers = Set(lambda: QuestionAnswer)
+
     created_at = Required(datetime)
     uploaded_at = Required(datetime)
-
-    question_answers = Set(lambda: QuestionAnswer)
 
 
 class QuestionAnswer(db.Entity):
@@ -138,7 +145,7 @@ def _ns():
                 ]
             }
 
-            from gaia.business.surveys import create_survey
+            from sage.business.surveys import create_survey
             create_survey(survey, user)
 
 

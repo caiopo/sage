@@ -2,8 +2,8 @@ from datetime import datetime
 
 from flask import Blueprint, jsonify
 
-from gaia.models.db import User
-from gaia.utils.crypto import RSAKey
+from sage.models.db import User
+from sage.utils.crypto import RSAKey
 from .utils import verify_user, auth_required
 
 bp = Blueprint('users', __name__)

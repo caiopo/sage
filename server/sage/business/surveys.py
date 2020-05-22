@@ -1,5 +1,5 @@
-from gaia.models.db import Survey, Question
-from gaia.utils.exceptions import Forbidden
+from sage.models.db import Survey, Question
+from sage.utils.exceptions import Forbidden
 
 
 def create_survey(survey_data, owner):

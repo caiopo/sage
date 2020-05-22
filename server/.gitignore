@@ -1,5 +1,5 @@
 .vscode/
-gaia-survey-firebase-admin.json
+firebase-admin.json
 data.db
 
 ### Flask ###

@@ -2,7 +2,7 @@ from firebase_admin import credentials, initialize_app
 from flask import Flask, jsonify
 from pony.flask import Pony
 
-from gaia.config import PORT, FIREBASE_CERTIFICATE
+from sage.config import PORT, FIREBASE_CERTIFICATE
 
 app = Flask(__name__)
 
@@ -15,7 +15,7 @@ initialize_app(
 if app.env != 'development':
     @app.errorhandler(Exception)
     def error_handler(error):
-        from gaia.utils.exceptions import GaiaException
+        from sage.utils.exceptions import GaiaException
         if isinstance(error, GaiaException):
             return jsonify({
                 'code': error.status_code,
@@ -31,7 +31,7 @@ if app.env != 'development':
             'message': error.args
         }), 500
 
-from gaia.routes import blueprints
+from sage.routes import blueprints
 
 for (bp, prefix) in blueprints:
     app.register_blueprint(bp, url_prefix=prefix)

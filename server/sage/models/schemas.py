@@ -1,7 +1,7 @@
 from schema import Schema, Or, Optional, SchemaError
 
-from gaia.models.utils import QuestionType
-from gaia.utils.exceptions import BadRequest
+from sage.models.utils import QuestionType
+from sage.utils.exceptions import BadRequest
 
 question_schema = Schema({
     'type': Or(*QuestionType.ALL),

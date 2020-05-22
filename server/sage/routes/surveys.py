@@ -1,10 +1,10 @@
 from flask import Blueprint, jsonify, request
 from pony.orm import select
 
-from gaia.business.surveys import create_survey
-from gaia.models.db import Survey
-from gaia.models.schemas import validate_survey
-from gaia.utils.exceptions import NotFound
+from sage.business.surveys import create_survey
+from sage.models.db import Survey
+from sage.models.schemas import validate_survey
+from sage.utils.exceptions import NotFound
 from .utils import auth_required
 
 bp = Blueprint('surveys', __name__)

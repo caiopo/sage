@@ -3,11 +3,10 @@ from functools import wraps
 from firebase_admin.auth import verify_id_token, CertificateFetchError, \
     RevokedIdTokenError, ExpiredIdTokenError, InvalidIdTokenError
 from flask import request
-from schema import SchemaError
 
-from gaia.models.db import User
-from gaia.utils.crypto import RSAKey
-from gaia.utils.exceptions import BadRequest, Unauthorized
+from sage.business.users import create_user
+from sage.models.db import User
+from sage.utils.exceptions import Unauthorized
 
 
 def verify_user() -> User:
@@ -28,6 +27,8 @@ def verify_user() -> User:
         print(e)
         raise Unauthorized()
 
+    print(data)
+
     uid = data['uid']
 
     user = User.get(uid=uid)
@@ -35,10 +36,7 @@ def verify_user() -> User:
     if user is not None:
         return user
 
-    return User(
-        uid=uid,
-        private_key=RSAKey.generate().to_private_pem(),
-    )
+    return create_user(uid)
 
 
 def auth_required(decorated):
