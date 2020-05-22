@@ -1,4 +1,3 @@
-# from dynaconf import FlaskDynaconf, settings
 from firebase_admin import credentials, initialize_app
 from flask import Flask, jsonify
 from pony.flask import Pony

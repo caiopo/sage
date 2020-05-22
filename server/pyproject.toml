@@ -6,13 +6,13 @@ authors = ["Caio Pereira Oliveira <caiopoliveira@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-pony = "^0.7.10"
-flask = "^1.1.1"
-firebase_admin = "^3.0.0"
-schema = "^0.7.1"
-gunicorn = "^19.9"
-psycopg2-binary = "^2.8"
-cryptography = "^2.7"
+pony = "^0.7.13"
+flask = "^1.1.2"
+firebase_admin = "^4.3.0"
+schema = "^0.7.2"
+gunicorn = "^20.0.4"
+psycopg2-binary = "^2.8.5"
+cryptography = "^2.9.2"
 
 [tool.poetry.dev-dependencies]
 
