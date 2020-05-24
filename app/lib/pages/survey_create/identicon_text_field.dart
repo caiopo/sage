@@ -32,6 +32,7 @@ class IdenticonTextField extends StatelessWidget {
               labelText: 'Título do questionário',
               helperText: 'Obrigatório',
             ),
+            maxLength: 200,
             validator: (title) {
               if (title == null || title.isEmpty) {
                 return 'Obrigatório';
