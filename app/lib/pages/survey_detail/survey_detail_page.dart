@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sage/data/db.dart';
+import 'package:sage/router/router.dart';
 import 'package:sage/utils/datetime.dart';
 import 'package:sage/utils/random.dart';
 import 'package:sage/widgets/identicon.dart';
@@ -34,9 +35,11 @@ class _SurveyDetailPageState extends State<SurveyDetailPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.edit),
+        icon: Icon(Icons.assignment),
         label: Text('RESPONDER'),
-        onPressed: () {},
+        onPressed: () {
+          navigator(context).pushAnswer();
+        },
       ),
       body: CustomScrollView(
         slivers: <Widget>[
@@ -108,7 +111,7 @@ class _SurveyDetailPageState extends State<SurveyDetailPage> {
               childCount: 10 * 2 - 1,
             ),
           ),
-          SliverToBoxAdapter(child: SizedBox(height: 80)),
+          const SliverToBoxAdapter(child: SizedBox(height: 80)),
         ],
       ),
     );

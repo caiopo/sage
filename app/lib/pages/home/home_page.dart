@@ -23,8 +23,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: Icon(Icons.add),
+        label: Text('NOVO QUESTIONÁRIO'),
         tooltip: 'Criar questionário',
         onPressed: () {
           navigator(context).pushSurveyCreate();
@@ -39,36 +40,27 @@ class _HomePageState extends State<HomePage> {
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildListDelegate([
+            SizedBox(height: 8),
+            Card(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 16),
+                  Text('oi'),
+                  SizedBox(height: 16),
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(
-                top: 8,
                 left: 16,
                 right: 16,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        'Questionários',
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      OutlineButton.icon(
-                        icon: Icon(Icons.sync),
-                        label: Text('SINCRONIZAR'),
-                        textColor: Theme.of(context).primaryColor,
-                        onPressed: () {
-                          navigator(context).pushSync();
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+              child: Text(
+                'Meus questionários',
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ]),
@@ -78,7 +70,7 @@ class _HomePageState extends State<HomePage> {
             return SurveyTile(
               survey: Survey(
                 title:
-                    'Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet $index',
+                'Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet Lorem Ipsum Dolor Sit Amet $index',
                 owner: 'aaa',
                 uploadedAnswers: index,
                 uuid: 'aa',

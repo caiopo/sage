@@ -56,9 +56,9 @@ class _SurveyCreatePageState extends State<SurveyCreatePage>
             )
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          tooltip: 'Adicionar pergunta',
-          child: Icon(Icons.add),
+        floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(Icons.add),
+          label: Text('ADICIONAR PERGUNTA'),
           onPressed: () async {
             final question = await navigator(context).pushQuestionCreate();
             print(question);

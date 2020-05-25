@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sage/pages/answer/answer_page.dart';
 import 'package:sage/pages/home/home_page.dart';
 import 'package:sage/pages/login/login_page.dart';
 import 'package:sage/pages/question_create/question_create_page.dart';
@@ -22,6 +23,8 @@ class $Router {
   SurveyDetailPage surveyDetail;
   SurveyCreatePage surveyCreate;
   QuestionCreatePage questionCreate;
+
+  AnswerPage answer;
 }
 
 ExtendedNavigatorState navigator(BuildContext context) {

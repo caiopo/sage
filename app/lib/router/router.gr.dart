@@ -14,6 +14,7 @@ import 'package:sage/pages/survey_detail/survey_detail_page.dart';
 import 'package:sage/pages/survey_create/survey_create_page.dart';
 import 'package:sage/pages/question_create/question_create_page.dart';
 import 'package:sage/data/db.dart';
+import 'package:sage/pages/answer/answer_page.dart';
 
 abstract class Routes {
   static const login = '/';
@@ -22,6 +23,7 @@ abstract class Routes {
   static const surveyDetail = '/survey-detail';
   static const surveyCreate = '/survey-create';
   static const questionCreate = '/question-create';
+  static const answer = '/answer';
   static const all = {
     login,
     home,
@@ -29,6 +31,7 @@ abstract class Routes {
     surveyDetail,
     surveyCreate,
     questionCreate,
+    answer,
   };
 }
 
@@ -85,6 +88,11 @@ class Router extends RouterBase {
               key: typedArgs.key, question: typedArgs.question),
           settings: settings,
         );
+      case Routes.answer:
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AnswerPage(),
+          settings: settings,
+        );
       default:
         return unknownRoutePage(settings.name);
     }
@@ -137,4 +145,6 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
         Routes.questionCreate,
         arguments: QuestionCreatePageArguments(key: key, question: question),
       );
+
+  Future pushAnswer() => pushNamed(Routes.answer);
 }
