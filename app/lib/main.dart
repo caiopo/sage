@@ -21,7 +21,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.lightGreen,
         primaryColor: _primaryColor,
         accentColor: _accentColor,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        visualDensity: VisualDensity.standard,
         textTheme: GoogleFonts.openSansTextTheme(),
       ),
       debugShowCheckedModeBanner: false,

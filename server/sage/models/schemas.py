@@ -4,6 +4,7 @@ from sage.models.utils import QuestionType
 from sage.utils.exceptions import BadRequest
 
 question_schema = Schema({
+    Optional('uuid', default=None): Or(str, None),
     'type': Or(*QuestionType.ALL),
     'title': str,
     'required': bool,

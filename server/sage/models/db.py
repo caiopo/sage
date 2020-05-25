@@ -149,4 +149,4 @@ def _ns():
             create_survey(survey, user)
 
 
-_ns()
+# _ns()
