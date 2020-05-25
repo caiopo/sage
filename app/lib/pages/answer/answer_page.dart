@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/data/models/question.dart';
@@ -9,11 +10,15 @@ class AnswerPage extends StatefulWidget {
 }
 
 class _AnswerPageState extends State<AnswerPage> {
+  int questionIndex = 0;
+  bool pressedPrevious = false;
+
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor;
+
     final question = Question(
         uuid: 'a',
-//        title: 'a',
         title:
             'Instead of mashing up nutty sweet chili sauce with oysters, use a handfull and a half teaspoons lentils juice and one cup pepper soup pot.',
         description:
@@ -23,9 +28,10 @@ class _AnswerPageState extends State<AnswerPage> {
         extras: QuestionExtrasSingle(
           options: [
             'Maçã',
-            'Banana',
             'Goiaba',
-            'Melancia',
+            'Pêra',
+            'Banana',
+            'Pêssego',
           ],
         ));
 
@@ -33,56 +39,99 @@ class _AnswerPageState extends State<AnswerPage> {
       appBar: AppBar(
         title: Text('Questionário'),
       ),
-      body: SizedBox.expand(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            // question title and description
-            Padding(
-              padding: const EdgeInsets.all(16),
+      body: Stack(
+        children: <Widget>[
+          SingleChildScrollView(
+            child: PageTransitionSwitcher(
+              reverse: pressedPrevious,
+              duration: const Duration(milliseconds: 500),
+              transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+                return SharedAxisTransition(
+                  animation: primaryAnimation,
+                  secondaryAnimation: secondaryAnimation,
+                  transitionType: SharedAxisTransitionType.horizontal,
+                  child: child,
+                );
+              },
               child: Column(
+                key: ValueKey(questionIndex),
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    question.title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 18,
+                  // question title and description
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          question.title,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          question.description,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    question.description,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.black54,
-                      fontSize: 12,
+
+                  // options
+
+//            for (final option
+//                in (question.extras as QuestionExtrasSingle).options)
+//              RadioListTile(
+//                title: Text(option),
+//                value: false,
+//                onChanged: (v) {},
+//                groupValue: true,
+//                controlAffinity: ListTileControlAffinity.leading,
+//              ),
+
+                  for (final option
+                      in (question.extras as QuestionExtrasSingle).options)
+                    RadioListTile(
+                      title: Text(option),
+                      activeColor: primaryColor,
+                      value: true,
+                      groupValue: false,
+                      onChanged: (v) {},
+                      controlAffinity: ListTileControlAffinity.leading,
                     ),
-                  ),
+
+                  SizedBox(height: 80),
                 ],
               ),
             ),
+          ),
 
-            // options
-
-            for (final option
-                in (question.extras as QuestionExtrasSingle).options)
-              RadioListTile(
-                title: Text(option),
-                value: false,
-                onChanged: (v) {},
-                groupValue: true,
-                controlAffinity: ListTileControlAffinity.leading,
-              ),
-
-            Expanded(child: Container()),
-
-            ButtonBar(
+          // previous/next buttons
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ButtonBar(
+              onPrevious: () {
+                setState(() {
+                  questionIndex--;
+                  pressedPrevious = true;
+                });
+              },
+              onNext: () {
+                setState(() {
+                  questionIndex++;
+                  pressedPrevious = false;
+                });
+              },
               showPrevious: true,
-              onNext: () {},
-              onPrevious: () {},
+              showNext: true,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -92,12 +141,14 @@ class ButtonBar extends StatelessWidget {
   final VoidCallback onPrevious;
   final VoidCallback onNext;
   final bool showPrevious;
+  final bool showNext;
 
   const ButtonBar({
     Key key,
     this.onPrevious,
     this.onNext,
     this.showPrevious = true,
+    this.showNext = true,
   }) : super(key: key);
 
   @override
@@ -106,15 +157,15 @@ class ButtonBar extends StatelessWidget {
     final textColor = Theme.of(context).primaryColor;
 
     return Container(
-      decoration: const BoxDecoration(
-        boxShadow: [
+      decoration: BoxDecoration(
+        boxShadow: const [
           BoxShadow(
             color: Colors.black12,
             offset: Offset(0, -1),
-            blurRadius: 3,
+            blurRadius: 5,
           ),
         ],
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
       ),
       child: Row(
         children: <Widget>[
@@ -134,21 +185,24 @@ class ButtonBar extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: FlatButton(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(
-                    'PRÓXIMA',
-                    style: textStyle,
-                  ),
-                  const SizedBox(width: 8.0),
-                  Icon(Icons.arrow_forward),
-                ],
+            child: Ghost(
+              show: showNext,
+              child: FlatButton(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      'PRÓXIMA',
+                      style: textStyle,
+                    ),
+                    const SizedBox(width: 8.0),
+                    Icon(Icons.arrow_forward),
+                  ],
+                ),
+                textColor: textColor,
+                padding: EdgeInsets.all(16),
+                onPressed: onNext,
               ),
-              textColor: textColor,
-              padding: EdgeInsets.all(16),
-              onPressed: onNext,
             ),
           ),
         ],
