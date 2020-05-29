@@ -6,7 +6,8 @@ abstract class DioModule {
   @injectable
   Dio get dio => Dio(
         BaseOptions(
-          baseUrl: '',
+          baseUrl: 'https://sage-survey.herokuapp.com',
+          followRedirects: true,
           queryParameters: {
 //            'token': inject<IdTokenResult>().token,
           },

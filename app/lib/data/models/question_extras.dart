@@ -36,7 +36,7 @@ abstract class QuestionExtras {
   }
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class QuestionExtrasSingle extends QuestionExtras {
   final QuestionType type = QuestionType.single;
   final List<String> options;
@@ -49,7 +49,7 @@ class QuestionExtrasSingle extends QuestionExtras {
   Map<String, dynamic> toJson() => _$QuestionExtrasSingleToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class QuestionExtrasMulti extends QuestionExtras {
   final QuestionType type = QuestionType.multi;
   final List<String> options;
@@ -62,7 +62,7 @@ class QuestionExtrasMulti extends QuestionExtras {
   Map<String, dynamic> toJson() => _$QuestionExtrasMultiToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class QuestionExtrasNumeric extends QuestionExtras {
   final QuestionType type = QuestionType.numeric;
   final int min;
@@ -76,7 +76,7 @@ class QuestionExtrasNumeric extends QuestionExtras {
   Map<String, dynamic> toJson() => _$QuestionExtrasNumericToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class QuestionExtrasText extends QuestionExtras {
   final QuestionType type = QuestionType.text;
   final int minLength;

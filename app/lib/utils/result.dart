@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sage/utils/exceptions.dart';
 import 'package:sage/utils/optional.dart';
 
@@ -61,7 +62,7 @@ class _ErrorResult<D> extends Result<D> {
 
   _ErrorResult(this.error) : super._() {
     assert(() {
-      print(error);
+      print('$error, ${error.message}');
       return true;
     }());
   }

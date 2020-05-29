@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sage/business/sync_business.dart';
+import 'package:sage/di/di.dart';
 
 class SyncPage extends StatefulWidget {
   @override
@@ -6,6 +8,12 @@ class SyncPage extends StatefulWidget {
 }
 
 class _SyncPageState extends State<SyncPage> {
+  @override
+  void initState() {
+    super.initState();
+    inject<SyncBusiness>().synchronize().listen(print, onError: print);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

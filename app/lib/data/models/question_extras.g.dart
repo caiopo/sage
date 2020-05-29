@@ -54,14 +54,14 @@ Map<String, dynamic> _$QuestionExtrasNumericToJson(
 QuestionExtrasText _$QuestionExtrasTextFromJson(Map<String, dynamic> json) {
   return QuestionExtrasText(
     type: json['type'] == null ? null : QuestionType.fromJson(json['type']),
-    minLength: json['minLength'] as int,
-    maxLength: json['maxLength'] as int,
+    minLength: json['min_length'] as int,
+    maxLength: json['max_length'] as int,
   );
 }
 
 Map<String, dynamic> _$QuestionExtrasTextToJson(QuestionExtrasText instance) =>
     <String, dynamic>{
       'type': instance.type,
-      'minLength': instance.minLength,
-      'maxLength': instance.maxLength,
+      'min_length': instance.minLength,
+      'max_length': instance.maxLength,
     };

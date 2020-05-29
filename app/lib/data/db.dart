@@ -10,6 +10,7 @@ import 'package:sage/data/models/question.dart';
 import 'package:sage/data/models/survey.dart';
 
 part 'db.moor.dart';
+part 'utility_types.dart';
 
 @singleton
 @UseMoor(tables: [
