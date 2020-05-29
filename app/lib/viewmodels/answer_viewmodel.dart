@@ -62,7 +62,7 @@ class AnswerViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
-      title: 'Qual sua cor preferida?',
+      title: 'Qual sua cor preferida? Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
       description:
           'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
       optional: true,

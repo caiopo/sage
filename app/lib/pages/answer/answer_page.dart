@@ -28,7 +28,7 @@ class _AnswerPageState extends State<AnswerPage>
         children: <Widget>[
           PageTransitionSwitcher(
             reverse: viewModel.previousPressed,
-            duration: const Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 300),
             transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
               return SharedAxisTransition(
                 animation: primaryAnimation,
@@ -42,9 +42,29 @@ class _AnswerPageState extends State<AnswerPage>
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
+                    if (question.optional)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8, top: 4),
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: Chip(
+                            visualDensity: VisualDensity.comfortable,
+                            label: Text(
+                              'Opcional',
+                            ),
+                            backgroundColor: Theme.of(context).accentColor,
+                          ),
+                        ),
+                      ),
+
                     // question title and description
                     Padding(
-                      padding: const EdgeInsets.all(24),
+                      padding: EdgeInsets.only(
+                        top: question.optional ? 0 : 24,
+                        left: 24,
+                        right: 24,
+                        bottom: 24,
+                      ),
                       child: Column(
                         children: <Widget>[
                           Text(
@@ -69,10 +89,7 @@ class _AnswerPageState extends State<AnswerPage>
                     ),
 
                     // options
-                    ChangeNotifierProvider.value(
-                      value: viewModel,
-                      child: _buildTypeSpecific(),
-                    ),
+                    _buildTypeSpecific(),
                   ],
                 ),
               ),
