@@ -1,7 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:sage/data/db.dart';
+import 'package:provider/provider.dart';
 import 'package:sage/data/models/question.dart';
+import 'package:sage/pages/answer/answer_type_layouts.dart';
+import 'package:sage/utils/viewmodels.dart';
+import 'package:sage/viewmodels/answer_viewmodel.dart';
 import 'package:sage/widgets/ghost.dart';
 
 class AnswerPage extends StatefulWidget {
@@ -9,131 +12,125 @@ class AnswerPage extends StatefulWidget {
   _AnswerPageState createState() => _AnswerPageState();
 }
 
-class _AnswerPageState extends State<AnswerPage> {
+class _AnswerPageState extends State<AnswerPage>
+    with ViewModelState<AnswerViewModel, AnswerPage> {
   int questionIndex = 0;
   bool pressedPrevious = false;
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = Theme.of(context).primaryColor;
-
-    final question = Question(
-        uuid: 'a',
-        title:
-            'Instead of mashing up nutty sweet chili sauce with oysters, use a handfull and a half teaspoons lentils juice and one cup pepper soup pot.',
-        description:
-            'Ferox, bi-color assimilatios satis convertam de domesticus, magnum onus.',
-        type: QuestionType.single,
-        optional: false,
-        extras: QuestionExtrasSingle(
-          options: [
-            'Maçã',
-            'Goiaba',
-            'Pêra',
-            'Banana',
-            'Pêssego',
-          ],
-        ));
-
+    final question = viewModel.currentQuestion;
     return Scaffold(
       appBar: AppBar(
         title: Text('Questionário'),
       ),
       body: Stack(
         children: <Widget>[
-          SingleChildScrollView(
-            child: PageTransitionSwitcher(
-              reverse: pressedPrevious,
-              duration: const Duration(milliseconds: 500),
-              transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
-                return SharedAxisTransition(
-                  animation: primaryAnimation,
-                  secondaryAnimation: secondaryAnimation,
-                  transitionType: SharedAxisTransitionType.horizontal,
-                  child: child,
-                );
-              },
-              child: Column(
-                key: ValueKey(questionIndex),
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  // question title and description
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          question.title,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 18,
+          PageTransitionSwitcher(
+            reverse: viewModel.previousPressed,
+            duration: const Duration(milliseconds: 500),
+            transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+              return SharedAxisTransition(
+                animation: primaryAnimation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.horizontal,
+                child: child,
+              );
+            },
+            child: SizedBox.expand(
+              key: ValueKey(question.uuid),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    // question title and description
+                    Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            question.title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 18,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          question.description,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // options
-
-//            for (final option
-//                in (question.extras as QuestionExtrasSingle).options)
-//              RadioListTile(
-//                title: Text(option),
-//                value: false,
-//                onChanged: (v) {},
-//                groupValue: true,
-//                controlAffinity: ListTileControlAffinity.leading,
-//              ),
-
-                  for (final option
-                      in (question.extras as QuestionExtrasSingle).options)
-                    RadioListTile(
-                      title: Text(option),
-                      activeColor: primaryColor,
-                      value: true,
-                      groupValue: false,
-                      onChanged: (v) {},
-                      controlAffinity: ListTileControlAffinity.leading,
+                          SizedBox(height: 8),
+                          if (question.description != null)
+                            Text(
+                              question.description ?? '',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.black54,
+                                fontSize: 12,
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
 
-                  SizedBox(height: 80),
-                ],
+                    // options
+                    ChangeNotifierProvider.value(
+                      value: viewModel,
+                      child: _buildTypeSpecific(),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-
-          // previous/next buttons
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ButtonBar(
-              onPrevious: () {
-                setState(() {
-                  questionIndex--;
-                  pressedPrevious = true;
-                });
-              },
-              onNext: () {
-                setState(() {
-                  questionIndex++;
-                  pressedPrevious = false;
-                });
-              },
-              showPrevious: true,
-              showNext: true,
+          Builder(
+            builder: (context) => Align(
+              alignment: Alignment.bottomCenter,
+              child: ButtonBar(
+                onPrevious: viewModel.onPrevious,
+                onNext: viewModel.onNext,
+                showPrevious: !viewModel.isFirstQuestion,
+                showNext: !viewModel.isLastQuestion && viewModel.canAdvance(),
+                showFinish: viewModel.isLastQuestion && viewModel.canAdvance(),
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildTypeSpecific() {
+    final question = viewModel.currentQuestion;
+
+    switch (question.type) {
+      case QuestionType.single:
+        return AnswerSingle(
+          question: question,
+          value: viewModel.currentAnswer as String,
+          onChanged: viewModel.setAnswer,
+        );
+
+      case QuestionType.multi:
+        return AnswerMulti(
+          question: question,
+          value: viewModel.currentAnswer as List<String>,
+          onChanged: viewModel.setAnswer,
+        );
+
+      case QuestionType.numeric:
+        return AnswerNumeric(
+          question: question,
+          value: viewModel.currentAnswer as int,
+          onChanged: viewModel.setAnswer,
+          validation: viewModel.validation,
+        );
+
+      case QuestionType.text:
+        return AnswerText(
+          question: question,
+          value: viewModel.currentAnswer as String,
+          onChanged: viewModel.setAnswer,
+          validation: viewModel.validation,
+        );
+    }
+
+    return Container();
   }
 }
 
@@ -142,13 +139,15 @@ class ButtonBar extends StatelessWidget {
   final VoidCallback onNext;
   final bool showPrevious;
   final bool showNext;
+  final bool showFinish;
 
   const ButtonBar({
     Key key,
-    this.onPrevious,
-    this.onNext,
-    this.showPrevious = true,
-    this.showNext = true,
+    @required this.onPrevious,
+    @required this.onNext,
+    @required this.showPrevious,
+    @required this.showNext,
+    @required this.showFinish,
   }) : super(key: key);
 
   @override
@@ -186,17 +185,17 @@ class ButtonBar extends StatelessWidget {
           ),
           Expanded(
             child: Ghost(
-              show: showNext,
+              show: showNext || showFinish,
               child: FlatButton(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(
-                      'PRÓXIMA',
+                      showFinish ? 'FINALIZAR' : 'PRÓXIMA',
                       style: textStyle,
                     ),
                     const SizedBox(width: 8.0),
-                    Icon(Icons.arrow_forward),
+                    Icon(showFinish ? Icons.done : Icons.arrow_forward),
                   ],
                 ),
                 textColor: textColor,

@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:sage/utils/exceptions.dart';
 import 'package:sage/utils/result.dart';
-import 'package:flutter/foundation.dart';
 
 abstract class ViewModel extends ChangeNotifier {}
 
@@ -52,5 +52,5 @@ abstract class StreamViewModel<T> extends ViewModel {
     );
   }
 
-  Result<T> get batata => _value;
+  Result<T> get currentValue => _value;
 }

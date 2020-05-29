@@ -4,6 +4,8 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
+import 'package:sage/business/answer_business.dart';
+import 'package:sage/viewmodels/answer_viewmodel.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/data/api/settings.dart';
 import 'package:dio/dio.dart';
@@ -17,6 +19,9 @@ import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
   final dioModule = _$DioModule();
+  g.registerFactory<AnswerBusiness>(() => AnswerBusiness());
+  g.registerFactory<AnswerViewModel>(
+      () => AnswerViewModel(g<AnswerBusiness>()));
   g.registerFactory<Dio>(() => dioModule.dio);
   g.registerFactory<QuestionBusiness>(() => QuestionBusiness());
   g.registerFactory<QuestionCreateViewModel>(

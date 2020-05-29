@@ -41,15 +41,15 @@ class _HomePageState extends State<HomePage> {
         SliverList(
           delegate: SliverChildListDelegate([
             SizedBox(height: 8),
-            Card(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 16),
-                  Text('oi'),
-                  SizedBox(height: 16),
-                ],
-              ),
-            ),
+//            Card(
+//              child: Column(
+//                children: <Widget>[
+//                  SizedBox(height: 16),
+//                  Text('oi'),
+//                  SizedBox(height: 16),
+//                ],
+//              ),
+//            ),
             Padding(
               padding: const EdgeInsets.only(
                 left: 16,

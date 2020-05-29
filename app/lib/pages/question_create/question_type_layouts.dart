@@ -323,17 +323,3 @@ class _CreateTextQuestionState extends State<CreateTextQuestion> {
     );
   }
 }
-
-String _intValidator(String str) {
-  if (str == null || str.isEmpty) {
-    return null;
-  }
-
-  int value = int.tryParse(str);
-
-  if (value == null) {
-    return 'Número inválido';
-  }
-
-  return null;
-}
