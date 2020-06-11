@@ -1,7 +1,7 @@
 from functools import wraps
 
 from firebase_admin.auth import verify_id_token, CertificateFetchError, \
-    RevokedIdTokenError, ExpiredIdTokenError, InvalidIdTokenError
+    RevokedIdTokenError, ExpiredIdTokenError, InvalidIdTokenError, get_user
 from flask import request
 
 from sage.business.users import create_user
@@ -28,6 +28,8 @@ def verify_user() -> User:
         raise Unauthorized()
 
     print(data)
+
+
 
     uid = data['uid']
 
