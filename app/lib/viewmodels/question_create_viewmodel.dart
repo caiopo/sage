@@ -10,15 +10,18 @@ typedef QuestionMutator = Question Function(Question question);
 class QuestionCreateViewModel extends ViewModel {
   QuestionBusiness _questionBusiness;
 
-  QuestionCreateViewModel(this._questionBusiness) {
-    _question = _questionBusiness.create();
-  }
+  QuestionCreateViewModel(this._questionBusiness);
 
   bool editing = false;
 
   Question _question;
 
   Question get question => _question;
+
+  void init(Survey survey, Question originalQuestion) {
+    _question =
+        originalQuestion ?? _questionBusiness.create(surveyUuid: survey.uuid);
+  }
 
   set question(Question newQuestion) {
     _question = newQuestion;

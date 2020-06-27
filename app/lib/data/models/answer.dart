@@ -12,14 +12,19 @@ class Answers extends Table {
 
   BoolColumn get finished => boolean().withDefault(const Constant(false))();
 
+  TextColumn get surveyUuid =>
+      text().customConstraint('REFERENCES surveys(uuid)')();
+
   @override
   Set<Column> get primaryKey => {uuid};
 }
 
 class QuestionAnswers extends Table {
-  TextColumn get answerUuid => text()();
+  TextColumn get answerUuid =>
+      text().customConstraint('REFERENCES answers(uuid)')();
 
-  TextColumn get questionUuid => text()();
+  TextColumn get questionUuid =>
+      text().customConstraint('REFERENCES questions(uuid)')();
 
   TextColumn get extras => text().map(const AnswerExtrasConverter())();
 }

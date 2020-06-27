@@ -299,13 +299,15 @@ class Question extends DataClass implements Insertable<Question> {
   final String description;
   final QuestionExtras extras;
   final bool optional;
+  final String surveyUuid;
   Question(
       {@required this.uuid,
       @required this.type,
       @required this.title,
       @required this.description,
       @required this.extras,
-      @required this.optional});
+      @required this.optional,
+      @required this.surveyUuid});
   factory Question.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -323,6 +325,8 @@ class Question extends DataClass implements Insertable<Question> {
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}extras'])),
       optional:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}optional']),
+      surveyUuid: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}survey_uuid']),
     );
   }
   @override
@@ -348,6 +352,9 @@ class Question extends DataClass implements Insertable<Question> {
     if (!nullToAbsent || optional != null) {
       map['optional'] = Variable<bool>(optional);
     }
+    if (!nullToAbsent || surveyUuid != null) {
+      map['survey_uuid'] = Variable<String>(surveyUuid);
+    }
     return map;
   }
 
@@ -365,6 +372,9 @@ class Question extends DataClass implements Insertable<Question> {
       optional: optional == null && nullToAbsent
           ? const Value.absent()
           : Value(optional),
+      surveyUuid: surveyUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(surveyUuid),
     );
   }
 
@@ -378,6 +388,7 @@ class Question extends DataClass implements Insertable<Question> {
       description: serializer.fromJson<String>(json['description']),
       extras: serializer.fromJson<QuestionExtras>(json['extras']),
       optional: serializer.fromJson<bool>(json['optional']),
+      surveyUuid: serializer.fromJson<String>(json['surveyUuid']),
     );
   }
   @override
@@ -390,6 +401,7 @@ class Question extends DataClass implements Insertable<Question> {
       'description': serializer.toJson<String>(description),
       'extras': serializer.toJson<QuestionExtras>(extras),
       'optional': serializer.toJson<bool>(optional),
+      'surveyUuid': serializer.toJson<String>(surveyUuid),
     };
   }
 
@@ -399,7 +411,8 @@ class Question extends DataClass implements Insertable<Question> {
           String title,
           String description,
           QuestionExtras extras,
-          bool optional}) =>
+          bool optional,
+          String surveyUuid}) =>
       Question(
         uuid: uuid ?? this.uuid,
         type: type ?? this.type,
@@ -407,6 +420,7 @@ class Question extends DataClass implements Insertable<Question> {
         description: description ?? this.description,
         extras: extras ?? this.extras,
         optional: optional ?? this.optional,
+        surveyUuid: surveyUuid ?? this.surveyUuid,
       );
   @override
   String toString() {
@@ -416,7 +430,8 @@ class Question extends DataClass implements Insertable<Question> {
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('extras: $extras, ')
-          ..write('optional: $optional')
+          ..write('optional: $optional, ')
+          ..write('surveyUuid: $surveyUuid')
           ..write(')'))
         .toString();
   }
@@ -428,8 +443,10 @@ class Question extends DataClass implements Insertable<Question> {
           type.hashCode,
           $mrjc(
               title.hashCode,
-              $mrjc(description.hashCode,
-                  $mrjc(extras.hashCode, optional.hashCode))))));
+              $mrjc(
+                  description.hashCode,
+                  $mrjc(extras.hashCode,
+                      $mrjc(optional.hashCode, surveyUuid.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -439,7 +456,8 @@ class Question extends DataClass implements Insertable<Question> {
           other.title == this.title &&
           other.description == this.description &&
           other.extras == this.extras &&
-          other.optional == this.optional);
+          other.optional == this.optional &&
+          other.surveyUuid == this.surveyUuid);
 }
 
 class QuestionsCompanion extends UpdateCompanion<Question> {
@@ -449,6 +467,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
   final Value<String> description;
   final Value<QuestionExtras> extras;
   final Value<bool> optional;
+  final Value<String> surveyUuid;
   const QuestionsCompanion({
     this.uuid = const Value.absent(),
     this.type = const Value.absent(),
@@ -456,6 +475,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     this.description = const Value.absent(),
     this.extras = const Value.absent(),
     this.optional = const Value.absent(),
+    this.surveyUuid = const Value.absent(),
   });
   QuestionsCompanion.insert({
     @required String uuid,
@@ -464,12 +484,14 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     @required String description,
     @required QuestionExtras extras,
     @required bool optional,
+    @required String surveyUuid,
   })  : uuid = Value(uuid),
         type = Value(type),
         title = Value(title),
         description = Value(description),
         extras = Value(extras),
-        optional = Value(optional);
+        optional = Value(optional),
+        surveyUuid = Value(surveyUuid);
   static Insertable<Question> custom({
     Expression<String> uuid,
     Expression<String> type,
@@ -477,6 +499,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     Expression<String> description,
     Expression<String> extras,
     Expression<bool> optional,
+    Expression<String> surveyUuid,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
@@ -485,6 +508,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
       if (description != null) 'description': description,
       if (extras != null) 'extras': extras,
       if (optional != null) 'optional': optional,
+      if (surveyUuid != null) 'survey_uuid': surveyUuid,
     });
   }
 
@@ -494,7 +518,8 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
       Value<String> title,
       Value<String> description,
       Value<QuestionExtras> extras,
-      Value<bool> optional}) {
+      Value<bool> optional,
+      Value<String> surveyUuid}) {
     return QuestionsCompanion(
       uuid: uuid ?? this.uuid,
       type: type ?? this.type,
@@ -502,6 +527,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
       description: description ?? this.description,
       extras: extras ?? this.extras,
       optional: optional ?? this.optional,
+      surveyUuid: surveyUuid ?? this.surveyUuid,
     );
   }
 
@@ -527,6 +553,9 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     }
     if (optional.present) {
       map['optional'] = Variable<bool>(optional.value);
+    }
+    if (surveyUuid.present) {
+      map['survey_uuid'] = Variable<String>(surveyUuid.value);
     }
     return map;
   }
@@ -611,9 +640,18 @@ class $QuestionsTable extends Questions
     );
   }
 
+  final VerificationMeta _surveyUuidMeta = const VerificationMeta('surveyUuid');
+  GeneratedTextColumn _surveyUuid;
+  @override
+  GeneratedTextColumn get surveyUuid => _surveyUuid ??= _constructSurveyUuid();
+  GeneratedTextColumn _constructSurveyUuid() {
+    return GeneratedTextColumn('survey_uuid', $tableName, false,
+        $customConstraints: 'REFERENCES surveys(uuid)');
+  }
+
   @override
   List<GeneratedColumn> get $columns =>
-      [uuid, type, title, description, extras, optional];
+      [uuid, type, title, description, extras, optional, surveyUuid];
   @override
   $QuestionsTable get asDslTable => this;
   @override
@@ -653,6 +691,14 @@ class $QuestionsTable extends Questions
     } else if (isInserting) {
       context.missing(_optionalMeta);
     }
+    if (data.containsKey('survey_uuid')) {
+      context.handle(
+          _surveyUuidMeta,
+          surveyUuid.isAcceptableOrUnknown(
+              data['survey_uuid'], _surveyUuidMeta));
+    } else if (isInserting) {
+      context.missing(_surveyUuidMeta);
+    }
     return context;
   }
 
@@ -679,8 +725,12 @@ class Answer extends DataClass implements Insertable<Answer> {
   final String uuid;
   final DateTime createdAt;
   final bool finished;
+  final String surveyUuid;
   Answer(
-      {@required this.uuid, @required this.createdAt, @required this.finished});
+      {@required this.uuid,
+      @required this.createdAt,
+      @required this.finished,
+      @required this.surveyUuid});
   factory Answer.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -693,6 +743,8 @@ class Answer extends DataClass implements Insertable<Answer> {
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
       finished:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}finished']),
+      surveyUuid: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}survey_uuid']),
     );
   }
   @override
@@ -707,6 +759,9 @@ class Answer extends DataClass implements Insertable<Answer> {
     if (!nullToAbsent || finished != null) {
       map['finished'] = Variable<bool>(finished);
     }
+    if (!nullToAbsent || surveyUuid != null) {
+      map['survey_uuid'] = Variable<String>(surveyUuid);
+    }
     return map;
   }
 
@@ -719,6 +774,9 @@ class Answer extends DataClass implements Insertable<Answer> {
       finished: finished == null && nullToAbsent
           ? const Value.absent()
           : Value(finished),
+      surveyUuid: surveyUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(surveyUuid),
     );
   }
 
@@ -729,6 +787,7 @@ class Answer extends DataClass implements Insertable<Answer> {
       uuid: serializer.fromJson<String>(json['uuid']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       finished: serializer.fromJson<bool>(json['finished']),
+      surveyUuid: serializer.fromJson<String>(json['surveyUuid']),
     );
   }
   @override
@@ -738,68 +797,89 @@ class Answer extends DataClass implements Insertable<Answer> {
       'uuid': serializer.toJson<String>(uuid),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'finished': serializer.toJson<bool>(finished),
+      'surveyUuid': serializer.toJson<String>(surveyUuid),
     };
   }
 
-  Answer copyWith({String uuid, DateTime createdAt, bool finished}) => Answer(
+  Answer copyWith(
+          {String uuid,
+          DateTime createdAt,
+          bool finished,
+          String surveyUuid}) =>
+      Answer(
         uuid: uuid ?? this.uuid,
         createdAt: createdAt ?? this.createdAt,
         finished: finished ?? this.finished,
+        surveyUuid: surveyUuid ?? this.surveyUuid,
       );
   @override
   String toString() {
     return (StringBuffer('Answer(')
           ..write('uuid: $uuid, ')
           ..write('createdAt: $createdAt, ')
-          ..write('finished: $finished')
+          ..write('finished: $finished, ')
+          ..write('surveyUuid: $surveyUuid')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(uuid.hashCode, $mrjc(createdAt.hashCode, finished.hashCode)));
+  int get hashCode => $mrjf($mrjc(
+      uuid.hashCode,
+      $mrjc(
+          createdAt.hashCode, $mrjc(finished.hashCode, surveyUuid.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is Answer &&
           other.uuid == this.uuid &&
           other.createdAt == this.createdAt &&
-          other.finished == this.finished);
+          other.finished == this.finished &&
+          other.surveyUuid == this.surveyUuid);
 }
 
 class AnswersCompanion extends UpdateCompanion<Answer> {
   final Value<String> uuid;
   final Value<DateTime> createdAt;
   final Value<bool> finished;
+  final Value<String> surveyUuid;
   const AnswersCompanion({
     this.uuid = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.finished = const Value.absent(),
+    this.surveyUuid = const Value.absent(),
   });
   AnswersCompanion.insert({
     @required String uuid,
     this.createdAt = const Value.absent(),
     this.finished = const Value.absent(),
-  }) : uuid = Value(uuid);
+    @required String surveyUuid,
+  })  : uuid = Value(uuid),
+        surveyUuid = Value(surveyUuid);
   static Insertable<Answer> custom({
     Expression<String> uuid,
     Expression<DateTime> createdAt,
     Expression<bool> finished,
+    Expression<String> surveyUuid,
   }) {
     return RawValuesInsertable({
       if (uuid != null) 'uuid': uuid,
       if (createdAt != null) 'created_at': createdAt,
       if (finished != null) 'finished': finished,
+      if (surveyUuid != null) 'survey_uuid': surveyUuid,
     });
   }
 
   AnswersCompanion copyWith(
-      {Value<String> uuid, Value<DateTime> createdAt, Value<bool> finished}) {
+      {Value<String> uuid,
+      Value<DateTime> createdAt,
+      Value<bool> finished,
+      Value<String> surveyUuid}) {
     return AnswersCompanion(
       uuid: uuid ?? this.uuid,
       createdAt: createdAt ?? this.createdAt,
       finished: finished ?? this.finished,
+      surveyUuid: surveyUuid ?? this.surveyUuid,
     );
   }
 
@@ -814,6 +894,9 @@ class AnswersCompanion extends UpdateCompanion<Answer> {
     }
     if (finished.present) {
       map['finished'] = Variable<bool>(finished.value);
+    }
+    if (surveyUuid.present) {
+      map['survey_uuid'] = Variable<String>(surveyUuid.value);
     }
     return map;
   }
@@ -856,8 +939,17 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, Answer> {
         defaultValue: const Constant(false));
   }
 
+  final VerificationMeta _surveyUuidMeta = const VerificationMeta('surveyUuid');
+  GeneratedTextColumn _surveyUuid;
   @override
-  List<GeneratedColumn> get $columns => [uuid, createdAt, finished];
+  GeneratedTextColumn get surveyUuid => _surveyUuid ??= _constructSurveyUuid();
+  GeneratedTextColumn _constructSurveyUuid() {
+    return GeneratedTextColumn('survey_uuid', $tableName, false,
+        $customConstraints: 'REFERENCES surveys(uuid)');
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [uuid, createdAt, finished, surveyUuid];
   @override
   $AnswersTable get asDslTable => this;
   @override
@@ -882,6 +974,14 @@ class $AnswersTable extends Answers with TableInfo<$AnswersTable, Answer> {
     if (data.containsKey('finished')) {
       context.handle(_finishedMeta,
           finished.isAcceptableOrUnknown(data['finished'], _finishedMeta));
+    }
+    if (data.containsKey('survey_uuid')) {
+      context.handle(
+          _surveyUuidMeta,
+          surveyUuid.isAcceptableOrUnknown(
+              data['survey_uuid'], _surveyUuidMeta));
+    } else if (isInserting) {
+      context.missing(_surveyUuidMeta);
     }
     return context;
   }
@@ -1065,11 +1165,8 @@ class $QuestionAnswersTable extends QuestionAnswers
   @override
   GeneratedTextColumn get answerUuid => _answerUuid ??= _constructAnswerUuid();
   GeneratedTextColumn _constructAnswerUuid() {
-    return GeneratedTextColumn(
-      'answer_uuid',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('answer_uuid', $tableName, false,
+        $customConstraints: 'REFERENCES answers(uuid)');
   }
 
   final VerificationMeta _questionUuidMeta =
@@ -1079,11 +1176,8 @@ class $QuestionAnswersTable extends QuestionAnswers
   GeneratedTextColumn get questionUuid =>
       _questionUuid ??= _constructQuestionUuid();
   GeneratedTextColumn _constructQuestionUuid() {
-    return GeneratedTextColumn(
-      'question_uuid',
-      $tableName,
-      false,
-    );
+    return GeneratedTextColumn('question_uuid', $tableName, false,
+        $customConstraints: 'REFERENCES questions(uuid)');
   }
 
   final VerificationMeta _extrasMeta = const VerificationMeta('extras');

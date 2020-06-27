@@ -12,6 +12,7 @@ class QuestionBusiness extends Business {
     QuestionType type,
     QuestionExtras extras,
     bool optional,
+    String surveyUuid,
   }) {
     assert(extras == null || type == extras.type);
 
@@ -22,6 +23,7 @@ class QuestionBusiness extends Business {
       type: type,
       extras: extras,
       optional: optional ?? false,
+      surveyUuid: surveyUuid,
     );
   }
 

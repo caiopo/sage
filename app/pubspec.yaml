@@ -11,34 +11,35 @@ dependencies:
   flutter:
     sdk: flutter
 
-  animations: ^1.0.0+5
+  animations: ^1.1.1
   auto_route: ^0.5.0
   auto_size_text: ^2.1.0
   cached_network_image: ^2.2.0+1
-  encrypt: ^4.0.1
   dio: ^3.0.9
-  firebase_auth: ^0.16.0
-  firebase_core: ^0.4.4+3
+  encrypt: ^4.0.2
+  firebase_auth: ^0.16.1
+  firebase_core: ^0.4.5
   flutter_auth_buttons: ^0.8.0
-  flutter_reorderable_list: ^0.1.3
+  flutter_reorderable_list: ^0.1.4
   flutter_svg: ^0.17.4
+  freezed_annotation: ^0.11.0
   get_it: ^4.0.2
   google_fonts: ^1.1.0
   google_sign_in: ^4.5.1
-  injectable: ^0.4.0
+  injectable: ^0.4.0+1
   intl: ^0.16.1
   jdenticon_dart: ^1.2.1+1
   json_annotation: ^3.0.1
   list_diff: ^1.3.0
   moor: ^3.1.0
   moor_ffi: ^0.6.0
+  package_info: ^0.4.1
   path: ^1.6.4
-  path_provider: ^1.6.9
-  package_info: ^0.4.0+18
+  path_provider: ^1.6.11
   pretty_dio_logger: ^1.1.1
-  provider: ^4.1.2
+  provider: ^4.1.3
   shared_preferences: ^0.5.7+3
-  uuid: ^2.0.4
+  uuid: ^2.1.0
   webcolors: ^0.1.0
 
 dev_dependencies:
@@ -49,8 +50,9 @@ dev_dependencies:
   auto_route_generator: ^0.5.0
   build_runner: ^1.10.0
   flutter_launcher_icons: ^0.7.5
-  grinder: ^0.8.4
-  injectable_generator: ^0.4.0
+  freezed: ^0.11.2
+  grinder: ^0.8.5
+  injectable_generator: ^0.4.1
   json_serializable: ^3.3.0
   moor_generator: ^3.1.0
 

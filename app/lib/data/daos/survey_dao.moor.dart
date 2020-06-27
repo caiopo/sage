@@ -8,4 +8,5 @@ part of 'survey_dao.dart';
 
 mixin _$SurveyDaoMixin on DatabaseAccessor<AppDatabase> {
   $SurveysTable get surveys => attachedDatabase.surveys;
+  $QuestionsTable get questions => attachedDatabase.questions;
 }

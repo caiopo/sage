@@ -21,6 +21,7 @@ class AnswerViewModel extends ViewModel {
   List<Question> questions = [
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Qual seu cômodo preferido?',
       description: null,
       optional: false,
@@ -36,6 +37,7 @@ class AnswerViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Quais frutas você gosta?',
       description: null,
       optional: false,
@@ -62,6 +64,7 @@ class AnswerViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Qual sua cor preferida? Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
       description:
           'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
@@ -79,6 +82,7 @@ class AnswerViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Qual sua idade?',
       description: null,
       type: QuestionType.numeric,
@@ -90,6 +94,7 @@ class AnswerViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Qual seu nome?',
       description: null,
       type: QuestionType.text,

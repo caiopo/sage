@@ -12,9 +12,14 @@ import 'package:sage/viewmodels/question_create_viewmodel.dart';
   returnType: Question,
 )
 class QuestionCreatePage extends StatefulWidget {
+  final Survey survey;
   final Question question;
 
-  const QuestionCreatePage({Key key, this.question}) : super(key: key);
+  const QuestionCreatePage({
+    Key key,
+    this.survey,
+    this.question,
+  }) : super(key: key);
 
   @override
   _QuestionCreatePageState createState() => _QuestionCreatePageState();
@@ -27,9 +32,7 @@ class _QuestionCreatePageState extends State<QuestionCreatePage>
   @override
   void initState() {
     super.initState();
-    if (widget.question != null) {
-      viewModel.question = widget.question;
-    }
+    viewModel.init(widget.survey, widget.question);
   }
 
   @override

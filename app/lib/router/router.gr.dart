@@ -85,7 +85,9 @@ class Router extends RouterBase {
             QuestionCreatePageArguments();
         return MaterialPageRoute<dynamic>(
           builder: (context) => QuestionCreatePage(
-              key: typedArgs.key, question: typedArgs.question),
+              key: typedArgs.key,
+              survey: typedArgs.survey,
+              question: typedArgs.question),
           settings: settings,
         );
       case Routes.answer:
@@ -112,8 +114,9 @@ class SurveyDetailPageArguments {
 //QuestionCreatePage arguments holder class
 class QuestionCreatePageArguments {
   final Key key;
+  final Survey survey;
   final Question question;
-  QuestionCreatePageArguments({this.key, this.question});
+  QuestionCreatePageArguments({this.key, this.survey, this.question});
 }
 
 // *************************************************************************
@@ -139,11 +142,13 @@ extension RouterNavigationHelperMethods on ExtendedNavigatorState {
 
   Future pushQuestionCreate({
     Key key,
+    Survey survey,
     Question question,
   }) =>
       pushNamed(
         Routes.questionCreate,
-        arguments: QuestionCreatePageArguments(key: key, question: question),
+        arguments: QuestionCreatePageArguments(
+            key: key, survey: survey, question: question),
       );
 
   Future pushAnswer() => pushNamed(Routes.answer);

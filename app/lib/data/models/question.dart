@@ -20,6 +20,9 @@ class Questions extends Table {
 
   BoolColumn get optional => boolean()();
 
+  TextColumn get surveyUuid =>
+      text().customConstraint('REFERENCES surveys(uuid)')();
+
   @override
   Set<Column> get primaryKey => {uuid};
 }

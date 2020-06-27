@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/pages/home/survey_tile.dart';
 import 'package:sage/router/router.dart';
+import 'package:sage/utils/viewmodels.dart';
+import 'package:sage/viewmodels/home_viewmodel.dart';
 import 'package:sage/widgets/sage_wordmark.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,7 +11,14 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with ViewModelState<HomeViewModel, HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    viewModel.init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,18 +51,9 @@ class _HomePageState extends State<HomePage> {
       slivers: <Widget>[
         SliverList(
           delegate: SliverChildListDelegate([
-            SizedBox(height: 8),
-//            Card(
-//              child: Column(
-//                children: <Widget>[
-//                  SizedBox(height: 16),
-//                  Text('oi'),
-//                  SizedBox(height: 16),
-//                ],
-//              ),
-//            ),
             Padding(
               padding: const EdgeInsets.only(
+                top: 8,
                 left: 16,
                 right: 16,
               ),

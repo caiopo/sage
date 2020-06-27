@@ -27,6 +27,7 @@ class SurveyCreateViewModel extends ViewModel {
   List<Question> _questions = [
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Qual seu cômodo preferido?',
       description: null,
       optional: false,
@@ -42,6 +43,7 @@ class SurveyCreateViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Quais frutas você gosta?',
       description: null,
       optional: false,
@@ -58,6 +60,7 @@ class SurveyCreateViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Qual sua cor preferida?',
       description:
           'Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
@@ -75,6 +78,7 @@ class SurveyCreateViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Qual sua idade?',
       description: null,
       type: QuestionType.numeric,
@@ -86,6 +90,7 @@ class SurveyCreateViewModel extends ViewModel {
     ),
     Question(
       uuid: generateUuid(),
+      surveyUuid: generateUuid(),
       title: 'Qual seu nome?',
       description: null,
       type: QuestionType.text,
@@ -96,18 +101,6 @@ class SurveyCreateViewModel extends ViewModel {
       ),
     ),
   ];
-
-//  List<Question> _questions = List.generate(
-//    50,
-//    (i) => Question(
-//      title: 'Question $i',
-//      description: 'Description $i',
-//      uuid: '$i',
-//      type: QuestionType.values.choice(),
-//      extras: null,
-//      optional: false,
-//    ),
-//  );
 
   List<Question> get questions => UnmodifiableListView(_questions);
 

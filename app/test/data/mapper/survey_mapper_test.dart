@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sage/data/api/mappers/survey_serializer.dart';
+import 'package:sage/data/api/serializers/survey_serializer.dart';
 import 'package:sage/data/db.dart';
 import 'package:sage/data/models/question.dart';
 
 void main() {
   group('survey_mapper', () {
     test('complete survey', () {
-      final mapped = mapSurvey(_survey, _questions);
+      final mapped = SurveySerializer().to(SurveyWithQuestions(_survey, _questions));
 
       expect(mapped, _expected);
     });
@@ -85,6 +85,7 @@ Survey _survey = Survey(
 List<Question> _questions = [
   Question(
     uuid: '25108330-b4b2-4371-9f15-a88c17a03c66',
+    surveyUuid: '05c32d87-2afa-4901-8308-8b385b4e25f6',
     title: 'Qual seu cômodo preferido?',
     description: null,
     optional: false,
@@ -100,6 +101,7 @@ List<Question> _questions = [
   ),
   Question(
     uuid: 'ac9b09fd-69e7-4af1-a143-d6e1cc5496b2',
+    surveyUuid: '05c32d87-2afa-4901-8308-8b385b4e25f6',
     title: 'Quais frutas você gosta?',
     description: null,
     optional: false,
@@ -117,6 +119,7 @@ List<Question> _questions = [
   ),
   Question(
     uuid: 'ce7d694d-f9ad-4333-bee7-cf341564bf3f',
+    surveyUuid: '05c32d87-2afa-4901-8308-8b385b4e25f6',
     title:
         'Qual sua cor preferida? Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet',
     description:
@@ -135,6 +138,7 @@ List<Question> _questions = [
   ),
   Question(
     uuid: 'b63681d1-8e1b-4974-bf82-1cfa1eec9603',
+    surveyUuid: '05c32d87-2afa-4901-8308-8b385b4e25f6',
     title: 'Qual sua idade?',
     description: null,
     type: QuestionType.numeric,
@@ -146,6 +150,7 @@ List<Question> _questions = [
   ),
   Question(
     uuid: 'a900f9b7-f9bc-4c60-b260-2e39d55e3280',
+    surveyUuid: '05c32d87-2afa-4901-8308-8b385b4e25f6',
     title: 'Qual seu nome?',
     description: null,
     type: QuestionType.text,

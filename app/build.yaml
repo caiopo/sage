@@ -70,6 +70,9 @@ targets:
       json_serializable:json_serializable:
         enabled: false
 
+      freezed:freezed:
+        enabled: false
+
   run_others:
     dependencies: ['sage']
     builders:

@@ -14,7 +14,7 @@ class SurveySerializer extends Serializer<SurveyWithQuestions> {
 
     final questions = [
       for (final q in data['questions'])
-        _deserializeQuestion(q as Map<String, dynamic>)
+        _deserializeQuestion(survey, q as Map<String, dynamic>)
     ];
 
     return SurveyWithQuestions(survey, questions);
@@ -49,13 +49,19 @@ Map<String, dynamic> _serializeQuestion(Question q) {
   };
 }
 
-Question _deserializeQuestion(Map<String, dynamic> data) {
+Question _deserializeQuestion(Survey survey, Map<String, dynamic> data) {
+  final extras = {
+    ...(data['extras'] as Map<String, dynamic>),
+    'type': data['type'],
+  };
+
   return Question(
     uuid: data['uuid'] as String,
     title: data['title'] as String,
     description: data['description'] as String,
     optional: !((data['required'] ?? true) as bool),
     type: QuestionType.fromJson(data['type']),
-    extras: QuestionExtras.fromJson(data['extras'] as Map<String, dynamic>),
+    extras: QuestionExtras.fromJson(extras),
+    surveyUuid: survey.uuid,
   );
 }

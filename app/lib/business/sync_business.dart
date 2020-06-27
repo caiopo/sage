@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sage/business/business.dart';
 import 'package:sage/data/api/services/survey_service.dart';
+import 'package:sage/data/daos/survey_dao.dart';
 
 enum SyncStatus {
   connecting,
@@ -15,13 +16,16 @@ class SyncSummary {
   final SyncStatus status;
   final int sentAnswers;
   final int receivedSurveys;
+  final int failedSend;
+  final int failedReceive;
 
   SyncSummary({
     @required this.status,
     this.sentAnswers = 0,
     this.receivedSurveys = 0,
+    this.failedSend = 0,
+    this.failedReceive = 0,
   });
-
 
   @override
   String toString() {
@@ -32,8 +36,9 @@ class SyncSummary {
 @injectable
 class SyncBusiness extends Business {
   final SurveyService _surveyService;
+  final SurveyDao _surveyDao;
 
-  SyncBusiness(this._surveyService);
+  SyncBusiness(this._surveyService, this._surveyDao);
 
   Stream<SyncSummary> synchronize() async* {
     yield SyncSummary(status: SyncStatus.connecting);
@@ -50,9 +55,8 @@ class SyncBusiness extends Business {
     for (final uuid in surveyUuids.data) {
       final result = await _surveyService.getByUuid(uuid);
 
-      print(result);
       if (result.hasData) {
-        print(result.data.survey);
+        await _surveyDao.insert(result.data);
       }
     }
   }
