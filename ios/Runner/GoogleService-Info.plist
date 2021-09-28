@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>743083895931-l7b5ka2kvettt2eiogki23f6hm8b7sik.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.743083895931-l7b5ka2kvettt2eiogki23f6hm8b7sik</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDv_UzWyGPqvK67LMs_ckGpsk79Rf-m7GI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>743083895931</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.caiopo.sage</string>
+	<key>PROJECT_ID</key>
+	<string>sage-survey</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sage-survey.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:743083895931:ios:4e42fbe4a12c28d26706de</string>
+	<key>DATABASE_URL</key>
+	<string>https://sage-survey.firebaseio.com</string>
+</dict>
+</plist>

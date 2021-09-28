@@ -1,0 +1,22 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      - graphql/**
+      - graphql/schema.graphql
+      - $package$
+    builders:
+      artemis:
+        options:
+          generate_helpers: true
+          schema_mapping:
+            - schema: graphql/schema.graphql
+              queries_glob: graphql/queries/*.graphql
+              output: lib/api/graphql/queries.dart
+#          scalar_mapping:
+#            - custom_parser_import: 'package:sage/api/graphql/converters.dart'
+#              graphql_type: Decimal
+#              dart_type:
+#                name: Decimal
+#                imports:
+#                  - 'package:decimal/decimal.dart'
