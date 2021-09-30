@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sage/pages/home/home_page.dart';
 import 'package:sage/pages/login/login_page.dart';
+import 'package:sage/utils/firebase.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initFirebase();
+
   runApp(const App());
 }
 
@@ -29,7 +35,8 @@ class App extends StatelessWidget {
           bodyText1: TextStyle(fontWeight: FontWeight.w600),
         ),
       ),
-      home: LoginPage(),
+      home:
+          FirebaseAuth.instance.currentUser == null ? LoginPage() : HomePage(),
     );
   }
 }

@@ -17,6 +17,7 @@ dependencies:
   flutter_hooks: ^0.17.0
   flutter_signin_button: ^2.0.0
   google_fonts: ^2.1.0
+  google_sign_in: ^5.1.1
   gql: ^0.13.0
   gql_dedupe_link: ^2.0.0
   gql_exec: ^0.3.0
@@ -29,6 +30,7 @@ dependencies:
   riverpod: ^0.14.0+3
   shared_preferences: ^2.0.8
   sign_in_with_apple: ^3.2.0
+  crypto: ^3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,4 @@
-package com.caiopo.sage.sage
+package com.caiopo.sage
 
 import io.flutter.embedding.android.FlutterActivity
 
