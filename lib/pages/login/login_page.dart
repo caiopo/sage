@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sage/business/auth_business.dart';
+import 'package:sage/config.dart';
 import 'package:sage/pages/home/home_page.dart';
 import 'package:sage/widgets/login_buttons.dart';
 import 'package:sage/widgets/sage_wordmark.dart';
@@ -59,9 +60,10 @@ class LoginPage extends HookWidget {
                 onPressed: () => login(signInWithGoogle),
               ),
               SizedBox(height: 8),
-              AppleSignInButton(
-                onPressed: () => login(signInWithApple),
-              ),
+              if (kEnableAppleLogin)
+                AppleSignInButton(
+                  onPressed: () => login(signInWithApple),
+                ),
             ],
           ),
         ),
