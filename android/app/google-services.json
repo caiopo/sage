@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "743083895931",
+    "firebase_url": "https://sage-survey.firebaseio.com",
+    "project_id": "sage-survey",
+    "storage_bucket": "sage-survey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743083895931:android:efabe9fb0cc3de786706de",
+        "android_client_info": {
+          "package_name": "com.caiopo.sage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743083895931-tnvrj18r8p3ijehgp4dadf88h7r163sp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.caiopo.sage",
+            "certificate_hash": "52b412209f8b4ed5873920da71ba9d19709690fd"
+          }
+        },
+        {
+          "client_id": "743083895931-171tagt3aec8qke86df237inmhjk762v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD92xboQtEr54zJng5ya0O-y60_dcAuhzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743083895931-171tagt3aec8qke86df237inmhjk762v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "743083895931-l7b5ka2kvettt2eiogki23f6hm8b7sik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.caiopo.sage"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
