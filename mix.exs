@@ -41,11 +41,13 @@ defmodule Sage.MixProject do
       {:phoenix_live_dashboard, "~> 0.5"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
+      {:telemetry, "~> 1.0", override: true},
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:absinthe, "~> 1.6"},
-      {:absinthe_plug, "~> 1.5"}
+      {:absinthe_plug, "~> 1.5"},
+      {:ex_firebase_auth, "~> 0.4.2"}
     ]
   end
 

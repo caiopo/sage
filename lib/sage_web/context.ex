@@ -2,9 +2,6 @@ defmodule SageWeb.Context do
   @behaviour Plug
 
   import Plug.Conn
-  import Ecto.Query, only: [where: 2]
-
-  alias MyApp.{Repo, User}
 
   def init(opts), do: opts
 
@@ -26,15 +23,16 @@ defmodule SageWeb.Context do
   end
 
   defp authorize(token) do
-    IO.puts(token)
-
-    {:ok, nil}
-    #    User
-    #    |> where(token: ^token)
-    #    |> Repo.one()
-    #    |> case do
-    #      nil -> {:error, "invalid authorization token"}
-    #      user -> {:ok, user}
-    #    end
+    case ExFirebaseAuth.Token.verify_token(token) do
+      {:ok, uid, jwt} ->
+        {:ok, Sage.Accounts.get_or_create_user(%{
+          uid: uid,
+          name: jwt.fields["name"],
+          email: jwt.fields["email"],
+          picture: jwt.fields["picture"]
+        })}
+      _ ->
+        {:err, "Invalid token"}
+    end
   end
 end

@@ -51,6 +51,16 @@ defmodule Sage.Accounts do
   def get_user(id), do: Repo.get(User, id)
 
   @doc """
+  Gets a single user, if they don't exist, create.
+  """
+  def get_or_create_user(user) do
+    case Repo.one(User, uid: user.uid) do
+      nil -> create_user(user) |> elem(1)
+      u -> u
+    end
+  end
+
+  @doc """
   Creates a user.
 
   ## Examples
