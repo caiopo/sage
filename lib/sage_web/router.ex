@@ -5,6 +5,10 @@ defmodule SageWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :graphql do
+    plug SageWeb.Context
+  end
+
   scope "/api", SageWeb do
     pipe_through :api
   end
@@ -35,5 +39,17 @@ defmodule SageWeb.Router do
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
+  end
+
+  scope "/graphql" do
+    pipe_through :graphql
+
+    forward "/",
+            Absinthe.Plug.GraphiQL,
+            schema: SageWeb.Schema,
+            interface: :simple,
+            context: %{
+              pubsub: SageWeb.Endpoint
+            }
   end
 end

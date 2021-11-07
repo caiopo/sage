@@ -1,8 +1,7 @@
 import Config
 
 # Configure your database
-config :sage, Sage.Repo,
-  database: "db/db.sqlite3"
+config :sage, Sage.Repo, database: "db/db.sqlite3"
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
