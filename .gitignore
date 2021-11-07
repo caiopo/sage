@@ -25,3 +25,6 @@ sage-*.tar
 # Ignora IntelliJ files
 .idea/
 *.iml
+
+# Ignore test/dev database
+db/

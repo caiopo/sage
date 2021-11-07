@@ -36,13 +36,16 @@ defmodule Sage.MixProject do
       {:phoenix, "~> 1.6.2"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
-      {:postgrex, ">= 0.0.0"},
+      {:ecto_sqlite3, ">= 0.0.0", only: [:dev, :test]},
+      {:postgrex, ">= 0.0.0", only: [:prod]},
       {:phoenix_live_dashboard, "~> 0.5"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:absinthe, "~> 1.6"},
+      {:absinthe_plug, "~> 1.5"}
     ]
   end
 
