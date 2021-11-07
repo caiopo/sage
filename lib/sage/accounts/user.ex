@@ -8,6 +8,8 @@ defmodule Sage.Accounts.User do
     field :picture, :string
     field :uid, :string
 
+    has_many :surveys, Sage.Surveys.Survey
+
     timestamps()
   end
 

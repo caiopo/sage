@@ -25,12 +25,14 @@ defmodule SageWeb.Context do
   defp authorize(token) do
     case ExFirebaseAuth.Token.verify_token(token) do
       {:ok, uid, jwt} ->
-        {:ok, Sage.Accounts.get_or_create_user(%{
-          uid: uid,
-          name: jwt.fields["name"],
-          email: jwt.fields["email"],
-          picture: jwt.fields["picture"]
-        })}
+        {:ok,
+         Sage.Accounts.get_or_create_user(%{
+           uid: uid,
+           name: jwt.fields["name"],
+           email: jwt.fields["email"],
+           picture: jwt.fields["picture"]
+         })}
+
       _ ->
         {:err, "Invalid token"}
     end
