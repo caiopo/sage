@@ -9,4 +9,8 @@ defmodule SageWeb.Schema do
     import_fields(:user_queries)
     import_fields(:survey_queries)
   end
+
+  mutation do
+    import_fields(:survey_mutations)
+  end
 end

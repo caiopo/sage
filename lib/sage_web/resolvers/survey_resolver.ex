@@ -15,4 +15,9 @@ defmodule SageWeb.Resolvers.Surveys do
       {:error, "Unauthorized"}
     end
   end
+
+  def update_survey(_root, %{survey: survey}, _test) do
+    # Surveys.create_survey()
+    {:ok, %{title: "123", uuid: "2345"}}
+  end
 end

@@ -33,4 +33,24 @@ defmodule SageWeb.Schema.Survey do
       resolve(&Resolvers.Surveys.list_questions/3)
     end
   end
+
+  input_object :survey_input do
+    field :uuid, :string
+    field :title, non_null(:string)
+    field :questions, non_null(list_of(non_null(:question_input)))
+  end
+
+  input_object :question_input do
+    field :uuid, :string
+    field :title, non_null(:string)
+    field :type, non_null(:question_type)
+  end
+
+  object :survey_mutations do
+    @desc "Update survey"
+    field :update_survey, non_null(:survey) do
+      arg(:survey, non_null(:survey_input))
+      resolve(&Resolvers.Surveys.update_survey/3)
+    end
+  end
 end

@@ -209,4 +209,11 @@ defmodule Sage.Surveys do
   def change_question(%Question{} = question, attrs \\ %{}) do
     Question.changeset(question, attrs)
   end
+
+  def upsert_questions(questions) do
+    # Repo.insert_all(Question, questions,
+    #   on_conflict: [set: [uuid: uuid]],
+    #   conflict_target: :uuid
+    # )
+  end
 end
