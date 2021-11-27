@@ -11,8 +11,8 @@ defmodule Sage.SurveysFixtures do
     {:ok, survey} =
       attrs
       |> Enum.into(%{
-        title: "some title",
-        uuid: "7488a646-e31f-11e4-aace-600308960662"
+        uuid: "7488a646-e31f-11e4-aace-600308960662",
+        title: "some title"
       })
       |> Sage.Surveys.create_survey()
 
@@ -26,10 +26,11 @@ defmodule Sage.SurveysFixtures do
     {:ok, question} =
       attrs
       |> Enum.into(%{
-        data: %{},
+        data: %{"a" => "b", "c" => 1},
         title: "some title",
         type: :single,
-        uuid: "7488a646-e31f-11e4-aace-600308960662"
+        uuid: "7488a646-e31f-11e4-aace-600308960662",
+        survey_id: 1
       })
       |> Sage.Surveys.create_question()
 

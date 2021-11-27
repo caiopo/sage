@@ -24,7 +24,7 @@ defmodule SageWeb.Resolvers.Surveys do
   end
 
   def update_survey(_root, %{survey: survey}, %{context: %{current_user: current_user}}) do
-    old_survey = Surveys.get_survey_by_uuid!(survey.uuid)
+    {:ok, old_survey} = Surveys.get_survey_by_uuid(survey.uuid)
 
     if old_survey.user == current_user do
       survey = Surveys.update_survey(%{survey | user: current_user})

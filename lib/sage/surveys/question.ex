@@ -4,12 +4,12 @@ defmodule Sage.Surveys.Question do
 
   @primary_key false
   schema "questions" do
+    field :uuid, Ecto.UUID, primary_key: true
+    belongs_to :survey, Sage.Surveys.Survey, primary_key: true
+
     field :title, :string
     field :type, Ecto.Enum, values: [:single, :multi, :text, :number]
-    field :uuid, Ecto.UUID
     field :data, :map
-
-    belongs_to :survey, Sage.Surveys.Survey
 
     timestamps()
   end
