@@ -211,6 +211,13 @@ defmodule Sage.Surveys do
   end
 
   def upsert_questions(questions) do
+
+    multi = Ecto.Multi.new()
+
+    for q <- questions do
+      multi.insert_or_update!()
+    end
+
     # Repo.insert_all(Question, questions,
     #   on_conflict: [set: [uuid: uuid]],
     #   conflict_target: :uuid

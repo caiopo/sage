@@ -16,7 +16,7 @@ defmodule SageWeb.Resolvers.Surveys do
     end
   end
 
-  def update_survey(_root, %{survey: survey}, _test) do
+  def update_survey(_root, %{survey: survey}, %{context: %{current_user: current_user}}) do
     # Surveys.create_survey()
     {:ok, %{title: "123", uuid: "2345"}}
   end
