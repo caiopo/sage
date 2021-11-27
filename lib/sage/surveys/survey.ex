@@ -8,7 +8,7 @@ defmodule Sage.Surveys.Survey do
 
     belongs_to :user, Sage.Accounts.User
 
-    has_many :surveys, Sage.Surveys.Survey
+    has_many :questions, Sage.Surveys.Question
 
     timestamps()
   end

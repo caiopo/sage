@@ -10,6 +10,7 @@ defmodule Sage.Repo.Migrations.CreateSurveys do
       timestamps()
     end
 
+    create index(:surveys, [:uuid], unique: true)
     create index(:surveys, [:user_id])
   end
 end

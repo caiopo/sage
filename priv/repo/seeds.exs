@@ -20,11 +20,16 @@ survey = %Survey{
 
 Repo.insert!(survey)
 
+IO.puts("first insert")
+
 question = %Question{
+  survey: survey,
+  uuid: Ecto.UUID.generate,
   title: "Dolor sit amet",
   type: :single,
-  data: %{"a" => "b", "hello" => 2},
-  survey: survey
+  data: %{"a" => "b", "hello" => 2}
 }
 
 Repo.insert!(question)
+
+IO.puts("second insert")
