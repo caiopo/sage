@@ -211,22 +211,21 @@ defmodule Sage.Surveys do
   end
 
   def upsert_questions(survey, questions) do
-    new_questions = Enum.map(questions, fn q ->
-      new_uuid =
-        if q.uuid == nil do
-          Ecto.UUID.generate()
-        else
-          q.uuid
-        end
+    IO.inspect(questions)
 
+    now = NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
 
-      Ecto.build_assoc(survey, :questions, %{q | uuid: new_uuid})
-    end)
+    new_questions =
+      Enum.map(questions, fn q ->
+        q2 = Map.merge(%{survey_id: survey.id, uuid: Ecto.UUID.generate(), inserted_at: now}, q)
+
+        Map.merge(q2, %{updated_at: now})
+      end)
 
     IO.inspect(new_questions)
 
     Repo.insert_all(Question, new_questions,
-      on_conflict: {:replace_all_except, [:uuid, :survey_id]},
+      on_conflict: {:replace_all_except, [:uuid, :survey_id]}
       # conflict_target: [:uuid, :survey_id]
     )
   end
