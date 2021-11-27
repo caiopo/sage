@@ -23,3 +23,10 @@ defmodule SageWeb.Resolvers.Surveys do
     {:ok, %{title: "123", uuid: "2345"}}
   end
 end
+
+# mutation {
+#   updateSurvey(survey: {title: "123", questions: [{title: "teste", type: NUMBER}]}) {
+#     uuid
+#     title
+#   }
+# }
