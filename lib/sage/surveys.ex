@@ -221,8 +221,6 @@ defmodule Sage.Surveys do
 
 
       Ecto.build_assoc(survey, :questions, %{q | uuid: new_uuid})
-
-
     end)
 
     IO.inspect(new_questions)

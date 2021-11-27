@@ -9,13 +9,13 @@ alias Sage.Surveys
   })
 
 questions = [
-  %Question{
+  %{
     uuid: Ecto.UUID.generate(),
     title: "What's your favorite color?",
     type: :single,
     data: %{"options" => ["Red", "Green", "Blue"]}
   },
-  %Question{
+  %{
     uuid: Ecto.UUID.generate(),
     title: "Which fruits do you like?",
     type: :multi,
