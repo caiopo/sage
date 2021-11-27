@@ -211,7 +211,6 @@ defmodule Sage.Surveys do
   end
 
   def upsert_questions(questions) do
-
     multi = Ecto.Multi.new()
 
     for q <- questions do
