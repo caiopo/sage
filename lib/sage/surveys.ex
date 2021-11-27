@@ -210,16 +210,20 @@ defmodule Sage.Surveys do
     Question.changeset(question, attrs)
   end
 
-  def upsert_questions(questions) do
-    multi = Ecto.Multi.new()
+  def upsert_questions(survey, questions) do
+    Enum.map(questions, fn q ->
+      new_uuid = if q.uuid == nil do
+        Ecto.UUID.generate
+      else
+        q.uuid
+      end
 
-    for q <- questions do
-      multi.insert_or_update!()
-    end
+      %{q | survey: survey, uuid: new_uuid}
+    end)
 
-    # Repo.insert_all(Question, questions,
-    #   on_conflict: [set: [uuid: uuid]],
-    #   conflict_target: :uuid
-    # )
+    Repo.insert_all(Question, questions,
+      on_conflict: :replace_all,
+      conflict_target: :uuid
+    )
   end
 end
