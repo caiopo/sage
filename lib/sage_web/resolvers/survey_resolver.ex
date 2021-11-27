@@ -16,11 +16,25 @@ defmodule SageWeb.Resolvers.Surveys do
     end
   end
 
-  def update_survey(_root, %{survey: survey}, _) do
+  def create_survey(_root, %{survey: survey}, %{context: %{current_user: current_user}}) do
     survey = Surveys.create_survey(survey)
     Surveys.upsert_questions(survey, survey.questions)
 
     {:ok, %{title: "123", uuid: "2345"}}
+  end
+
+  def update_survey(_root, %{survey: survey}, %{context: %{current_user: current_user}}) do
+    old_survey = Surveys.get_survey_by_uuid!(survey.uuid)
+
+    if old_survey.user == current_user do
+      survey = Surveys.update_survey(%{survey | user: current_user})
+
+      Surveys.upsert_questions(survey, survey.questions)
+
+      {:ok, %{title: "123", uuid: "2345"}}
+    else
+      {:error, "Unauthorized"}
+    end
   end
 end
 

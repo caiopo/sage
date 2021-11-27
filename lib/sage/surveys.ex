@@ -211,7 +211,7 @@ defmodule Sage.Surveys do
   end
 
   def upsert_questions(survey, questions) do
-    Enum.map(questions, fn q ->
+    new_questions = Enum.map(questions, fn q ->
       new_uuid =
         if q.uuid == nil do
           Ecto.UUID.generate()
@@ -219,11 +219,16 @@ defmodule Sage.Surveys do
           q.uuid
         end
 
-      %{q | survey: survey, uuid: new_uuid}
+
+      Ecto.build_assoc(survey, :questions, %{q | uuid: new_uuid})
+
+
     end)
 
-    Repo.insert_all(Question, questions,
-      on_conflict: {:replace_all_except, [:uuid, :survey_id]}
+    IO.inspect(new_questions)
+
+    Repo.insert_all(Question, new_questions,
+      on_conflict: {:replace_all_except, [:uuid, :survey_id]},
       # conflict_target: [:uuid, :survey_id]
     )
   end
