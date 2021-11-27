@@ -222,8 +222,8 @@ defmodule Sage.Surveys do
     end)
 
     Repo.insert_all(Question, questions,
-      on_conflict: :replace_all,
-      conflict_target: :uuid
+      on_conflict: {:replace_all_except, [:uuid, :survey_id]},
+      # conflict_target: [:uuid, :survey_id]
     )
   end
 end
