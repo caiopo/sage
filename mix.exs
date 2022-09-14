@@ -33,6 +33,8 @@ defmodule Sage.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 3.0"},
+      {:phoenix_html, "~> 3.2"},
       {:absinthe_plug, "~> 1.5"},
       {:phoenix, "~> 1.6.11"},
       {:phoenix_ecto, "~> 4.4"},
