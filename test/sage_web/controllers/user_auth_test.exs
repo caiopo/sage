@@ -112,18 +112,4 @@ defmodule SageWeb.UserAuthTest do
       refute conn.assigns.current_user
     end
   end
-
-  describe "redirect_if_user_is_authenticated/2" do
-    test "redirects if user is authenticated", %{conn: conn, user: user} do
-      conn = conn |> assign(:current_user, user) |> UserAuth.redirect_if_user_is_authenticated([])
-      assert conn.halted
-      assert redirected_to(conn) == "/"
-    end
-
-    test "does not redirect if user is not authenticated", %{conn: conn} do
-      conn = UserAuth.redirect_if_user_is_authenticated(conn, [])
-      refute conn.halted
-      refute conn.status
-    end
-  end
 end

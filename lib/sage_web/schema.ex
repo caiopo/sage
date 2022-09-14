@@ -6,10 +6,10 @@ defmodule SageWeb.Schema do
   import_types(Schema.AccountsSchema)
 
   query do
-    import_fields(:query_user)
+    import_fields(:query_accounts)
   end
 
   mutation do
-    import_fields(:mutation_user)
+    import_fields(:mutation_accounts)
   end
 end

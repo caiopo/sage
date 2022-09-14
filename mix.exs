@@ -20,7 +20,7 @@ defmodule Sage.MixProject do
   def application do
     [
       mod: {Sage.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -33,20 +33,21 @@ defmodule Sage.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:bcrypt_elixir, "~> 3.0"},
-      {:phoenix_html, "~> 3.2"},
       {:absinthe_plug, "~> 1.5"},
-      {:phoenix, "~> 1.6.11"},
-      {:phoenix_ecto, "~> 4.4"},
+      {:bcrypt_elixir, "~> 3.0"},
+      {:ecto_psql_extras, "~> 0.7.4"},
       {:ecto_sql, "~> 3.6"},
       {:ecto_sqlite3, ">= 0.0.0"},
+      {:jason, "~> 1.2"},
+      {:phoenix_ecto, "~> 4.4"},
+      {:phoenix_html, "~> 3.2"},
       {:phoenix_live_dashboard, "~> 0.6"},
+      {:phoenix_live_reload, "~> 1.3", only: [:dev]},
+      {:phoenix, "~> 1.6.11"},
+      {:plug_cowboy, "~> 2.5"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
-      {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
-      {:phoenix_live_reload, "~> 1.3", only: [:dev]}
+      {:telemetry_poller, "~> 1.0"}
     ]
   end
 

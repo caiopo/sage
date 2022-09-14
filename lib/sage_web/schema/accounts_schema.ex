@@ -1,33 +1,46 @@
 defmodule SageWeb.Schema.AccountsSchema do
-  use Absinthe.Schema.Notation
-
+  use SageWeb, :resolver
   alias SageWeb.Resolvers.AccountsResolver
 
   object :user do
-    field :id, non_null(:id)
-    field :email, non_null(:string)
+    field! :id, :id
+    field! :email, :string
   end
 
-  object :query_user do
-    field :viewer, :user do
-      resolve(&AccountsResolver.get_viewer/2)
+  object :query_accounts do
+    field! :viewer, :user do
+      resolve &AccountsResolver.get_viewer/2
+    end
+
+    field! :user, :user do
+      arg! :id, :id
+      resolve &AccountsResolver.get_user/3
     end
   end
 
-  object :mutation_user do
-    field :create_user, :user do
-      arg(:email, non_null(:string))
-      arg(:password, non_null(:string))
+  input_object :create_user_input do
+    field! :email, :string
+    field! :name, :string
+    field! :password, :string
+  end
 
-      resolve(&AccountsResolver.create_user/3)
+  input_object :login_input do
+    field! :email, :string
+    field! :name, :string
+    field! :password, :string
+  end
+
+  object :mutation_accounts do
+    field! :create_user, :user do
+      arg! :input, :create_user_input
+
+      resolve &AccountsResolver.create_user/3
     end
 
-    field :login, :user do
-      arg(:email, non_null(:string))
-      arg(:password, non_null(:string))
+    field! :login, :user do
+      arg! :input, :login_input
 
-      resolve(&AccountsResolver.login/3)
+      resolve &AccountsResolver.login/3
     end
-
   end
 end

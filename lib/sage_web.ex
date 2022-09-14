@@ -56,6 +56,13 @@ defmodule SageWeb do
     end
   end
 
+  def resolver do
+    quote do
+      use Absinthe.Schema.Notation
+      import SageWeb.Utils.Schemas
+    end
+  end
+
   defp view_helpers do
     quote do
       # Import basic rendering functionality (render, render_layout, etc)

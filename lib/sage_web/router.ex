@@ -22,7 +22,10 @@ defmodule SageWeb.Router do
     scope "/" do
       pipe_through [:fetch_session, :protect_from_forgery]
 
-      live_dashboard "/dashboard", metrics: SageWeb.Telemetry
+      live_dashboard "/dashboard",
+        metrics: SageWeb.Telemetry,
+        ecto_repos: [Sage.Repo],
+        ecto_psql_extras_options: [long_running_queries: [threshold: "200 milliseconds"]]
     end
   end
 
@@ -39,13 +42,13 @@ defmodule SageWeb.Router do
   end
 
   pipeline :graphql do
-    # Will be used later
+    plug SageWeb.Context
   end
 
   scope "/graphql" do
     pipe_through :graphql
 
-    forward "/", Absinthe.Plug, schema: GraphqlTutorialWeb.Schema
+    forward "/", Absinthe.Plug, schema: SageWeb.Schema
   end
 
   if Mix.env() == :dev do
