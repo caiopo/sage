@@ -37,4 +37,18 @@ defmodule SageWeb.Router do
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+
+  pipeline :graphql do
+    # Will be used later
+  end
+
+  scope "/graphql" do
+    pipe_through :graphql
+
+    forward "/", Absinthe.Plug, schema: GraphqlTutorialWeb.Schema
+  end
+
+  if Mix.env() == :dev do
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: SageWeb.Schema, interface: :playground
+  end
 end
