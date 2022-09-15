@@ -24,4 +24,10 @@ defmodule SageWeb.Utils.Schemas do
       list_of(non_null(unquote(type)))
     end
   end
+
+  defmacro public!() do
+    quote do
+      middleware SageWeb.Middlewares.PublicResolver
+    end
+  end
 end

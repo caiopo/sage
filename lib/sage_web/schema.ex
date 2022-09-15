@@ -13,9 +13,16 @@ defmodule SageWeb.Schema do
     import_fields(:mutation_accounts)
   end
 
-  def middleware(middleware, _field, %{identifier: :mutation}) do
-    middleware ++ [SageWeb.Middlewares.HandleChangesetErrors]
-  end
+  alias SageWeb.Middlewares
 
-  def middleware(middleware, _field, _object), do: middleware
+  def middleware(middleware, field, object) do
+    a =
+      middleware
+      |> Middlewares.RequireAuthentication.add(field, object)
+      |> Middlewares.HandleChangesetErrors.add(field, object)
+
+    IO.inspect(a)
+
+    a
+  end
 end

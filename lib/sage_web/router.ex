@@ -52,6 +52,10 @@ defmodule SageWeb.Router do
   end
 
   if Mix.env() == :dev do
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: SageWeb.Schema, interface: :playground
+    scope "/graphiql" do
+      pipe_through :graphql
+
+      forward "/", Absinthe.Plug.GraphiQL, schema: SageWeb.Schema, interface: :playground
+    end
   end
 end

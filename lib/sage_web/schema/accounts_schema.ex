@@ -36,6 +36,8 @@ defmodule SageWeb.Schema.AccountsSchema do
 
   object :mutation_accounts do
     field! :create_user, :login_result do
+      public!()
+
       arg! :input, :create_user_input
 
       resolve &AccountsResolver.create_user/3
