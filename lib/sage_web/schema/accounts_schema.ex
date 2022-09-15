@@ -9,12 +9,12 @@ defmodule SageWeb.Schema.AccountsSchema do
 
   object :query_accounts do
     field! :viewer, :user do
-      resolve &AccountsResolver.get_viewer/2
+      resolve &AccountsResolver.viewer/2
     end
 
     field! :user, :user do
       arg! :id, :id
-      resolve &AccountsResolver.get_user/3
+      resolve &AccountsResolver.user/3
     end
   end
 
@@ -26,18 +26,22 @@ defmodule SageWeb.Schema.AccountsSchema do
 
   input_object :login_input do
     field! :email, :string
-    field! :name, :string
     field! :password, :string
   end
 
+  object :login_result do
+    field! :token, :string
+    field! :user, :user
+  end
+
   object :mutation_accounts do
-    field! :create_user, :user do
+    field! :create_user, :login_result do
       arg! :input, :create_user_input
 
       resolve &AccountsResolver.create_user/3
     end
 
-    field! :login, :user do
+    field! :login, :login_result do
       arg! :input, :login_input
 
       resolve &AccountsResolver.login/3

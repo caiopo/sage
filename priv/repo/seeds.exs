@@ -9,3 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias Sage.Accounts
+
+{:ok, _} =
+  Accounts.register_user(%{
+    email: "example@example.com",
+    password: "abc1234567890"
+  })

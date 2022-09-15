@@ -12,4 +12,10 @@ defmodule SageWeb.Schema do
   mutation do
     import_fields(:mutation_accounts)
   end
+
+  def middleware(middleware, _field, %{identifier: :mutation}) do
+    middleware ++ [SageWeb.Middlewares.HandleChangesetErrors]
+  end
+
+  def middleware(middleware, _field, _object), do: middleware
 end

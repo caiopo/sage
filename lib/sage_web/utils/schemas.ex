@@ -21,7 +21,7 @@ defmodule SageWeb.Utils.Schemas do
 
   defmacro list_of!(type) do
     quote do
-      non_null(list_of(non_null(unquote(type))))
+      list_of(non_null(unquote(type)))
     end
   end
 end
