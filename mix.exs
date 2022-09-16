@@ -37,7 +37,7 @@ defmodule Sage.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:ecto_psql_extras, "~> 0.7.4"},
       {:ecto_sql, "~> 3.6"},
-      {:ecto_sqlite3, ">= 0.0.0"},
+      {:ecto_sqlite3, ">= 0.0.0", only: [:dev, :test]},
       {:jason, "~> 1.2"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.2"},
@@ -45,6 +45,7 @@ defmodule Sage.MixProject do
       {:phoenix_live_reload, "~> 1.3", only: [:dev]},
       {:phoenix, "~> 1.6.11"},
       {:plug_cowboy, "~> 2.5"},
+      {:postgrex, ">= 0.0.0", only: :prod},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}
