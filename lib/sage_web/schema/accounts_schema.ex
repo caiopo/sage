@@ -5,22 +5,18 @@ defmodule SageWeb.Schema.AccountsSchema do
   object :user do
     field! :id, :id
     field! :email, :string
+    field! :name, :string
   end
 
   object :query_accounts do
     field! :viewer, :user do
       resolve &AccountsResolver.viewer/2
     end
-
-    field! :user, :user do
-      arg! :id, :id
-      resolve &AccountsResolver.user/3
-    end
   end
 
   input_object :create_user_input do
-    field! :email, :string
     field! :name, :string
+    field! :email, :string
     field! :password, :string
   end
 

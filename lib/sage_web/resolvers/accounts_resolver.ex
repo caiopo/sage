@@ -5,10 +5,6 @@ defmodule SageWeb.Resolvers.AccountsResolver do
     {:ok, user}
   end
 
-  def user(_parent, _args, _context) do
-    {:ok, %{id: "123", email: "hello@world.com"}}
-  end
-
   def create_user(_parent, %{input: input}, _context) do
     with {:ok, user} <- Accounts.register_user(input),
          token <- Accounts.generate_user_session_token(user) do
