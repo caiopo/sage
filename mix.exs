@@ -40,6 +40,7 @@ defmodule Sage.MixProject do
       {:ecto_sql, "~> 3.6"},
       {:ecto_sqlite3, ">= 0.0.0", only: [:dev, :test]},
       {:jason, "~> 1.2"},
+      {:kaffy, "~> 0.9.3"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.2"},
       {:phoenix_live_dashboard, "~> 0.6"},

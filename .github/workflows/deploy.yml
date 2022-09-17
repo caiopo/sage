@@ -18,6 +18,7 @@ jobs:
       - run: mix deps.get
       - run: mix credo
       - run: mix test
+      - run: mix format --check-formatted
 
   deploy:
     name: Deploy app

@@ -38,6 +38,13 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :kaffy,
+  otp_app: :sage,
+  admin_title: "Sage Admin",
+  ecto_repo: Sage.Repo,
+  router: SageWeb.Router,
+  resources: &SageWeb.Admin.Config.create_resources/1
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

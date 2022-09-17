@@ -14,6 +14,7 @@ alias Sage.Accounts
 
 {:ok, _} =
   Accounts.register_user(%{
+    name: "Test Testing",
     email: "example@example.com",
     password: "abc1234567890"
   })

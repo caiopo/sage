@@ -60,6 +60,12 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  config :sage, :basic_auth,
+    username: "admin",
+    password:
+      System.get_env("ADMIN_PASSWORD") ||
+        raise("environment variable ADMIN_PASSWORD is missing.")
+
   # ## Configuring the mailer
   #
   # In production you need to configure the mailer to use a different adapter.

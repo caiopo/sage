@@ -350,4 +350,8 @@ defmodule Sage.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  def count_users() do
+    Repo.one(from u in User, select: count("*"))
+  end
 end
