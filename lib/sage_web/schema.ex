@@ -16,13 +16,8 @@ defmodule SageWeb.Schema do
   alias SageWeb.Middlewares
 
   def middleware(middleware, field, object) do
-    a =
-      middleware
-      |> Middlewares.RequireAuthentication.add(field, object)
-      |> Middlewares.HandleChangesetErrors.add(field, object)
-
-    IO.inspect(a)
-
-    a
+    middleware
+    |> Middlewares.RequireAuthentication.add(field, object)
+    |> Middlewares.HandleChangesetErrors.add(field, object)
   end
 end

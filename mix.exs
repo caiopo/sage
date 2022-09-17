@@ -35,6 +35,7 @@ defmodule Sage.MixProject do
     [
       {:absinthe_plug, "~> 1.5"},
       {:bcrypt_elixir, "~> 3.0"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ecto_psql_extras, "~> 0.7.4"},
       {:ecto_sql, "~> 3.6"},
       {:ecto_sqlite3, ">= 0.0.0", only: [:dev, :test]},

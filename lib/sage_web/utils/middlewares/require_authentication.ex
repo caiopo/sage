@@ -2,8 +2,6 @@ defmodule SageWeb.Middlewares.RequireAuthentication do
   @behaviour Absinthe.Middleware
 
   def call(resolution, _config) do
-    IO.inspect(resolution.context)
-
     case resolution.context do
       %{public: true} ->
         resolution
