@@ -4,13 +4,19 @@ defmodule SageWeb.Schema do
   alias SageWeb.Schema
 
   import_types(Schema.AccountsSchema)
+  import_types(Schema.SurveysSchema)
+  import_types(Schema.QuestionsSchema)
 
   query do
     import_fields(:query_accounts)
+    import_fields(:query_surveys)
+    import_fields(:query_questions)
   end
 
   mutation do
     import_fields(:mutation_accounts)
+    import_fields(:mutation_surveys)
+    import_fields(:mutation_questions)
   end
 
   alias SageWeb.Middlewares

@@ -1,13 +1,13 @@
 defmodule SageWeb.Utils.Schemas do
   use Absinthe.Schema.Notation
 
-  defmacro field!(identifier, type) when is_atom(type) do
+  defmacro field!(identifier, type) do
     quote do
       field(unquote(identifier), non_null(unquote(type)))
     end
   end
 
-  defmacro field!(identifier, type, body) when is_atom(type) do
+  defmacro field!(identifier, type, body) do
     quote do
       field(unquote(identifier), non_null(unquote(type)), unquote(body))
     end
