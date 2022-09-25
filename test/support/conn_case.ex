@@ -17,6 +17,9 @@ defmodule SageWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
+  import Phoenix.ConnTest
+  @endpoint SageWeb.Endpoint
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -59,6 +62,20 @@ defmodule SageWeb.ConnCase do
 
     conn
     |> Phoenix.ConnTest.init_test_session(%{})
-    |> Plug.Conn.put_session(:user_token, token)
+    |> Plug.Conn.put_req_header("authorization", "Bearer " <> Base.url_encode64(token))
+  end
+
+  def send_query(conn, query) do
+    conn
+    |> post("/graphql", %{
+      "query" => query
+    })
+    |> json_response(200)
+  end
+
+  def assert_response(response, expected) do
+    assert response == %{
+             "data" => expected
+           }
   end
 end

@@ -10,4 +10,8 @@ defmodule SageWeb.Resolvers.SurveysResolver do
   def edit_survey(_parent, _input, _context) do
     {:ok, nil}
   end
+
+  def share_survey(_parent, _input, _context) do
+    {:ok, nil}
+  end
 end
