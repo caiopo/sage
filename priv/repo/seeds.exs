@@ -25,4 +25,21 @@ alias Sage.Surveys
     title: "Minha Survey 123"
   })
 
+{:ok, survey2} =
+  Surveys.create_new_survey(%{
+    title: "aaaaaaaaaaaaa"
+  })
+
+Surveys.create_survey_version(survey.id, %{title: "hello world"})
+
 Surveys.grant_survey_user_role(survey, user, :admin)
+Surveys.grant_survey_user_role(survey2, user, :editor)
+
+Surveys.create_survey_version(survey.id, %{title: "hello world dois"})
+Surveys.create_survey_version(survey2.id, %{title: "hello dasdasfasdfas dois"})
+
+IO.inspect(Surveys.list_surveys_for_user(user))
+
+Surveys.delete_survey(survey.id)
+
+IO.inspect(Surveys.list_surveys_for_user(user))

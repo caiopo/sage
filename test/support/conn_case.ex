@@ -29,6 +29,9 @@ defmodule SageWeb.ConnCase do
 
       alias SageWeb.Router.Helpers, as: Routes
 
+      import Assertions
+      import Assertions.Absinthe
+
       # The default endpoint for testing
       @endpoint SageWeb.Endpoint
     end

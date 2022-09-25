@@ -1,5 +1,5 @@
 defmodule Sage.Surveys.Survey do
-  use Ecto.Schema
+  use Sage.Schema
   import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -8,6 +8,9 @@ defmodule Sage.Surveys.Survey do
     field :version, :integer, primary_key: true
     field :title, :string
     field :deleted_at, :utc_datetime_usec
+
+    # used only for user queries
+    field :role, Ecto.Enum, values: [:admin, :editor, :user], virtual: true
 
     timestamps()
   end

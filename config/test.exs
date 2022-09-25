@@ -23,6 +23,8 @@ config :sage, SageWeb.Endpoint,
 # In test we don't send emails.
 config :sage, Sage.Mailer, adapter: Swoosh.Adapters.Test
 
+config :sage, Sage.Clock, freezable: true
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 

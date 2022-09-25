@@ -24,6 +24,8 @@ defmodule Sage.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Sage.DataCase
+
+      alias Sage.Clock
     end
   end
 

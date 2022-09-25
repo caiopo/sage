@@ -1,5 +1,5 @@
 defmodule Sage.Accounts.UserToken do
-  use Ecto.Schema
+  use Sage.Schema
   import Ecto.Query
   alias Sage.Accounts.UserToken
 

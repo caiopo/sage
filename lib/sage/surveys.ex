@@ -8,10 +8,21 @@ defmodule Sage.Surveys do
 
   alias Sage.Repo
 
-  alias Sage.Surveys.Survey
+  alias Sage.Accounts.User
+  alias Sage.Surveys.{Survey, Question, SurveyUsers}
 
-  def list_surveys do
-    Repo.all(Survey)
+  def list_surveys_for_user(user) do
+    q =
+      from s in Survey,
+        where: is_nil(s.deleted_at),
+        join: su in SurveyUsers,
+        on: su.survey_id == s.id,
+        join: u in User,
+        on: su.user_id == ^user.id,
+        order_by: [desc: :inserted_at],
+        select_merge: %{role: su.role}
+
+    Repo.all(q)
   end
 
   def get_latest_survey!(id) do
@@ -33,65 +44,41 @@ defmodule Sage.Surveys do
   end
 
   def create_survey_version(id, attrs \\ %{}) do
-    survey = get_latest_survey!(id)
+    with {:ok, new_survey} <-
+           Repo.transaction(fn ->
+             survey = get_latest_survey!(id)
+             delete_survey(id)
 
-    %{survey | inserted_at: nil, updated_at: nil}
-    |> Changeset.change()
-    |> Survey.changeset(attrs)
-    |> Changeset.put_change(:version, survey.version + 1)
-    |> Repo.insert()
+             %{survey | inserted_at: nil, updated_at: nil}
+             |> Changeset.change()
+             |> Survey.changeset(attrs)
+             |> Changeset.put_change(:version, survey.version + 1)
+             |> Repo.insert()
+           end) do
+      new_survey
+    end
   end
 
-  alias Sage.Surveys.Question
+  def delete_survey(id) do
+    Repo.update_all(
+      from(s in Survey,
+        where: s.id == ^id
+      ),
+      set: [deleted_at: DateTime.utc_now()]
+    )
+  end
 
-  @doc """
-  Returns the list of questions.
-
-  ## Examples
-
-      iex> list_questions()
-      [%Question{}, ...]
-
-  """
   def list_questions do
     Repo.all(Question)
   end
 
-  @doc """
-  Gets a single question.
-
-  Raises `Ecto.NoResultsError` if the Question does not exist.
-
-  ## Examples
-
-      iex> get_question!(123)
-      %Question{}
-
-      iex> get_question!(456)
-      ** (Ecto.NoResultsError)
-
-  """
   def get_question!(id), do: Repo.get!(Question, id)
 
-  @doc """
-  Creates a question.
-
-  ## Examples
-
-      iex> create_question(%{field: value})
-      {:ok, %Question{}}
-
-      iex> create_question(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
   def create_question(attrs \\ %{}) do
     %Question{}
     |> Question.changeset(attrs)
     |> Repo.insert()
   end
-
-  alias Sage.Surveys.SurveyUsers
 
   def grant_survey_user_role(survey, user, role) do
     Repo.transaction(fn ->
@@ -104,10 +91,8 @@ defmodule Sage.Surveys do
   end
 
   def revoke_survey_user_role(survey, user) do
-    Repo.update_all(
-      query_survey_user(survey, user),
-      set: [deleted_at: DateTime.utc_now()]
-    )
+    query_survey_user(survey, user)
+    |> Repo.update_all(set: [deleted_at: DateTime.utc_now()])
   end
 
   def get_survey_users(survey, user) do

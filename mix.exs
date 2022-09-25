@@ -34,11 +34,13 @@ defmodule Sage.MixProject do
   defp deps do
     [
       {:absinthe_plug, "~> 1.5"},
+      {:assertions, "~> 0.19.0", only: [:test]},
       {:bcrypt_elixir, "~> 3.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ecto_psql_extras, "~> 0.7.4"},
       {:ecto_sql, "~> 3.6"},
       {:ecto_sqlite3, ">= 0.0.0", only: [:dev, :test]},
+      {:ex_machina, "~> 2.7", only: [:test]},
       {:jason, "~> 1.2"},
       {:kaffy, "~> 0.9.3"},
       {:phoenix_ecto, "~> 4.4"},
