@@ -11,6 +11,9 @@ config :sage,
   ecto_repos: [Sage.Repo],
   generators: [binary_id: true]
 
+# Configures repo to use UTC datetimes
+config :sage, Sage.Repo, migration_timestamps: [type: :utc_datetime_usec]
+
 # Configures the endpoint
 config :sage, SageWeb.Endpoint,
   url: [host: "localhost"],

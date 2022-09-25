@@ -11,10 +11,18 @@
 # and so on) as they will fail if something goes wrong.
 
 alias Sage.Accounts
+alias Sage.Surveys
 
-{:ok, _} =
+{:ok, user} =
   Accounts.register_user(%{
     name: "Test Testing",
     email: "example@example.com",
     password: "abc1234567890"
   })
+
+{:ok, survey} =
+  Surveys.create_new_survey(%{
+    title: "Minha Survey 123"
+  })
+
+Surveys.grant_survey_user_role(survey, user, :admin)

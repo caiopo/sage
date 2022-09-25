@@ -3,7 +3,7 @@ defmodule Sage.Repo.Migrations.AddUserName do
 
   def change do
     alter table(:users) do
-      add :name, :string, null: false, default: "Anon"
+      add :name, :string, null: false
     end
   end
 end
