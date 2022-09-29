@@ -5,7 +5,7 @@ defmodule SageWeb.Schema.QuestionsSchema do
     value :single
     value :multi
     value :text
-    value :numeric
+    value :number
   end
 
   interface :question do
@@ -17,7 +17,7 @@ defmodule SageWeb.Schema.QuestionsSchema do
       %{type: :single}, _ -> :single_question
       %{type: :multi}, _ -> :multi_question
       %{type: :text}, _ -> :text_question
-      %{type: :numeric}, _ -> :numeric_question
+      %{type: :number}, _ -> :number_question
       _, _ -> nil
     end
   end
@@ -38,6 +38,7 @@ defmodule SageWeb.Schema.QuestionsSchema do
     field! :type, :question_type
 
     field! :options, list_of!(:string)
+
     interface :question
   end
 
@@ -52,7 +53,7 @@ defmodule SageWeb.Schema.QuestionsSchema do
     interface :question
   end
 
-  object :numeric_question do
+  object :number_question do
     field! :id, :id
     field! :title, :string
     field! :type, :question_type

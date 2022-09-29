@@ -30,16 +30,17 @@ alias Sage.Surveys
     title: "aaaaaaaaaaaaa"
   })
 
-Surveys.create_survey_version(survey.id, %{title: "hello world"})
+Surveys.create_survey_version(survey2.id, %{title: "My Test Survey"})
 
 Surveys.grant_survey_user_role(survey, user, :admin)
-Surveys.grant_survey_user_role(survey2, user, :editor)
 
-Surveys.create_survey_version(survey.id, %{title: "hello world dois"})
-Surveys.create_survey_version(survey2.id, %{title: "hello dasdasfasdfas dois"})
-
-IO.inspect(Surveys.list_surveys_for_user(user))
-
-Surveys.delete_survey(survey.id)
-
-IO.inspect(Surveys.list_surveys_for_user(user))
+{:ok, question} =
+  Surveys.create_question(%{
+    survey: survey,
+    title: "What's your favorite color?",
+    order: 1,
+    attributes: %{
+      type: :single,
+      options: ["Red", "Blue", "Green"]
+    }
+  })

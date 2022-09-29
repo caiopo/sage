@@ -68,17 +68,24 @@ defmodule Sage.Surveys do
     )
   end
 
-  def list_questions do
-    Repo.all(Question)
-  end
-
-  def get_question!(id), do: Repo.get!(Question, id)
-
-  def create_question(attrs \\ %{}) do
+  def create_question(attrs) do
     %Question{}
     |> Question.changeset(attrs)
     |> Repo.insert()
   end
+
+  def list_survey_questions(survey_id) do
+    q =
+      from q in Question,
+        join: s in Survey,
+        on: q.survey_id == ^survey_id and q.version == s.version,
+        where: is_nil(s.deleted_at),
+        order_by: [asc: :order]
+
+    Repo.all(q)
+  end
+
+  def get_question!(id, version), do: Repo.get_by!(Question, id: id, version: version)
 
   def grant_survey_user_role(survey, user, role) do
     Repo.transaction(fn ->

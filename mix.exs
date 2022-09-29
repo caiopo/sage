@@ -49,6 +49,7 @@ defmodule Sage.MixProject do
       {:phoenix_live_reload, "~> 1.3", only: [:dev]},
       {:phoenix, "~> 1.6.11"},
       {:plug_cowboy, "~> 2.5"},
+      {:polymorphic_embed, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
