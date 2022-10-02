@@ -1,0 +1,123 @@
+"Represents a schema"
+schema {
+  query: RootQueryType
+  mutation: RootMutationType
+}
+
+enum QuestionType {
+  SINGLE
+  MULTI
+  TEXT
+  NUMBER
+}
+
+interface Question {
+  id: ID!
+  title: String!
+  type: QuestionType!
+}
+
+type SingleQuestion implements Question {
+  id: ID!
+  title: String!
+  type: QuestionType!
+  options: [String!]!
+}
+
+type Survey {
+  id: ID!
+  title: String!
+  questions: [Question!]!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type User {
+  id: ID!
+  email: String!
+  name: String!
+}
+
+type TextQuestion implements Question {
+  id: ID!
+  title: String!
+  type: QuestionType!
+  minLength: Int
+  maxLength: Int
+}
+
+type MultiQuestion implements Question {
+  id: ID!
+  title: String!
+  type: QuestionType!
+  options: [String!]!
+}
+
+type RootQueryType {
+  viewer: User!
+  surveys: [Survey!]!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+type LoginResult {
+  token: String!
+  user: User!
+}
+
+input ShareSurveyInput {
+  surveyId: ID!
+  email: String!
+}
+
+input QuestionInput {
+  id: ID
+
+  title: String!
+
+  type: QuestionType!
+
+  "Only used by single and multi questions"
+  options: [String!]
+
+  "Only used by text questions"
+  minLength: Int
+
+  "Only used by text questions"
+  maxLength: Int
+
+  "Only used by number questions"
+  minValue: Int
+
+  "Only used by number questions"
+  maxValue: Int
+}
+
+type RootMutationType {
+  createUser(input: CreateUserInput!): LoginResult!
+  login(input: LoginInput!): LoginResult!
+  createSurvey(input: SurveyInput!): Survey!
+  editSurvey(input: SurveyInput!): Survey!
+  shareSurvey(input: ShareSurveyInput!): ID!
+}
+
+type NumberQuestion implements Question {
+  id: ID!
+  title: String!
+  type: QuestionType!
+  minValue: Int
+  maxValue: Int
+}
+
+input SurveyInput {
+  id: ID
+  title: String!
+  questions: [QuestionInput!]!
+}

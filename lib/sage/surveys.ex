@@ -74,18 +74,24 @@ defmodule Sage.Surveys do
     |> Repo.insert()
   end
 
-  def list_survey_questions(survey_id) do
+  def list_survey_questions(survey) do
     q =
       from q in Question,
-        join: s in Survey,
-        on: q.survey_id == ^survey_id and q.version == s.version,
-        where: is_nil(s.deleted_at),
+        where: q.survey_id == ^survey.id and q.version == ^survey.version,
         order_by: [asc: :order]
 
     Repo.all(q)
   end
 
   def get_question!(id, version), do: Repo.get_by!(Question, id: id, version: version)
+
+  def user_has_access_to_survey?(survey_id, user, role) do
+    survey_user =
+      query_survey_user(survey_id, user)
+      |> Repo.one()
+
+    survey_user != nil and survey_user.role == role
+  end
 
   def grant_survey_user_role(survey, user, role) do
     Repo.transaction(fn ->
@@ -98,19 +104,19 @@ defmodule Sage.Surveys do
   end
 
   def revoke_survey_user_role(survey, user) do
-    query_survey_user(survey, user)
+    query_survey_user(survey.id, user)
     |> Repo.update_all(set: [deleted_at: DateTime.utc_now()])
   end
 
   def get_survey_users(survey, user) do
-    query_survey_user(survey, user)
+    query_survey_user(survey.id, user)
     |> Repo.one()
   end
 
-  defp query_survey_user(survey, user) do
+  defp query_survey_user(survey_id, user) do
     from su in SurveyUsers,
       where:
-        su.user_id == ^user.id and su.survey_id == ^survey.id and
+        su.user_id == ^user.id and su.survey_id == ^survey_id and
           is_nil(su.deleted_at)
   end
 end

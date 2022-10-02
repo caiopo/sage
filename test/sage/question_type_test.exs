@@ -1,8 +1,6 @@
 defmodule Sage.QuestionTypeTest do
   use Sage.DataCase
 
-  alias Sage.Surveys
-  alias Sage.Surveys.Question
   alias Sage.Surveys.QuestionType.{Single, Multi, Text, Number}
 
   describe "create_question/1 with type single:" do
@@ -64,23 +62,23 @@ defmodule Sage.QuestionTypeTest do
   describe "create_question/1 with type number:" do
     test "value can be negative or zero" do
       assert %Ecto.Changeset{valid?: true} =
-               Text.changeset(%Text{}, %{
+               Number.changeset(%Number{}, %{
                  min_value: -10
                })
 
       assert %Ecto.Changeset{valid?: true} =
-               Text.changeset(%Text{}, %{
+               Number.changeset(%Number{}, %{
                  max_value: 0
                })
     end
 
     test "valid" do
-      assert %Ecto.Changeset{valid?: true} = Text.changeset(%Text{}, %{})
+      assert %Ecto.Changeset{valid?: true} = Number.changeset(%Number{}, %{})
 
       assert %Ecto.Changeset{valid?: true} =
-               Text.changeset(%Text{}, %{
-                 min_length: 5,
-                 max_length: 10
+               Number.changeset(%Number{}, %{
+                 min_value: 5,
+                 max_value: 10
                })
     end
   end

@@ -48,7 +48,7 @@ defmodule Sage.QuestionTest do
 
     assert question.survey == survey
 
-    assert Surveys.list_survey_questions(survey.id) |> Repo.preload(:survey) == [question]
+    assert Surveys.list_survey_questions(survey) |> Repo.preload(:survey) == [question]
 
     assert {:ok, question2} =
              Surveys.create_question(%{
@@ -62,7 +62,7 @@ defmodule Sage.QuestionTest do
                }
              })
 
-    assert Surveys.list_survey_questions(survey.id) |> Repo.preload(:survey) == [
+    assert Surveys.list_survey_questions(survey) |> Repo.preload(:survey) == [
              question2,
              question
            ]

@@ -11,7 +11,7 @@ defmodule Sage.SurveysFixtures do
     {:ok, survey} =
       attrs
       |> Enum.into(%{
-        title: "My Survey",
+        title: Faker.Lorem.sentence(5),
         version: 1
       })
       |> Sage.Surveys.create_new_survey()
@@ -26,8 +26,8 @@ defmodule Sage.SurveysFixtures do
     {:ok, question} =
       attrs
       |> Enum.into(%{
-        order: 42,
-        title: "Some question",
+        order: :rand.uniform(100),
+        title: Faker.Lorem.sentence(5),
         version: 1,
         attributes: question_attributes_fixture(type)
       })
@@ -43,7 +43,7 @@ defmodule Sage.SurveysFixtures do
       Map.merge(
         %{
           type: :single,
-          options: ~w(Red Blue Green)
+          options: Faker.Lorem.sentences()
         },
         attrs
       )
@@ -53,7 +53,7 @@ defmodule Sage.SurveysFixtures do
       Map.merge(
         %{
           type: :multi,
-          options: ~w(Apple Banana Guava)
+          options: Faker.Lorem.sentences()
         },
         attrs
       )

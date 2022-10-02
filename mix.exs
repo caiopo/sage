@@ -26,6 +26,7 @@ defmodule Sage.MixProject do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:dev), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -40,7 +41,7 @@ defmodule Sage.MixProject do
       {:ecto_psql_extras, "~> 0.7.4"},
       {:ecto_sql, "~> 3.6"},
       {:ecto_sqlite3, ">= 0.0.0", only: [:dev, :test]},
-      {:ex_machina, "~> 2.7", only: [:test]},
+      {:faker, "~> 0.17.0", only: [:dev, :test]},
       {:jason, "~> 1.2"},
       {:kaffy, "~> 0.9.3"},
       {:phoenix_ecto, "~> 4.4"},

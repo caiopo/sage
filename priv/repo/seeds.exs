@@ -12,6 +12,7 @@
 
 alias Sage.Accounts
 alias Sage.Surveys
+import Sage.SurveysFixtures
 
 {:ok, user} =
   Accounts.register_user(%{
@@ -22,25 +23,56 @@ alias Sage.Surveys
 
 {:ok, survey} =
   Surveys.create_new_survey(%{
-    title: "Minha Survey 123"
+    title: "My Testing Survey"
   })
-
-{:ok, survey2} =
-  Surveys.create_new_survey(%{
-    title: "aaaaaaaaaaaaa"
-  })
-
-Surveys.create_survey_version(survey2.id, %{title: "My Test Survey"})
 
 Surveys.grant_survey_user_role(survey, user, :admin)
 
-{:ok, question} =
-  Surveys.create_question(%{
-    survey: survey,
-    title: "What's your favorite color?",
-    order: 1,
-    attributes: %{
-      type: :single,
-      options: ["Red", "Blue", "Green"]
-    }
-  })
+for i <- 1..50 do
+  question_fixture(Enum.random([:single, :multi, :text, :number]), survey: survey)
+end
+
+# {:ok, _} =
+#   Surveys.create_question(%{
+#     survey: survey,
+#     title: "What's your favorite color?",
+#     order: 1,
+#     attributes: %{
+#       type: :single,
+#       options: ~w(Red Blue Green)
+#     }
+#   })
+
+# {:ok, _} =
+#   Surveys.create_question(%{
+#     survey: survey,
+#     title: "Which fruit do you like?",
+#     order: 2,
+#     attributes: %{
+#       type: :multi,
+#       options: ~w(Apple Banana Guava)
+#     }
+#   })
+
+# {:ok, _} =
+#   Surveys.create_question(%{
+#     survey: survey,
+#     title: "What is your name?",
+#     order: 3,
+#     attributes: %{
+#       type: :number,
+#       min_length: 1
+#     }
+#   })
+
+# {:ok, _} =
+#   Surveys.create_question(%{
+#     survey: survey,
+#     title: "What is your age?",
+#     order: 4,
+#     attributes: %{
+#       type: :number,
+#       min_value: 0,
+#       max_value: 120
+#     }
+#   })

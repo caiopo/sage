@@ -20,6 +20,8 @@ defmodule SageWeb.ConnCase do
   import Phoenix.ConnTest
   @endpoint SageWeb.Endpoint
 
+  require Sage.Matcher
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -29,8 +31,7 @@ defmodule SageWeb.ConnCase do
 
       alias SageWeb.Router.Helpers, as: Routes
 
-      import Assertions
-      import Assertions.Absinthe
+      use Assertions.AbsintheCase, schema: SageWeb.Schema
 
       # The default endpoint for testing
       @endpoint SageWeb.Endpoint
@@ -77,8 +78,11 @@ defmodule SageWeb.ConnCase do
   end
 
   def assert_response(response, expected) do
-    assert response == %{
-             "data" => expected
-           }
+    Sage.Matcher.assert_matches?(
+      %{
+        data: expected
+      },
+      response
+    )
   end
 end

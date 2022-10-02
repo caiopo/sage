@@ -40,6 +40,8 @@ defmodule SageWeb.Schema.AccountsSchema do
     end
 
     field! :login, :login_result do
+      public!()
+
       arg! :input, :login_input
 
       resolve &AccountsResolver.login/3
