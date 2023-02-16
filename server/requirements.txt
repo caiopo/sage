@@ -38,4 +38,4 @@ schema==0.7.2
 six==1.15.0
 uritemplate==3.0.1
 urllib3==1.25.9
-Werkzeug==1.0.1
+Werkzeug==2.2.3
