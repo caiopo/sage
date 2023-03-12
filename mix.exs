@@ -42,8 +42,6 @@ defmodule Sage.MixProject do
       {:domo, "~> 1.5"},
       {:ecto_psql_extras, "~> 0.7.4"},
       {:ecto_sql, "~> 3.6"},
-      {:elixir_uuid, "~> 1.2"},
-      {:exconstructor, "~> 1.2"},
       {:guardian, "~> 2.3"},
       {:jason, "~> 1.2"},
       {:kaffy, "~> 0.9.3"},
@@ -53,14 +51,13 @@ defmodule Sage.MixProject do
       {:phoenix_view, "~> 2.0"},
       {:phoenix, "~> 1.7"},
       {:plug_cowboy, "~> 2.5"},
-      {:polymorphic_embed, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
+      {:shorter_maps, "~> 2.0"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:typed_struct, "~> 0.3.0"},
-      {:uniq, "~> 0.5.4"},
-      {:vex, "~> 0.9.0"}
+      {:uniq, "~> 0.5.4"}
     ] ++ dev_deps()
   end
 
@@ -74,17 +71,21 @@ defmodule Sage.MixProject do
     ]
   end
 
-  # Aliases are shortcuts or tasks specific to the current project.
-  # For example, to install project dependencies and perform other setup tasks, run:
-  #
-  #     $ mix setup
-  #
-  # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      setup: ["deps.get", "db.setup"],
+      "db.reset": [
+        "ecto.drop --force-drop",
+        "ecto.create",
+        "ecto.migrate",
+        "event_store.drop",
+        "event_store.create",
+        "event_store.init"
+      ],
+      "db.setup": [
+        "db.reset",
+        "run priv/repo/seeds.exs"
+      ],
       test: ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end

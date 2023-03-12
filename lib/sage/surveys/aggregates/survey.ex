@@ -5,6 +5,7 @@ defmodule Sage.Surveys.Aggregates.Survey do
     field :id, UUID.formatted(), enforce: false
     field :user_id, UUID.formatted()
     field :title, String.t()
+    field :archived_at, DateTime.t() | nil
   end
 
   alias Sage.Surveys.Aggregates.Survey
@@ -17,21 +18,35 @@ defmodule Sage.Surveys.Aggregates.Survey do
 
   alias Sage.Surveys.Events.{
     SurveyCreated,
-    SurveyTitleUpdated
+    SurveyTitleUpdated,
+    SurveyArchived
   }
 
-  def execute(%Survey{id: nil}, %CreateSurvey{} = create) do
+  def execute(%Survey{id: nil}, %CreateSurvey{} = command) do
     SurveyCreated.new!(
-      survey_id: create.survey_id,
-      user_id: create.user_id,
-      title: create.title
+      survey_id: command.survey_id,
+      user_id: command.user_id,
+      title: command.title
     )
   end
 
-  def execute(%Survey{}, %UpdateSurveyTitle{} = update) do
+  def execute(%Survey{id: nil}, %UpdateSurveyTitle{}),
+    do: {:error, "Cannot update title of nonexistent survey"}
+
+  def execute(%Survey{}, %UpdateSurveyTitle{} = command) do
     SurveyTitleUpdated.new!(
-      survey_id: update.survey_id,
-      title: update.title
+      survey_id: command.survey_id,
+      title: command.title
+    )
+  end
+
+  def execute(%Survey{id: nil}, %ArchiveSurvey{}),
+    do: {:error, "Cannot archive nonexistent survey"}
+
+  def execute(%Survey{}, %ArchiveSurvey{} = command) do
+    SurveyArchived.new!(
+      survey_id: command.survey_id,
+      archived_at: command.archived_at
     )
   end
 
@@ -48,6 +63,13 @@ defmodule Sage.Surveys.Aggregates.Survey do
     %Survey{
       survey
       | title: updated.title
+    }
+  end
+
+  def apply(%Survey{} = survey, %SurveyArchived{} = event) do
+    %Survey{
+      survey
+      | archived_at: event.archived_at
     }
   end
 end

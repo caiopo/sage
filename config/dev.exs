@@ -1,10 +1,19 @@
 import Config
 
 # Configure your database
+
+database_url = "postgres://postgres:postgres@localhost:5432/sage_dev"
+
 config :sage, Sage.Repo,
-  database: Path.expand("../sage_dev.db", Path.dirname(__ENV__.file)),
+  url: database_url,
   pool_size: 5,
   stacktrace: true,
+  show_sensitive_data_on_connection_error: true
+
+config :sage, Sage.EventStore,
+  serializer: Commanded.Serialization.JsonSerializer,
+  column_data_type: "jsonb",
+  url: database_url,
   show_sensitive_data_on_connection_error: true
 
 # For development, we disable any cache and enable
@@ -56,10 +65,3 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
-
-config :sage, Sage.EventStore,
-  serializer: Commanded.Serialization.JsonSerializer,
-  username: "postgres",
-  password: "postgres",
-  database: "sage_dev",
-  hostname: "localhost"

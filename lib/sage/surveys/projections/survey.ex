@@ -4,7 +4,7 @@ defmodule Sage.Surveys.Projections.Survey do
   @primary_key {:id, :binary_id, autogenerate: false}
 
   schema "surveys" do
-    field :user_id, :string
+    field :user_id, :binary_id
     field :title, :string
     field :archived_at, :utc_datetime
 

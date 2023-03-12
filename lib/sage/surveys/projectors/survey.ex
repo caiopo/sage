@@ -6,7 +6,8 @@ defmodule Sage.Surveys.Projectors.Survey do
 
   alias Sage.Surveys.Events.{
     SurveyCreated,
-    SurveyTitleUpdated
+    SurveyTitleUpdated,
+    SurveyArchived
   }
 
   alias Sage.Surveys.Projections.Survey
@@ -25,6 +26,15 @@ defmodule Sage.Surveys.Projectors.Survey do
       :survey_title_updated,
       survey_query(updated.survey_id),
       set: [title: updated.title]
+    )
+  end)
+
+  project(%SurveyArchived{} = updated, fn multi ->
+    Ecto.Multi.update_all(
+      multi,
+      :survey_title_updated,
+      survey_query(updated.survey_id),
+      set: [archived_at: updated.archived_at]
     )
   end)
 

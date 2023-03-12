@@ -25,7 +25,7 @@ if config_env() == :prod do
     System.get_env("DATABASE_URL") ||
       raise """
       environment variable DATABASE_URL is missing.
-      For example: /etc/sage/sage.db
+      For example: postgres://postgres:postgres@localhost:5432/sage_dev
       """
 
   config :sage, Sage.Repo,
@@ -33,8 +33,10 @@ if config_env() == :prod do
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "5"),
     socket_options: [:inet6]
 
-  # TODO
-  config :sage, Sage.EventStore, url: database_url
+  config :sage, Sage.EventStore,
+    serializer: Commanded.Serialization.JsonSerializer,
+    column_data_type: "jsonb",
+    url: database_url
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you

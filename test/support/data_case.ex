@@ -18,14 +18,19 @@ defmodule Sage.DataCase do
 
   using do
     quote do
-      alias Sage.Repo
+      require Sage.Clock
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
       import Sage.DataCase
+      import Sage.Support.Commanded
+      import ShorterMaps
 
+      alias Sage.Repo
       alias Sage.Clock
+      alias Uniq.UUID
+      alias Sage.Gen
     end
   end
 
@@ -38,8 +43,13 @@ defmodule Sage.DataCase do
   Sets up the sandbox based on the test tags.
   """
   def setup_sandbox(tags) do
+    {:ok, _apps} = Application.ensure_all_started(:sage)
     pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Sage.Repo, shared: not tags[:async])
-    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+
+    on_exit(fn ->
+      Ecto.Adapters.SQL.Sandbox.stop_owner(pid)
+      :ok = Application.stop(:sage)
+    end)
   end
 
   @doc """

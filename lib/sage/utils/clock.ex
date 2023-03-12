@@ -30,9 +30,9 @@ defmodule Sage.Clock do
     defmacro time_travel(to, do: block) do
       quote do
         previous = Process.get(:mock_utc_now)
-        Clock.freeze(unquote(to))
+        Sage.Clock.freeze(unquote(to))
         result = unquote(block)
-        Clock.freeze(previous)
+        Sage.Clock.freeze(previous)
         result
       end
     end
