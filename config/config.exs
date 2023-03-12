@@ -48,6 +48,19 @@ config :kaffy,
   router: SageWeb.Router,
   resources: &SageWeb.Admin.Config.create_resources/1
 
+config :sage, event_stores: [Sage.EventStore]
+
+config :commanded_ecto_projections,
+  repo: Sage.Repo
+
+config :sage, Sage.Commanded,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: Sage.EventStore
+  ],
+  pubsub: :local,
+  registry: :local
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

@@ -65,8 +65,14 @@ defmodule SageWeb.Schema.QuestionsSchema do
   end
 
   object :query_questions do
+    field! :lorem, :question do
+      resolve fn _, __ -> nil end
+    end
   end
 
   object :mutation_questions do
+    field! :lorem, :question do
+      resolve fn _, __ -> nil end
+    end
   end
 end

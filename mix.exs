@@ -7,7 +7,7 @@ defmodule Sage.MixProject do
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: Mix.compilers(),
+      compilers: [:domo_compiler] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -35,26 +35,42 @@ defmodule Sage.MixProject do
   defp deps do
     [
       {:absinthe_plug, "~> 1.5"},
-      {:assertions, "~> 0.19.0", only: [:test]},
       {:bcrypt_elixir, "~> 3.0"},
-      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:commanded_ecto_projections, "~> 1.3"},
+      {:commanded_eventstore_adapter, "~> 1.4"},
+      {:commanded, "~> 1.4"},
+      {:domo, "~> 1.5"},
       {:ecto_psql_extras, "~> 0.7.4"},
       {:ecto_sql, "~> 3.6"},
-      {:ecto_sqlite3, ">= 0.0.0", only: [:dev, :test]},
-      {:faker, "~> 0.17.0", only: [:dev, :test]},
+      {:elixir_uuid, "~> 1.2"},
+      {:exconstructor, "~> 1.2"},
+      {:guardian, "~> 2.3"},
       {:jason, "~> 1.2"},
       {:kaffy, "~> 0.9.3"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.2"},
       {:phoenix_live_dashboard, "~> 0.6"},
-      {:phoenix_live_reload, "~> 1.3", only: [:dev]},
-      {:phoenix, "~> 1.6.11"},
+      {:phoenix_view, "~> 2.0"},
+      {:phoenix, "~> 1.7"},
       {:plug_cowboy, "~> 2.5"},
       {:polymorphic_embed, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"}
+      {:telemetry_poller, "~> 1.0"},
+      {:typed_struct, "~> 0.3.0"},
+      {:uniq, "~> 0.5.4"},
+      {:vex, "~> 0.9.0"}
+    ] ++ dev_deps()
+  end
+
+  defp dev_deps() do
+    [
+      {:assertions, "~> 0.19.0", only: [:test]},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:ecto_sqlite3, ">= 0.0.0", only: [:dev, :test]},
+      {:faker, "~> 0.17.0", only: [:dev, :test]},
+      {:phoenix_live_reload, "~> 1.3", only: [:dev]}
     ]
   end
 

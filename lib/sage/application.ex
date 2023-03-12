@@ -8,20 +8,13 @@ defmodule Sage.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
+      Sage.Commanded,
       Sage.Repo,
-      # Start the Telemetry supervisor
       SageWeb.Telemetry,
-      # Start the PubSub system
       {Phoenix.PubSub, name: Sage.PubSub},
-      # Start the Endpoint (http/https)
       SageWeb.Endpoint
-      # Start a worker by calling: Sage.Worker.start_link(arg)
-      # {Sage.Worker, arg}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Sage.Supervisor]
     Supervisor.start_link(children, opts)
   end
