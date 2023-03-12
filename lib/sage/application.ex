@@ -1,20 +1,26 @@
 defmodule Sage.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
-
   use Application
 
   @impl true
   def start(_type, _args) do
     children = [
+      # Start commanded application
       Sage.Commanded,
+      # Start the Ecto repository
       Sage.Repo,
+      # Start the Telemetry supervisor
       SageWeb.Telemetry,
+      # Start the PubSub system
       {Phoenix.PubSub, name: Sage.PubSub},
-      SageWeb.Endpoint
+      # Start the Endpoint (http/https)
+      SageWeb.Endpoint,
+
+      # Domain supervisors
+      Sage.Surveys.Supervisor
     ]
 
+    # See https://hexdocs.pm/elixir/Supervisor.html
+    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Sage.Supervisor]
     Supervisor.start_link(children, opts)
   end

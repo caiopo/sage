@@ -35,6 +35,6 @@ config :sage, Sage.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,
   username: "postgres",
   password: "postgres",
-  database: "sage_eventstore_test",
+  database: "sage_test",
   hostname: "localhost",
   pool_size: 1

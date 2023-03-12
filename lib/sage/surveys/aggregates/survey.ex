@@ -21,18 +21,18 @@ defmodule Sage.Surveys.Aggregates.Survey do
   }
 
   def execute(%Survey{id: nil}, %CreateSurvey{} = create) do
-    %SurveyCreated{
+    SurveyCreated.new!(
       survey_id: create.survey_id,
       user_id: create.user_id,
       title: create.title
-    }
+    )
   end
 
   def execute(%Survey{}, %UpdateSurveyTitle{} = update) do
-    %SurveyTitleUpdated{
+    SurveyTitleUpdated.new!(
       survey_id: update.survey_id,
       title: update.title
-    }
+    )
   end
 
   def apply(%Survey{} = survey, %SurveyCreated{} = created) do
