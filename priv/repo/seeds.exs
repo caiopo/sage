@@ -12,13 +12,25 @@
 
 Faker.start()
 
-alias Sage.Surveys
 alias Sage.Gen
+alias Sage.Accounts
+alias Sage.Surveys
+
+user_ids =
+  for i <- 1..100 do
+    {:ok, %{id: user_id}} =
+      Accounts.register_user(
+        email: Faker.Internet.email(),
+        password: "Loremipsum123"
+      )
+
+    user_id
+  end
 
 for i <- 1..500 do
   {:ok, %{id: survey_id}} =
     Surveys.create_survey(%{
-      user_id: Gen.uuid(),
+      user_id: Enum.random(user_ids),
       title: Faker.Lorem.sentence()
     })
 
