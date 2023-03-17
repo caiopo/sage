@@ -15,7 +15,8 @@ defmodule Sage.Router do
       RegisterUser,
       ChangePassword
     ],
-    to: User
+    to: User,
+    lifespan: Sage.DefaultLifespan
   )
 
   alias Sage.Surveys.Aggregates.Survey
@@ -34,6 +35,7 @@ defmodule Sage.Router do
       UpdateSurveyTitle,
       ArchiveSurvey
     ],
-    to: Survey
+    to: Survey,
+    lifespan: Sage.DefaultLifespan
   )
 end
