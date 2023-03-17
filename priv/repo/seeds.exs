@@ -17,7 +17,8 @@ alias Sage.Accounts
 alias Sage.Surveys
 
 user_ids =
-  for i <- 1..100 do
+  1..100
+  |> Task.async_stream(fn i ->
     {:ok, %{id: user_id}} =
       Accounts.register_user(
         email: Faker.Internet.email(),
@@ -25,9 +26,12 @@ user_ids =
       )
 
     user_id
-  end
+  end)
+  |> Stream.map(fn {:ok, id} -> id end)
+  |> Enum.to_list()
 
-for i <- 1..500 do
+1..500
+|> Task.async_stream(fn i ->
   {:ok, %{id: survey_id}} =
     Surveys.create_survey(%{
       user_id: Enum.random(user_ids),
@@ -44,4 +48,5 @@ for i <- 1..500 do
   if rem(i, 100) == 0 do
     Surveys.archive_survey(%{survey_id: survey_id})
   end
-end
+end)
+|> Enum.to_list()
