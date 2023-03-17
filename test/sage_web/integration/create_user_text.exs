@@ -16,8 +16,6 @@ defmodule SageWeb.Integration.CreateUserTest do
   setup :register_and_log_in_user
 
   test "mutation: createUser", %{conn: conn, user: user} do
-    IO.inspect(Repo.get!(User, user.id))
-
     conn
     |> send_query(@viewer_query)
     |> assert_response(%{

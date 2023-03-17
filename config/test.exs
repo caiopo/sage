@@ -1,8 +1,5 @@
 import Config
 
-# Only in tests, remove the complexity from the password hashing algorithm
-config :bcrypt_elixir, :log_rounds, 1
-
 # Configure your database
 config :sage, Sage.Repo,
   database: Path.expand("../sage_test.db", Path.dirname(__ENV__.file)),
@@ -32,3 +29,10 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :sage, SageWeb.Guardian,
+  issuer: "sage",
+  secret_key: "p7sygoQuCSN716Yz660KHUVHFW73Ib95qrsnk/7btSLp7tPXgfRugzXqi06MyFZh  "
+
+config :commanded,
+  refute_receive_event_timeout: 200

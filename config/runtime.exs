@@ -68,8 +68,14 @@ if config_env() == :prod do
   config :sage, :basic_auth,
     username: "admin",
     password:
-      System.get_env("ADMIN_PASSWORD") ||
-        raise("environment variable ADMIN_PASSWORD is missing.")
+      System.get_env("SAGE_ADMIN_PASSWORD") ||
+        raise("environment variable SAGE_ADMIN_PASSWORD is missing.")
+
+  config :sage, SageWeb.Guardian,
+    issuer: "sage",
+    secret_key:
+      System.get_env("SAGE_SECRET_KEY") ||
+        raise("environment variable SAGE_SECRET_KEY is missing.")
 
   # ## Configuring the mailer
   #

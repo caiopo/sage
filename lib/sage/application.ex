@@ -16,6 +16,7 @@ defmodule Sage.Application do
       SageWeb.Endpoint,
 
       # Domain supervisors
+      Sage.Accounts.Supervisor,
       Sage.Surveys.Supervisor
     ]
 

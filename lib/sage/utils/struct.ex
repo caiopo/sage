@@ -7,6 +7,8 @@ defmodule Sage.Struct do
       @derive Jason.Encoder
 
       alias Uniq.UUID
+
+      alias Sage.Validators
     end
   end
 end

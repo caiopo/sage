@@ -9,7 +9,6 @@ defmodule SageWeb.Resolvers.SurveysResolver do
   end
 
   def create_survey(input, %{context: %{current_user: _user}}) do
-    IO.inspect(input)
     {:ok, nil}
   end
 

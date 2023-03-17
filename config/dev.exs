@@ -65,3 +65,7 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :sage, SageWeb.Guardian,
+  issuer: "sage",
+  secret_key: "p7sygoQuCSN716Yz660KHUVHFW73Ib95qrsnk/7btSLp7tPXgfRugzXqi06MyFZh  "
