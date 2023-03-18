@@ -1,8 +1,7 @@
 defmodule Sage.Questions.Types do
   alias Sage.Questions.Types
 
-  @type t ::  Types.Single.t() | Types.Multi.t() | Types.Numeric.t() | Types.Text.t()
-
+  @type t :: Types.Single.t() | Types.Multi.t() | Types.Numeric.t() | Types.Text.t()
 
   def from_map(%{type: :single} = map),
     do: Types.Single.new(map)

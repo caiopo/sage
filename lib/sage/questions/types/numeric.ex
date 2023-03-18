@@ -8,4 +8,15 @@ defmodule Sage.Questions.Types.Numeric do
     field :min, integer(), enforce: false
     field :max, integer(), enforce: false
   end
+
+  precond(
+    t: fn attrs ->
+      if not is_nil(attrs.min) and not is_nil(attrs.max) and
+           attrs.max < attrs.min do
+        {:error, "max should be greater than min"}
+      else
+        :ok
+      end
+    end
+  )
 end
