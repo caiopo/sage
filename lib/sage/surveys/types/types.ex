@@ -18,4 +18,11 @@ defmodule Sage.Surveys.QuestionTypes do
 
   def from_map(%{type: :text} = map),
     do: QuestionTypes.Text.new(map)
+
+  def from_map!(params) do
+    case from_map(params) do
+      {:ok, value} -> value
+      {:err, error} -> raise error
+    end
+  end
 end

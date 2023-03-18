@@ -5,10 +5,14 @@ defmodule Sage.Surveys do
   alias Sage.Surveys.Commands.{
     CreateSurvey,
     ArchiveSurvey,
-    UpdateSurveyTitle
+    UpdateSurveyTitle,
+    CreateQuestion,
+    SortQuestions
   }
 
   alias Sage.Surveys.Queries
+
+  import ShorterMaps
 
   def create_survey(%{user_id: user_id, title: title}) do
     CreateSurvey.new(
@@ -35,8 +39,20 @@ defmodule Sage.Surveys do
     |> Commanded.maybe_dispatch()
   end
 
+  def create_question(params) do
+    CreateQuestion.new(
+     Map.put(params, :question_id, Sage.Gen.uuid())
+      )
+    |> Commanded.maybe_dispatch()
+  end
+
   def get_by_id!(survey_id) do
     Queries.by_id(survey_id)
     |> Repo.one!()
+  end
+
+  def get_questions_by_id!(survey_id) do
+    Queries.questions_by_id(survey_id)
+    |> Repo.all()
   end
 end

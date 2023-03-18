@@ -17,7 +17,7 @@ defmodule Sage.Surveys.Aggregates.Question do
   }
 
   def execute(%Question{id: nil}, %CreateQuestion{} = command) do
-    QuestionCreated.new(command)
+    QuestionCreated.new(Map.from_struct(command))
   end
 
   def apply(%Question{} = question, %QuestionCreated{} = created) do

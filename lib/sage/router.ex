@@ -20,11 +20,14 @@ defmodule Sage.Router do
   )
 
   alias Sage.Surveys.Aggregates.Survey
+  alias Sage.Surveys.Aggregates.Question
 
   alias Sage.Surveys.Commands.{
     CreateSurvey,
     UpdateSurveyTitle,
-    ArchiveSurvey
+    ArchiveSurvey,
+    CreateQuestion,
+    SortQuestions
   }
 
   identify(Survey, by: :survey_id, prefix: "survey-")
@@ -33,9 +36,20 @@ defmodule Sage.Router do
     [
       CreateSurvey,
       UpdateSurveyTitle,
-      ArchiveSurvey
+      ArchiveSurvey,
+      SortQuestions
     ],
     to: Survey,
+    lifespan: Sage.DefaultLifespan
+  )
+
+  identify(Question, by: :question_id, prefix: "question-")
+
+  dispatch(
+    [
+      CreateQuestion
+    ],
+    to: Question,
     lifespan: Sage.DefaultLifespan
   )
 end

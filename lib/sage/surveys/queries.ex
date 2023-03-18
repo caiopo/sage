@@ -1,7 +1,7 @@
 defmodule Sage.Surveys.Queries do
   import Ecto.Query
 
-  alias Sage.Surveys.Projections.Survey
+  alias Sage.Surveys.Projections.{Survey, Question}
 
   def by_id(survey_id) do
     from(
@@ -27,5 +27,13 @@ defmodule Sage.Surveys.Queries do
     else
       query
     end
+  end
+
+
+  def questions_by_id(survey_id) do
+    from(
+      q in Question,
+      where: q.survey_id == ^survey_id
+    )
   end
 end

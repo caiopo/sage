@@ -10,7 +10,8 @@ defmodule Sage.Surveys.Supervisor do
   def init(_arg) do
     Supervisor.init(
       [
-        Surveys.Projectors.Survey
+        Surveys.Projectors.Survey,
+        Surveys.Projectors.Question
       ],
       strategy: :one_for_one
     )
