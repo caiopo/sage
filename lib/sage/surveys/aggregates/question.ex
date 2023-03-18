@@ -9,21 +9,15 @@ defmodule Sage.Surveys.Aggregates.Question do
   alias Sage.Surveys.Aggregates.Question
 
   alias Sage.Surveys.Commands.{
-    CreateQuestion,
-    SortQuestions
+    CreateQuestion
   }
 
   alias Sage.Surveys.Events.{
-    QuestionCreated,
-    QuestionsSorted
+    QuestionCreated
   }
 
   def execute(%Question{id: nil}, %CreateQuestion{} = command) do
     QuestionCreated.new(command)
-  end
-
-  def execute(%Question{}, %SortQuestions{} = command) do
-    QuestionsSorted.new(command)
   end
 
   def apply(%Question{} = question, %QuestionCreated{} = created) do

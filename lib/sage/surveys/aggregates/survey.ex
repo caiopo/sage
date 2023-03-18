@@ -13,13 +13,15 @@ defmodule Sage.Surveys.Aggregates.Survey do
   alias Sage.Surveys.Commands.{
     CreateSurvey,
     ArchiveSurvey,
-    UpdateSurveyTitle
+    UpdateSurveyTitle,
+    SortQuestions
   }
 
   alias Sage.Surveys.Events.{
     SurveyCreated,
     SurveyTitleUpdated,
-    SurveyArchived
+    SurveyArchived,
+    QuestionsSorted
   }
 
   def execute(%Survey{id: nil}, %CreateSurvey{} = command) do
@@ -50,6 +52,10 @@ defmodule Sage.Surveys.Aggregates.Survey do
     )
   end
 
+  def execute(%Survey{}, %SortQuestions{} = command) do
+    QuestionsSorted.new(command)
+  end
+
   def apply(%Survey{} = survey, %SurveyCreated{} = created) do
     %Survey{
       survey
@@ -71,5 +77,9 @@ defmodule Sage.Surveys.Aggregates.Survey do
       survey
       | archived_at: event.archived_at
     }
+  end
+
+  def apply(%Survey{} = survey, %SortQuestions{} = event) do
+    survey
   end
 end
