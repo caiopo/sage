@@ -1,4 +1,4 @@
-defmodule Sage.Questions.Types.Text do
+defmodule Sage.Surveys.QuestionTypes.Text do
   use Sage.Struct
 
   @type text_type :: :text

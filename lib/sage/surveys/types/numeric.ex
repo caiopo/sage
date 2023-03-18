@@ -1,4 +1,4 @@
-defmodule Sage.Questions.Types.Numeric do
+defmodule Sage.Surveys.QuestionTypes.Numeric do
   use Sage.Struct
 
   @type numeric_type :: :numeric

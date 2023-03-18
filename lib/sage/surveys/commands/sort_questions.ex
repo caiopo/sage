@@ -1,11 +1,10 @@
-defmodule Sage.Questions.Commands.CreateQuestion do
+defmodule Sage.Surveys.Commands.SortQuestions do
   use Sage.Struct
 
   alias Sage.Questions.Types
 
   typedstruct enforce: true do
-    field :question_id, UUID.formatted()
     field :survey_id, UUID.formatted()
-    field :attributes, Types.t()
+    field :question_ids, nonempty_list(UUID.formatted())
   end
 end

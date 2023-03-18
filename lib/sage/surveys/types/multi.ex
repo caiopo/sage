@@ -1,4 +1,4 @@
-defmodule Sage.Questions.Types.Multi do
+defmodule Sage.Surveys.QuestionTypes.Multi do
   use Sage.Struct
 
   @type multi_type :: :multi

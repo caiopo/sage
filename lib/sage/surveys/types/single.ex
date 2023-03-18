@@ -1,4 +1,4 @@
-defmodule Sage.Questions.Types.Single do
+defmodule Sage.Surveys.QuestionTypes.Single do
   use Sage.Struct
 
   @type single_type :: :single
