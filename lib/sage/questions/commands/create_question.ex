@@ -4,8 +4,7 @@ defmodule Sage.Questions.Commands.CreateQuestion do
   alias Sage.Questions.Types
 
   typedstruct enforce: true do
-    # field :survey_id, UUID.formatted()
-    # field :type, Types.t()
-    field :attributes, Types.Numeric.t() | Types.Text.t()
+    field :survey_id, UUID.formatted()
+    field :attributes, Types.t()
   end
 end
