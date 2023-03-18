@@ -5,8 +5,8 @@ defmodule Sage.Questions.Types.Text do
 
   typedstruct enforce: true do
     field :type, text_type(), default: :text
-    field :min_length, non_neg_integer()
-    field :max_length, non_neg_integer()
+    field :min_length, non_neg_integer(), enforce: false
+    field :max_length, non_neg_integer(), enforce: false
   end
 
   precond(

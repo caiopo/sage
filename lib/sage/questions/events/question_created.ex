@@ -1,4 +1,4 @@
-defmodule Sage.Questions.Commands.CreateQuestion do
+defmodule Sage.Questions.Events.QuestionCreated do
   use Sage.Struct
 
   alias Sage.Questions.Types
