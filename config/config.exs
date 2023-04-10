@@ -38,6 +38,15 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Ash
+config :ash, :use_all_identities_in_manage_relationship?, false
+
+config :sage,
+  ash_apis: [Sage.Surveys]
+
+config :sage,
+  ecto_repos: [Sage.Repo]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
