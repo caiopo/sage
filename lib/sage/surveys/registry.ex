@@ -5,7 +5,7 @@ defmodule Sage.Surveys.Registry do
     ]
 
   entries do
-    entry Sage.Surveys.Question
     entry Sage.Surveys.Survey
+    entry Sage.Surveys.Question
   end
 end

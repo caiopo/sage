@@ -17,9 +17,9 @@ defmodule Sage.Application do
       # Start Finch
       {Finch, name: Sage.Finch},
       # Start the Endpoint (http/https)
-      SageWeb.Endpoint
-      # Start a worker by calling: Sage.Worker.start_link(arg)
-      # {Sage.Worker, arg}
+      SageWeb.Endpoint,
+
+      {AshAuthentication.Supervisor, otp_app: :sage}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

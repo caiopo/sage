@@ -1,8 +1,19 @@
 defmodule SageWeb.Router do
   use SageWeb, :router
 
+  import AshAdmin.Router
+
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  admin_browser_pipeline(:browser)
+
+  scope "/" do
+    # Pipe it through your browser pipeline
+    pipe_through [:browser]
+
+    ash_admin("/admin")
   end
 
   scope "/api", SageWeb do

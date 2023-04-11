@@ -32,20 +32,24 @@ defmodule Sage.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.2"},
-      {:phoenix_ecto, "~> 4.4"},
-      {:ecto_sql, "~> 3.6"},
-      {:postgrex, ">= 0.0.0"},
-      {:phoenix_live_dashboard, "~> 0.7.2"},
-      {:swoosh, "~> 1.3"},
-      {:finch, "~> 0.13"},
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
-      {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
-      {:ash, "~> 2.6"},
+      {:ash_admin, "~> 0.8"},
+      {:ash_archival, "~> 0.1"},
+      {:ash_authentication_phoenix, "~> 1.7"},
+      {:ash_authentication, "~> 3.10"},
       {:ash_postgres, "~> 1.3"},
-      {:ash_archival, "~> 0.1"}
+      {:ash, "~> 2.6"},
+      {:ecto_sql, "~> 3.6"},
+      {:finch, "~> 0.13"},
+      {:jason, "~> 1.2"},
+      {:phoenix_ecto, "~> 4.4"},
+      {:phoenix_live_dashboard, "~> 0.7.2"},
+      {:phoenix_live_view, "0.18.16"},
+      {:phoenix, "~> 1.7.2"},
+      {:plug_cowboy, "~> 2.5"},
+      {:postgrex, ">= 0.0.0"},
+      {:swoosh, "~> 1.3"},
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 1.0"}
     ]
   end
 
