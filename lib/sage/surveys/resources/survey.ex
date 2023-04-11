@@ -1,13 +1,10 @@
 defmodule Sage.Surveys.Survey do
   use Ash.Resource,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshArchival.Resource]
 
   actions do
-    defaults [:create, :read, :update]
-
-    update :archive do
-      accept []
-    end
+    defaults [:create, :read, :update, :destroy]
   end
 
   attributes do
@@ -16,7 +13,6 @@ defmodule Sage.Surveys.Survey do
     attribute :title, :string do
       allow_nil? false
     end
-
 
     timestamps
   end

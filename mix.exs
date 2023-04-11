@@ -44,7 +44,8 @@ defmodule Sage.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:ash, "~> 2.6"},
-      {:ash_postgres, "~> 1.3"}
+      {:ash_postgres, "~> 1.3"},
+      {:ash_archival, "~> 0.1"}
     ]
   end
 

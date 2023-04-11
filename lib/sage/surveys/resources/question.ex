@@ -1,9 +1,10 @@
 defmodule Sage.Surveys.Question do
   use Ash.Resource,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    extensions: [AshArchival.Resource]
 
   actions do
-    defaults [:create, :read, :update]
+    defaults [:create, :read, :update, :destroy]
   end
 
   attributes do
