@@ -14,11 +14,11 @@ defmodule Sage.Surveys.Survey do
       allow_nil? false
     end
 
-    timestamps
+    timestamps()
   end
 
   relationships do
-    has_many :questions, Helpdesk.Surveys.Question
+    has_many :questions, Sage.Surveys.Question
   end
 
   postgres do

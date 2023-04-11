@@ -19,7 +19,7 @@ defmodule Sage.Surveys.Question do
       allow_nil? false
     end
 
-    timestamps
+    timestamps()
   end
 
   relationships do
