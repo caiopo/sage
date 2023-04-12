@@ -9,16 +9,32 @@ defmodule SageWeb.Router do
 
   admin_browser_pipeline(:browser)
 
-  scope "/" do
+  scope "/admin" do
     # Pipe it through your browser pipeline
     pipe_through [:browser]
 
-    ash_admin("/admin")
+    ash_admin("/")
   end
 
   scope "/api", SageWeb do
     pipe_through :api
   end
+
+  pipeline :graphql do
+    plug AshGraphql.Plug
+  end
+
+  scope "/" do
+    pipe_through [:graphql]
+
+    forward "/graphql", Absinthe.Plug, schema: Sage.Schema
+
+    forward "/playground",
+            Absinthe.Plug.GraphiQL,
+            schema: Sage.Schema,
+            interface: :playground
+  end
+
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:sage, :dev_routes) do

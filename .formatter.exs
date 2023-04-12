@@ -2,7 +2,7 @@
   import_deps: [
     :ash_admin,
     :ash_authentication,
-    :ash_authentication_phoenix,
+    :ash_graphql,
     :ash_postgres,
     :ash,
     :ecto_sql,

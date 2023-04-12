@@ -18,7 +18,6 @@ defmodule Sage.Application do
       {Finch, name: Sage.Finch},
       # Start the Endpoint (http/https)
       SageWeb.Endpoint,
-
       {AshAuthentication.Supervisor, otp_app: :sage}
     ]
 

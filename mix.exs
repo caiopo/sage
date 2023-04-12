@@ -32,10 +32,12 @@ defmodule Sage.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:absinthe_plug, "~> 1.5"},
       {:ash_admin, "~> 0.8"},
       {:ash_archival, "~> 0.1"},
       {:ash_authentication_phoenix, "~> 1.7"},
       {:ash_authentication, "~> 3.10"},
+      {:ash_graphql, "~> 0.23.2"},
       {:ash_postgres, "~> 1.3"},
       {:ash, "~> 2.6"},
       {:ecto_sql, "~> 3.6"},
