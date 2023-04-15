@@ -1,7 +1,7 @@
 defmodule Sage.Schema do
   use Absinthe.Schema
 
-  @apis [Sage.Surveys]
+  @apis [Sage.Accounts, Sage.Surveys]
 
   use AshGraphql, apis: @apis
 

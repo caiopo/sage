@@ -64,3 +64,7 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :ash, :policies, show_policy_breakdowns?: true
+config :ash, :policies, log_policy_breakdowns: :error
+config :ash_authentication, debug_authentication_failures?: true

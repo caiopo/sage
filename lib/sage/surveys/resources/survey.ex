@@ -1,10 +1,13 @@
 defmodule Sage.Surveys.Survey do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
+    authorizers: [Ash.Policy.Authorizer],
     extensions: [AshArchival.Resource, AshGraphql.Resource]
 
+  use Sage.Resource
+
   attributes do
-    uuid_primary_key :id
+    sage_primary_key()
 
     attribute :title, :string do
       allow_nil? false
@@ -14,6 +17,7 @@ defmodule Sage.Surveys.Survey do
   end
 
   relationships do
+    belongs_to :owner, Sage.Accounts.User, api: Sage.Accounts
     has_many :questions, Sage.Surveys.Question
   end
 
@@ -33,6 +37,16 @@ defmodule Sage.Surveys.Survey do
       create :create_survey, :create
       update :update_survey, :update
       destroy :archive_survey, :destroy
+    end
+  end
+
+  # policy action_type(:read) do
+  #   authorize_if relates_to_actor_via(:owner)
+  # end
+
+  policies do
+    policy always() do
+      authorize_if AdminActor
     end
   end
 
