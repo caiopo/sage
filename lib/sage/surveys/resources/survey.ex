@@ -17,7 +17,10 @@ defmodule Sage.Surveys.Survey do
   end
 
   relationships do
-    belongs_to :owner, Sage.Accounts.User, api: Sage.Accounts
+    belongs_to :owner, Sage.Accounts.User do
+      api Sage.Accounts
+      allow_nil? false
+    end
     has_many :questions, Sage.Surveys.Question
   end
 
@@ -40,9 +43,11 @@ defmodule Sage.Surveys.Survey do
     end
   end
 
-  # policy action_type(:read) do
-  #   authorize_if relates_to_actor_via(:owner)
-  # end
+  policies do
+    policy action_type(:read) do
+      authorize_if relates_to_actor_via(:owner)
+    end
+  end
 
   policies do
     policy always() do

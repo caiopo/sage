@@ -63,7 +63,6 @@ defmodule Sage.Accounts.User do
 
   graphql do
     type :user
-    # type :user_with_token
 
     queries do
       get :sign_in_with_password, :sign_in_with_password do
