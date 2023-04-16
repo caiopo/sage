@@ -12,24 +12,25 @@ enum QuestionType {
 
 input UpdateSurveyInput {
   title: String
+  questions: [UpdateQuestionsInput!]
 }
 
 type Question {
   id: ID!
   title: String!
   type: QuestionType!
-  surveyId: ID
   survey: Survey
 }
 
 input CreateSurveyInput {
   title: String!
+  questions: [CreateQuestionsInput!]
 }
 
 type Survey {
   id: ID!
   title: String!
-  owner: User
+  owner: User!
   questions(
     "How to sort the records in the response"
     sort: [QuestionSortInput]
@@ -79,15 +80,6 @@ input UserFilterEmail {
   greaterThanOrEqual: String
 }
 
-"The result of the :archive_question mutation"
-type ArchiveQuestionResult {
-  "The record that was successfully deleted"
-  result: Question
-
-  "Any errors generated, if the mutation failed"
-  errors: [MutationError]
-}
-
 input UserFilterId {
   isNil: Boolean
   eq: ID
@@ -101,6 +93,7 @@ input UserFilterId {
 
 input RegisterWithPasswordInput {
   email: String!
+  name: String!
   password: String!
   passwordConfirmation: String!
 }
@@ -112,12 +105,6 @@ input SurveyFilterInput {
   title: SurveyFilterTitle
   owner: UserFilterInput
   questions: QuestionFilterInput
-}
-
-input CreateQuestionInput {
-  title: String!
-  type: QuestionType!
-  surveyId: ID
 }
 
 type RootQueryType {
@@ -139,13 +126,18 @@ input SurveySortInput {
   field: SurveySortField!
 }
 
+input CreateQuestionsInput {
+  id: ID
+  title: String
+  type: QuestionType
+}
+
 input QuestionFilterInput {
   and: [QuestionFilterInput!]
   or: [QuestionFilterInput!]
   id: QuestionFilterId
   title: QuestionFilterTitle
   type: QuestionFilterType
-  surveyId: QuestionFilterSurveyId
   survey: SurveyFilterInput
 }
 
@@ -154,17 +146,6 @@ input QuestionFilterId {
   eq: ID
   notEq: ID
   in: [ID!]
-  lessThan: ID
-  greaterThan: ID
-  lessThanOrEqual: ID
-  greaterThanOrEqual: ID
-}
-
-input QuestionFilterSurveyId {
-  isNil: Boolean
-  eq: ID
-  notEq: ID
-  in: [ID]
   lessThan: ID
   greaterThan: ID
   lessThanOrEqual: ID
@@ -195,6 +176,12 @@ input SurveyFilterId {
   greaterThanOrEqual: ID
 }
 
+input UpdateQuestionsInput {
+  id: ID
+  title: String
+  type: QuestionType
+}
+
 input UserFilterInput {
   and: [UserFilterInput!]
   or: [UserFilterInput!]
@@ -218,15 +205,6 @@ input QuestionFilterTitle {
 enum SurveySortField {
   ID
   TITLE
-}
-
-"The result of the :create_question mutation"
-type CreateQuestionResult {
-  "The successful result of the mutation"
-  result: Question
-
-  "Any errors generated, if the mutation failed"
-  errors: [MutationError]
 }
 
 "The result of the :update_survey mutation"
@@ -331,16 +309,12 @@ enum QuestionSortField {
   ID
   TITLE
   TYPE
-  SURVEY_ID
 }
 
 type RootMutationType {
   createSurvey(input: CreateSurveyInput): CreateSurveyResult
   updateSurvey(id: ID, input: UpdateSurveyInput): UpdateSurveyResult
   archiveSurvey(id: ID): ArchiveSurveyResult
-  createQuestion(input: CreateQuestionInput): CreateQuestionResult
-  updateQuestion(id: ID, input: UpdateQuestionInput): UpdateQuestionResult
-  archiveQuestion(id: ID): ArchiveQuestionResult
   registerWithPassword(input: RegisterWithPasswordInput): RegisterWithPasswordResult
   signInWithPassword(email: String!, password: String!): UserWithToken
 }
@@ -349,21 +323,6 @@ type RootMutationType {
 type CreateSurveyResult {
   "The successful result of the mutation"
   result: Survey
-
-  "Any errors generated, if the mutation failed"
-  errors: [MutationError]
-}
-
-input UpdateQuestionInput {
-  title: String
-  type: QuestionType
-  surveyId: ID
-}
-
-"The result of the :update_question mutation"
-type UpdateQuestionResult {
-  "The successful result of the mutation"
-  result: Question
 
   "Any errors generated, if the mutation failed"
   errors: [MutationError]

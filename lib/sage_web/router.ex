@@ -2,9 +2,17 @@ defmodule SageWeb.Router do
   use SageWeb, :router
 
   import AshAdmin.Router
+  import AshAuthentication.Plug.Helpers
+
+  def read_token(conn) do
+    IO.inspect(conn)
+    conn
+  end
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :retrieve_from_bearer, :sage
+    plug :set_actor, :user
   end
 
   admin_browser_pipeline(:browser)
@@ -25,7 +33,7 @@ defmodule SageWeb.Router do
   end
 
   scope "/" do
-    pipe_through [:graphql]
+    pipe_through [:api, :graphql]
 
     forward "/graphql", Absinthe.Plug, schema: Sage.Schema
 

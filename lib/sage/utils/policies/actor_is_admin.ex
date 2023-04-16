@@ -5,8 +5,8 @@ defmodule Sage.Policies.ActorIsAdmin do
     "actor is admin"
   end
 
-  def match?(%Sage.Accounts.User{admin: true} = _actor, _context, _opts) do
-    IO.inspect(["actor is admin", _actor, _context])
+  def match?(%Sage.Accounts.User{admin: true} = actor, context, opts) do
+    IO.inspect(["actor is admin", actor, context, opts])
     true
   end
 

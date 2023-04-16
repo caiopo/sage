@@ -22,9 +22,7 @@ defmodule Sage.Surveys.Question do
   end
 
   relationships do
-    belongs_to :survey, Sage.Surveys.Survey do
-      attribute_writable? true
-    end
+    belongs_to :survey, Sage.Surveys.Survey
   end
 
   actions do
@@ -35,14 +33,9 @@ defmodule Sage.Surveys.Question do
     type :question
 
     queries do
-      # get :get_question, :read
-      # list :list_questions, :for_survey
     end
 
     mutations do
-      create :create_question, :create
-      update :update_question, :update
-      destroy :archive_question, :destroy
     end
   end
 

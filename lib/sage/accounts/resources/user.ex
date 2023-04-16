@@ -29,6 +29,7 @@ defmodule Sage.Accounts.User do
 
     attribute :admin, :boolean do
       allow_nil? false
+      default false
     end
 
     timestamps()
@@ -48,6 +49,7 @@ defmodule Sage.Accounts.User do
     strategies do
       password :password do
         identity_field :email
+        register_action_accept [:name]
       end
     end
 
@@ -79,6 +81,14 @@ defmodule Sage.Accounts.User do
 
   policies do
     bypass AshAuthentication.Checks.AshAuthenticationInteraction do
+      authorize_if always()
+    end
+
+    policy action(:register_with_password) do
+      authorize_if always()
+    end
+
+    policy action(:sign_in_with_password) do
       authorize_if always()
     end
   end

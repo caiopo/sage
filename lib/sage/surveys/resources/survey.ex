@@ -25,7 +25,18 @@ defmodule Sage.Surveys.Survey do
   end
 
   actions do
-    defaults [:create, :read, :update, :destroy]
+    defaults [:read, :destroy]
+
+    create :create do
+      argument :questions, {:array, :map}
+      change relate_actor(:owner)
+      change manage_relationship(:questions, type: :direct_control)
+    end
+
+    update :update do
+      argument :questions, {:array, :map}
+      change manage_relationship(:questions, type: :direct_control)
+    end
   end
 
   graphql do
@@ -41,17 +52,17 @@ defmodule Sage.Surveys.Survey do
       update :update_survey, :update
       destroy :archive_survey, :destroy
     end
-  end
 
-  policies do
-    policy action_type(:read) do
-      authorize_if relates_to_actor_via(:owner)
+    managed_relationships do
+      managed_relationship :create, :questions
+      managed_relationship :update, :questions
     end
   end
 
   policies do
     policy always() do
-      authorize_if AdminActor
+      authorize_if ActorIsAdmin
+      authorize_if relates_to_actor_via(:owner)
     end
   end
 
