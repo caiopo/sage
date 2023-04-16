@@ -28,6 +28,11 @@ defmodule SageWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import SageWeb.ConnCase
+      import SageWeb.GraphqlHelpers
+
+      alias Sage.{Accounts, Surveys}
+      alias Sage.Surveys.{Survey, Question}
+      alias Sage.Accounts.User
     end
   end
 

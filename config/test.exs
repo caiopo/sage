@@ -33,3 +33,5 @@ config :logger, level: :warning
 config :phoenix, :plug_init_mode, :runtime
 
 config :sage, token_signing_secret: "secret"
+
+config :ash, disable_async?: true
