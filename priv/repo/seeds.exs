@@ -1,11 +1,40 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Sage.Repo.insert!(%Sage.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+alias Ash.Changeset
+
+alias Sage.{Accounts, Surveys}
+alias Sage.Accounts.User
+alias Sage.Surveys.{Survey, Question}
+
+user =
+  User
+  |> Changeset.for_create(:register_with_password,
+    name: "Lorem ipsum",
+    email: "lorem@ipsum.com",
+    password: "hello123",
+    password_confirmation: "hello123"
+  )
+  |> Accounts.create!()
+
+survey =
+  Survey
+  |> Changeset.for_create(
+    :create,
+    %{
+      title: "Hello survey",
+      questions: [
+        %{
+          title: "Favorite color?",
+          description: "Description hello world",
+          type: :single,
+          attributes: %{
+            options: [
+              "Red",
+              "Green",
+              "Blue"
+            ]
+          }
+        }
+      ]
+    },
+    actor: user
+  )
+  |> Surveys.create!()

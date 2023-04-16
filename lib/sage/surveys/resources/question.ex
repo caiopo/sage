@@ -9,9 +9,10 @@ defmodule Sage.Surveys.Question do
   attributes do
     sage_primary_key()
 
-    attribute :title, :string do
-      allow_nil? false
-    end
+    attribute :title, :string, allow_nil?: false
+    attribute :description, :string, allow_nil?: false, default: ""
+    attribute :required, :boolean, allow_nil?: false, default: false
+    attribute :attributes, :map, allow_nil?: false
 
     attribute :type, :atom do
       allow_nil? false

@@ -13,13 +13,9 @@ defmodule Sage.Accounts.User do
   attributes do
     sage_primary_key()
 
-    attribute :email, :string do
-      allow_nil? false
-    end
+    attribute :email, :string, allow_nil?: false
 
-    attribute :name, :string do
-      allow_nil? false
-    end
+    attribute :name, :string, allow_nil?: false
 
     attribute :hashed_password, :string do
       allow_nil? false

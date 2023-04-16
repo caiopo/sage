@@ -9,9 +9,7 @@ defmodule Sage.Surveys.Survey do
   attributes do
     sage_primary_key()
 
-    attribute :title, :string do
-      allow_nil? false
-    end
+    attribute :title, :string, allow_nil?: false
 
     timestamps()
   end
