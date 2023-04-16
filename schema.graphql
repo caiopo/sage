@@ -54,18 +54,6 @@ type User {
   id: ID!
   email: String!
   name: String!
-  admin: Boolean!
-}
-
-input UserFilterAdmin {
-  isNil: Boolean
-  eq: Boolean
-  notEq: Boolean
-  in: [Boolean!]
-  lessThan: Boolean
-  greaterThan: Boolean
-  lessThanOrEqual: Boolean
-  greaterThanOrEqual: Boolean
 }
 
 input UserFilterEmail {
@@ -157,8 +145,6 @@ type UserWithToken {
 
   name: String!
 
-  admin: Boolean!
-
   "A JWT which the user can use to authenticate to the API."
   token: String!
 }
@@ -186,7 +172,6 @@ input UserFilterInput {
   id: UserFilterId
   email: UserFilterEmail
   name: UserFilterName
-  admin: UserFilterAdmin
 }
 
 input QuestionFilterTitle {

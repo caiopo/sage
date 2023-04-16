@@ -40,7 +40,7 @@ defmodule SageWeb.Router do
     forward "/playground",
             Absinthe.Plug.GraphiQL,
             schema: Sage.Schema,
-            interface: :playground
+            interface: :advanced
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

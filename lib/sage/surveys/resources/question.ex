@@ -34,6 +34,8 @@ defmodule Sage.Surveys.Question do
   graphql do
     type :question
 
+    depth_limit 3
+
     queries do
     end
 

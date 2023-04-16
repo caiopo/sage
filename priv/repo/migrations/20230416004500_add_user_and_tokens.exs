@@ -19,10 +19,7 @@ defmodule Sage.Repo.Migrations.AddUserAndTokens do
       add :updated_at, :utc_datetime_usec, null: false, default: fragment("now()")
     end
 
-    create unique_index(:users, [:email],
-             where: "archived_at IS NULL",
-             name: "users_unique_email_index"
-           )
+    create unique_index(:users, [:email], name: "users_unique_email_index")
 
     create table(:tokens, primary_key: false) do
       add :updated_at, :utc_datetime_usec, null: false, default: fragment("now()")

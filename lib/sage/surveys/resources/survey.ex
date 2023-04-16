@@ -21,6 +21,7 @@ defmodule Sage.Surveys.Survey do
       api Sage.Accounts
       allow_nil? false
     end
+
     has_many :questions, Sage.Surveys.Question
   end
 
@@ -41,6 +42,8 @@ defmodule Sage.Surveys.Survey do
 
   graphql do
     type :survey
+
+    depth_limit 3
 
     queries do
       get :get_survey, :read

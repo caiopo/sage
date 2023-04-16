@@ -30,6 +30,7 @@ defmodule Sage.Accounts.User do
     attribute :admin, :boolean do
       allow_nil? false
       default false
+      private? true
     end
 
     timestamps()
@@ -55,7 +56,6 @@ defmodule Sage.Accounts.User do
 
     tokens do
       enabled? true
-      # store_all_tokens? true
       token_resource Sage.Accounts.Token
 
       signing_secret fn _, _ ->
@@ -66,6 +66,8 @@ defmodule Sage.Accounts.User do
 
   graphql do
     type :user
+
+    depth_limit 3
 
     queries do
       get :sign_in_with_password, :sign_in_with_password do
@@ -85,16 +87,13 @@ defmodule Sage.Accounts.User do
       authorize_if always()
     end
 
-    policy action_type(:read) do
-      authorize_if expr(id == ^actor(:id))
-    end
-
     policy action(:register_with_password) do
       authorize_if always()
     end
 
-    policy action(:sign_in_with_password) do
-      authorize_if always()
+    policy action_type(:read) do
+      authorize_if action(:sign_in_with_password)
+      authorize_if expr(id == ^actor(:id))
     end
   end
 
