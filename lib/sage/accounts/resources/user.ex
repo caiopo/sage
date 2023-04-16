@@ -55,6 +55,7 @@ defmodule Sage.Accounts.User do
 
     tokens do
       enabled? true
+      # store_all_tokens? true
       token_resource Sage.Accounts.Token
 
       signing_secret fn _, _ ->
@@ -82,6 +83,10 @@ defmodule Sage.Accounts.User do
   policies do
     bypass AshAuthentication.Checks.AshAuthenticationInteraction do
       authorize_if always()
+    end
+
+    policy action_type(:read) do
+      authorize_if expr(id == ^actor(:id))
     end
 
     policy action(:register_with_password) do

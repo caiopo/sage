@@ -24,7 +24,7 @@ defmodule Sage.Repo.Migrations.AddUserAndTokens do
              name: "users_unique_email_index"
            )
 
-    create table(:user_tokens, primary_key: false) do
+    create table(:tokens, primary_key: false) do
       add :updated_at, :utc_datetime_usec, null: false, default: fragment("now()")
       add :created_at, :utc_datetime_usec, null: false, default: fragment("now()")
       add :extra_data, :map
@@ -53,7 +53,7 @@ defmodule Sage.Repo.Migrations.AddUserAndTokens do
       remove :owner_id
     end
 
-    drop table(:user_tokens)
+    drop table(:tokens)
 
     drop_if_exists unique_index(:users, [:email], name: "users_unique_email_index")
 

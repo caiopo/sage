@@ -6,6 +6,6 @@ defmodule Sage.Accounts.Registry do
 
   entries do
     entry Sage.Accounts.User
-    entry Sage.Accounts.UserToken
+    entry Sage.Accounts.Token
   end
 end

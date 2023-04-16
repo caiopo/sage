@@ -60,7 +60,11 @@ defmodule Sage.Surveys.Survey do
   end
 
   policies do
-    policy always() do
+    policy action_type(:create) do
+      authorize_if actor_present()
+    end
+
+    policy action_type([:read, :update, :destroy]) do
       authorize_if ActorIsAdmin
       authorize_if relates_to_actor_via(:owner)
     end

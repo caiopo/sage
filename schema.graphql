@@ -19,7 +19,6 @@ type Question {
   id: ID!
   title: String!
   type: QuestionType!
-  survey: Survey
 }
 
 input CreateSurveyInput {
@@ -138,7 +137,6 @@ input QuestionFilterInput {
   id: QuestionFilterId
   title: QuestionFilterTitle
   type: QuestionFilterType
-  survey: SurveyFilterInput
 }
 
 input QuestionFilterId {

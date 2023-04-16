@@ -2,7 +2,7 @@ defmodule Sage.Resource do
   defmacro __using__(_opts) do
     quote do
       import Sage.Resource
-      alias Sage.Policies.ActorIsAdmin
+      alias Sage.Policies.{ActorIsAdmin, Debug}
     end
   end
 

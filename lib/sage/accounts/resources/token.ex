@@ -1,4 +1,4 @@
-defmodule Sage.Accounts.UserToken do
+defmodule Sage.Accounts.Token do
   use Ash.Resource,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
@@ -15,7 +15,7 @@ defmodule Sage.Accounts.UserToken do
   end
 
   postgres do
-    table "user_tokens"
+    table "tokens"
     repo Sage.Repo
   end
 end

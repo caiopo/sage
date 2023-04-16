@@ -22,7 +22,9 @@ defmodule Sage.Surveys.Question do
   end
 
   relationships do
-    belongs_to :survey, Sage.Surveys.Survey
+    belongs_to :survey, Sage.Surveys.Survey do
+      private? true
+    end
   end
 
   actions do
@@ -36,6 +38,17 @@ defmodule Sage.Surveys.Question do
     end
 
     mutations do
+    end
+  end
+
+  policies do
+    policy action_type(:create) do
+      authorize_if actor_present()
+    end
+
+    policy action_type([:read, :update, :destroy]) do
+      authorize_if ActorIsAdmin
+      authorize_if relates_to_actor_via([:survey, :owner])
     end
   end
 

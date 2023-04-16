@@ -66,7 +66,7 @@ defmodule Sage.MixProject do
     [
       setup: ["deps.get", "db.setup"],
       "db.setup": ["ash_postgres.create", "ash_postgres.migrate", "run priv/repo/seeds.exs"],
-      "db.reset": ["ash_postgres.drop", "db.setup"],
+      "db.reset": ["ash_postgres.drop --force-drop", "db.setup"],
       test: ["ash_postgres.create --quiet", "ash_postgres.migrate --quiet", "test"]
     ]
   end

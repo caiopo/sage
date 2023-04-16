@@ -85,5 +85,5 @@
   },
   "repo": "Elixir.Sage.Repo",
   "schema": null,
-  "table": "user_tokens"
+  "table": "tokens"
 }
