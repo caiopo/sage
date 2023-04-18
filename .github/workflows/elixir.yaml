@@ -108,3 +108,7 @@ jobs:
     # Step: Execute the tests.
     - name: Run tests
       run: mix test
+
+    # Step: Ensure migrations are up to date.
+    - name: Check Migrations
+      run: mix ash_postgres.generate_migrations --check --name test
