@@ -52,7 +52,9 @@ defmodule Sage.MixProject do
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:uniq, "~> 0.5.4"}
+      {:uniq, "~> 0.5.4"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -68,7 +70,8 @@ defmodule Sage.MixProject do
       "db.setup": ["ash_postgres.create", "ash_postgres.migrate", "run priv/repo/seeds.exs"],
       "db.reset": ["ash_postgres.drop --force-drop", "db.setup"],
       test: ["ash_postgres.create --quiet", "ash_postgres.migrate --quiet", "test"],
-      gen_migration: ["ash_postgres.generate_migrations"]
+      migration: ["ash_postgres.generate_migrations"],
+      schema: ["absinthe.schema.sdl --schema Sage.Schema"]
     ]
   end
 end
