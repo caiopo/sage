@@ -7,7 +7,7 @@ authors = ["Caio Pereira Oliveira <caiopoliveira@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.7"
 pony = "^0.7.13"
-flask = "^1.1.2"
+flask = "^2.2.5"
 firebase_admin = "^4.3.0"
 schema = "^0.7.2"
 gunicorn = "^20.0.4"
