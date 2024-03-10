@@ -19,7 +19,7 @@ jobs:
     # Additional services can be defined here if required.
     services:
       db:
-        image: postgres:12
+        image: postgres:14.1-alpine
         ports: ['5432:5432']
         env:
           POSTGRES_PASSWORD: postgres
@@ -35,8 +35,8 @@ jobs:
       # Specify the OTP and Elixir versions to use when building
       # and running the workflow steps.
       matrix:
-        otp: ['25.0.4']
-        elixir: ['1.14.4']
+        otp: ['26']
+        elixir: ['1.15']
     steps:
     # Step: Setup Elixir + Erlang image as the base.
     - name: Set up Elixir

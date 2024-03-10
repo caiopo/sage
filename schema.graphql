@@ -14,7 +14,7 @@ type RegisterWithPasswordResult {
   result: User
 
   "Any errors generated, if the mutation failed"
-  errors: [MutationError]
+  errors: [MutationError!]
 
   "Metadata produced by the mutation"
   metadata: RegisterWithPasswordMetadata
@@ -41,6 +41,8 @@ input UserFilterName {
   greaterThan: String
   lessThanOrEqual: String
   greaterThanOrEqual: String
+  like: String
+  ilike: String
 }
 
 input UserFilterEmail {
@@ -52,6 +54,8 @@ input UserFilterEmail {
   greaterThan: String
   lessThanOrEqual: String
   greaterThanOrEqual: String
+  like: String
+  ilike: String
 }
 
 input UserFilterId {
@@ -115,7 +119,7 @@ type MutationError {
   code: String
 
   "The field or fields that produced the error"
-  fields: [String]
+  fields: [String!]
 }
 
 enum QuestionType {
@@ -176,6 +180,8 @@ input QuestionFilterDescription {
   greaterThan: String
   lessThanOrEqual: String
   greaterThanOrEqual: String
+  like: String
+  ilike: String
 }
 
 input QuestionFilterTitle {
@@ -187,6 +193,8 @@ input QuestionFilterTitle {
   greaterThan: String
   lessThanOrEqual: String
   greaterThanOrEqual: String
+  like: String
+  ilike: String
 }
 
 input QuestionFilterId {
@@ -232,7 +240,7 @@ type ArchiveSurveyResult {
   result: Survey
 
   "Any errors generated, if the mutation failed"
-  errors: [MutationError]
+  errors: [MutationError!]
 }
 
 "The result of the :update_survey mutation"
@@ -241,7 +249,7 @@ type UpdateSurveyResult {
   result: Survey
 
   "Any errors generated, if the mutation failed"
-  errors: [MutationError]
+  errors: [MutationError!]
 }
 
 input UpdateSurveyInput {
@@ -255,7 +263,7 @@ type CreateSurveyResult {
   result: Survey
 
   "Any errors generated, if the mutation failed"
-  errors: [MutationError]
+  errors: [MutationError!]
 }
 
 input CreateSurveyInput {
@@ -295,6 +303,8 @@ input SurveyFilterTitle {
   greaterThan: String
   lessThanOrEqual: String
   greaterThanOrEqual: String
+  like: String
+  ilike: String
 }
 
 input SurveyFilterId {
@@ -357,14 +367,14 @@ type RootQueryType {
 }
 
 type RootMutationType {
-  createSurvey(input: CreateSurveyInput): CreateSurveyResult
+  createSurvey(input: CreateSurveyInput): CreateSurveyResult!
 
-  updateSurvey(id: ID, input: UpdateSurveyInput): UpdateSurveyResult
+  updateSurvey(id: ID, input: UpdateSurveyInput): UpdateSurveyResult!
 
-  archiveSurvey(id: ID): ArchiveSurveyResult
+  archiveSurvey(id: ID): ArchiveSurveyResult!
 
   "Register a new user with a username and password."
-  registerWithPassword(input: RegisterWithPasswordInput): RegisterWithPasswordResult
+  registerWithPassword(input: RegisterWithPasswordInput): RegisterWithPasswordResult!
 
   "Attempt to sign in using a username and password."
   signInWithPassword(

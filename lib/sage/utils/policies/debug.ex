@@ -6,6 +6,7 @@ defmodule Sage.Policies.Debug do
   end
 
   def match?(actor, context, opts) do
+    # credo:disable-for-next-line
     IO.inspect(["debug", actor, context, opts])
     false
   end

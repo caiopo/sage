@@ -1,6 +1,8 @@
 defmodule SageWeb.Accounts.SignInWithPasswordTest do
   use SageWeb.ConnCase
 
+  import Matcher
+
   test "signInWithPassword", %{conn: conn} do
     email = "lorem@ipsum.com"
     password = "hello123"
@@ -19,8 +21,8 @@ defmodule SageWeb.Accounts.SignInWithPasswordTest do
       |> send_query("""
         mutation {
           signInWithPassword(email: "#{email}", password: "#{password}") {
-            email
             id
+            email
             name
             token
           }
@@ -30,15 +32,11 @@ defmodule SageWeb.Accounts.SignInWithPasswordTest do
     assert matches?(
              %{
                data: %{
-                 errors: [],
                  sign_in_with_password: %{
-                   metadata: %{
-                     token: predicate(fn t -> byte_size(t) > 0 end)
-                   },
-                   user: %{
-                     name: "Lorem Ipsum",
-                     email: email
-                   }
+                   id: predicate(fn t -> byte_size(t) > 0 end),
+                   token: predicate(fn t -> byte_size(t) > 0 end),
+                   name: "Lorem Ipsum",
+                   email: email
                  }
                }
              },

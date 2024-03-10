@@ -8,44 +8,48 @@ defmodule SageWeb.Accounts.RegisterWithPasswordTest do
 
     response =
       conn
-      |> send_query("""
-        mutation {
-          registerWithPassword(
-            input: {
-              email: "#{email}"
-              name: "Lorem Ipsum"
-              password: "12341234"
-              passwordConfirmation: "12341234"
-            }
-          ) {
-            errors {
-              code
-              fields
-              message
-              shortMessage
-              vars
-            }
-            metadata {
-              token
-            }
-            result {
-              email
-              id
-              name
+      |> send_query(
+        """
+          mutation($email: String!) {
+            registerWithPassword(
+              input: {
+                email: $email
+                name: "Lorem Ipsum"
+                password: "12341234"
+                passwordConfirmation: "12341234"
+              }
+            ) {
+              errors {
+                code
+                fields
+                message
+                shortMessage
+                vars
+              }
+              metadata {
+                token
+              }
+              result {
+                email
+                id
+                name
+              }
             }
           }
-        }
-      """)
+        """,
+        %{email: email}
+      )
 
     assert matches?(
              %{
                data: %{
-                 errors: [],
                  register_with_password: %{
+                   errors: [],
                    metadata: %{
                      token: predicate(fn t -> byte_size(t) > 0 end)
                    },
-                   user: %{
+                   result: %{
+                     id: predicate(fn t -> byte_size(t) > 0 end),
                      name: "Lorem Ipsum",
                      email: email
                    }

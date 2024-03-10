@@ -5,6 +5,7 @@ defmodule SageWeb.Router do
   import AshAuthentication.Plug.Helpers
 
   def read_token(conn) do
+    # credo:disable-for-next-line
     IO.inspect(conn)
     conn
   end
