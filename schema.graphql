@@ -3,60 +3,44 @@ schema {
   query: RootQueryType
 }
 
-enum QuestionType {
-  SINGLE
-  MULTI
-  TEXT
-  NUMBER
+type RegisterWithPasswordMetadata {
+  "A JWT which the user can use to authenticate to the API."
+  token: String!
 }
 
-input UpdateSurveyInput {
-  title: String
-  questions: [UpdateQuestionsInput!]
+"The result of the :register_with_password mutation"
+type RegisterWithPasswordResult {
+  "The successful result of the mutation"
+  result: User
+
+  "Any errors generated, if the mutation failed"
+  errors: [MutationError]
+
+  "Metadata produced by the mutation"
+  metadata: RegisterWithPasswordMetadata
 }
 
-type Question {
-  id: ID!
-  title: String!
-  description: String!
-  required: Boolean!
-  attributes: JsonString!
-  type: QuestionType!
-}
-
-input CreateSurveyInput {
-  title: String!
-  questions: [CreateQuestionsInput!]
-}
-
-type Survey {
-  id: ID!
-  title: String!
-  owner: User!
-  questions(
-    "How to sort the records in the response"
-    sort: [QuestionSortInput]
-
-    "A filter to limit the results"
-    filter: QuestionFilterInput
-
-    "The number of records to return."
-    limit: Int
-
-    "The number of records to skip."
-    offset: Int
-  ): [Question!]!
-}
-
-input QuestionSortInput {
-  order: SortOrder
-  field: QuestionSortField!
-}
-
-type User {
-  id: ID!
+input RegisterWithPasswordInput {
   email: String!
+
   name: String!
+
+  "The proposed password for the user, in plain text."
+  password: String!
+
+  "The proposed password for the user (again), in plain text."
+  passwordConfirmation: String!
+}
+
+input UserFilterName {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
 }
 
 input UserFilterEmail {
@@ -81,81 +65,13 @@ input UserFilterId {
   greaterThanOrEqual: ID
 }
 
-input RegisterWithPasswordInput {
-  email: String!
-  name: String!
-  password: String!
-  passwordConfirmation: String!
-}
-
-input QuestionFilterDescription {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-}
-
-input SurveyFilterInput {
-  and: [SurveyFilterInput!]
-  or: [SurveyFilterInput!]
-  id: SurveyFilterId
-  title: SurveyFilterTitle
-  owner: UserFilterInput
-  questions: QuestionFilterInput
-}
-
-type RootQueryType {
-  getSurvey(
-    "The id of the record"
-    id: ID!
-  ): Survey
-  listSurveys(
-    "How to sort the records in the response"
-    sort: [SurveySortInput]
-
-    "A filter to limit the results"
-    filter: SurveyFilterInput
-  ): [Survey!]!
-}
-
-input SurveySortInput {
-  order: SortOrder
-  field: SurveySortField!
-}
-
-input CreateQuestionsInput {
-  attributes: JsonString
-  description: String
-  id: ID
-  required: Boolean
-  title: String
-  type: QuestionType
-}
-
-input QuestionFilterInput {
-  and: [QuestionFilterInput!]
-  or: [QuestionFilterInput!]
-  id: QuestionFilterId
-  title: QuestionFilterTitle
-  description: QuestionFilterDescription
-  required: QuestionFilterRequired
-  attributes: QuestionFilterAttributes
-  type: QuestionFilterType
-}
-
-input QuestionFilterId {
-  isNil: Boolean
-  eq: ID
-  notEq: ID
-  in: [ID!]
-  lessThan: ID
-  greaterThan: ID
-  lessThanOrEqual: ID
-  greaterThanOrEqual: ID
+input UserFilterInput {
+  and: [UserFilterInput!]
+  or: [UserFilterInput!]
+  not: [UserFilterInput!]
+  id: UserFilterId
+  email: UserFilterEmail
+  name: UserFilterName
 }
 
 type UserWithToken {
@@ -169,86 +85,19 @@ type UserWithToken {
   token: String!
 }
 
-input SurveyFilterId {
-  isNil: Boolean
-  eq: ID
-  notEq: ID
-  in: [ID!]
-  lessThan: ID
-  greaterThan: ID
-  lessThanOrEqual: ID
-  greaterThanOrEqual: ID
+type User {
+  id: ID!
+  email: String!
+  name: String!
 }
 
-input UpdateQuestionsInput {
-  attributes: JsonString
-  description: String
-  id: ID
-  required: Boolean
-  title: String
-  type: QuestionType
-}
-
-input UserFilterInput {
-  and: [UserFilterInput!]
-  or: [UserFilterInput!]
-  id: UserFilterId
-  email: UserFilterEmail
-  name: UserFilterName
-}
-
-input QuestionFilterTitle {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-}
-
-enum SurveySortField {
-  ID
-  TITLE
-}
-
-"The result of the :update_survey mutation"
-type UpdateSurveyResult {
-  "The successful result of the mutation"
-  result: Survey
-
-  "Any errors generated, if the mutation failed"
-  errors: [MutationError]
-}
-
-"""
-The `Json` scalar type represents arbitrary json string data, represented as UTF-8
-character sequences. The Json type is most often used to represent a free-form
-human-readable json string.
-"""
-scalar Json
-
-input UserFilterName {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-}
-
-input QuestionFilterRequired {
-  isNil: Boolean
-  eq: Boolean
-  notEq: Boolean
-  in: [Boolean!]
-  lessThan: Boolean
-  greaterThan: Boolean
-  lessThanOrEqual: Boolean
-  greaterThanOrEqual: Boolean
+enum SortOrder {
+  DESC
+  DESC_NULLS_FIRST
+  DESC_NULLS_LAST
+  ASC
+  ASC_NULLS_FIRST
+  ASC_NULLS_LAST
 }
 
 "An error generated by a failed mutation"
@@ -269,48 +118,20 @@ type MutationError {
   fields: [String]
 }
 
-enum SortOrder {
-  DESC
-  ASC
+enum QuestionType {
+  SINGLE
+  MULTI
+  TEXT
+  NUMBER
 }
 
-input SurveyFilterTitle {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-}
-
-type RegisterWithPasswordMetadata {
-  "A JWT which the user can use to authenticate to the API."
-  token: String!
-}
-
-"The result of the :register_with_password mutation"
-type RegisterWithPasswordResult {
-  "The successful result of the mutation"
-  result: User
-
-  "Any errors generated, if the mutation failed"
-  errors: [MutationError]
-
-  "Metadata produced by the mutation"
-  metadata: RegisterWithPasswordMetadata
-}
-
-input QuestionFilterAttributes {
-  isNil: Boolean
-  eq: JsonString
-  notEq: JsonString
-  in: [JsonString!]
-  lessThan: JsonString
-  greaterThan: JsonString
-  lessThanOrEqual: JsonString
-  greaterThanOrEqual: JsonString
+enum QuestionSortField {
+  ID
+  TITLE
+  DESCRIPTION
+  REQUIRED
+  ATTRIBUTES
+  TYPE
 }
 
 input QuestionFilterType {
@@ -324,6 +145,87 @@ input QuestionFilterType {
   greaterThanOrEqual: QuestionType
 }
 
+input QuestionFilterAttributes {
+  isNil: Boolean
+  eq: JsonString
+  notEq: JsonString
+  in: [JsonString!]
+  lessThan: JsonString
+  greaterThan: JsonString
+  lessThanOrEqual: JsonString
+  greaterThanOrEqual: JsonString
+}
+
+input QuestionFilterRequired {
+  isNil: Boolean
+  eq: Boolean
+  notEq: Boolean
+  in: [Boolean!]
+  lessThan: Boolean
+  greaterThan: Boolean
+  lessThanOrEqual: Boolean
+  greaterThanOrEqual: Boolean
+}
+
+input QuestionFilterDescription {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input QuestionFilterTitle {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input QuestionFilterId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+input QuestionFilterInput {
+  and: [QuestionFilterInput!]
+  or: [QuestionFilterInput!]
+  not: [QuestionFilterInput!]
+  id: QuestionFilterId
+  title: QuestionFilterTitle
+  description: QuestionFilterDescription
+  required: QuestionFilterRequired
+  attributes: QuestionFilterAttributes
+  type: QuestionFilterType
+}
+
+input QuestionSortInput {
+  order: SortOrder
+  field: QuestionSortField!
+}
+
+type Question {
+  id: ID!
+  title: String!
+  description: String!
+  required: Boolean!
+  attributes: JsonString!
+  type: QuestionType!
+}
+
 "The result of the :archive_survey mutation"
 type ArchiveSurveyResult {
   "The record that was successfully deleted"
@@ -333,29 +235,19 @@ type ArchiveSurveyResult {
   errors: [MutationError]
 }
 
-enum QuestionSortField {
-  ID
-  TITLE
-  DESCRIPTION
-  REQUIRED
-  ATTRIBUTES
-  TYPE
+"The result of the :update_survey mutation"
+type UpdateSurveyResult {
+  "The successful result of the mutation"
+  result: Survey
+
+  "Any errors generated, if the mutation failed"
+  errors: [MutationError]
 }
 
-type RootMutationType {
-  createSurvey(input: CreateSurveyInput): CreateSurveyResult
-  updateSurvey(id: ID, input: UpdateSurveyInput): UpdateSurveyResult
-  archiveSurvey(id: ID): ArchiveSurveyResult
-  registerWithPassword(input: RegisterWithPasswordInput): RegisterWithPasswordResult
-  signInWithPassword(email: String!, password: String!): UserWithToken
+input UpdateSurveyInput {
+  title: String
+  questions: [SurveyUpdateQuestionsInput!]
 }
-
-"""
-The `Json` scalar type represents arbitrary json string data, represented as UTF-8
-character sequences. The Json type is most often used to represent a free-form
-human-readable json string.
-"""
-scalar JsonString
 
 "The result of the :create_survey mutation"
 type CreateSurveyResult {
@@ -365,3 +257,135 @@ type CreateSurveyResult {
   "Any errors generated, if the mutation failed"
   errors: [MutationError]
 }
+
+input CreateSurveyInput {
+  title: String!
+  questions: [SurveyCreateQuestionsInput!]
+}
+
+input SurveyUpdateQuestionsInput {
+  attributes: JsonString
+  id: ID
+  type: QuestionType
+  description: String
+  title: String
+  required: Boolean
+}
+
+input SurveyCreateQuestionsInput {
+  attributes: JsonString
+  id: ID
+  type: QuestionType
+  description: String
+  title: String
+  required: Boolean
+}
+
+enum SurveySortField {
+  ID
+  TITLE
+}
+
+input SurveyFilterTitle {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String!]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+}
+
+input SurveyFilterId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+input SurveyFilterInput {
+  and: [SurveyFilterInput!]
+  or: [SurveyFilterInput!]
+  not: [SurveyFilterInput!]
+  id: SurveyFilterId
+  title: SurveyFilterTitle
+  owner: UserFilterInput
+  questions: QuestionFilterInput
+}
+
+input SurveySortInput {
+  order: SortOrder
+  field: SurveySortField!
+}
+
+type Survey {
+  id: ID!
+  title: String!
+  owner: User!
+  questions(
+    "How to sort the records in the response"
+    sort: [QuestionSortInput]
+
+    "A filter to limit the results"
+    filter: QuestionFilterInput
+
+    "The number of records to return."
+    limit: Int
+
+    "The number of records to skip."
+    offset: Int
+  ): [Question!]!
+}
+
+type RootQueryType {
+  getSurvey(
+    "The id of the record"
+    id: ID!
+  ): Survey
+  listSurveys(
+    "How to sort the records in the response"
+    sort: [SurveySortInput]
+
+    "A filter to limit the results"
+    filter: SurveyFilterInput
+  ): [Survey!]!
+}
+
+type RootMutationType {
+  createSurvey(input: CreateSurveyInput): CreateSurveyResult
+
+  updateSurvey(id: ID, input: UpdateSurveyInput): UpdateSurveyResult
+
+  archiveSurvey(id: ID): ArchiveSurveyResult
+
+  "Register a new user with a username and password."
+  registerWithPassword(input: RegisterWithPasswordInput): RegisterWithPasswordResult
+
+  "Attempt to sign in using a username and password."
+  signInWithPassword(
+    "The identity to use for retrieving the user."
+    email: String!
+
+    "The password to check for the matching user."
+    password: String!
+  ): UserWithToken
+}
+
+"""
+The `Json` scalar type represents arbitrary json string data, represented as UTF-8
+character sequences. The Json type is most often used to represent a free-form
+human-readable json string.
+"""
+scalar JsonString
+
+"""
+The `Json` scalar type represents arbitrary json string data, represented as UTF-8
+character sequences. The Json type is most often used to represent a free-form
+human-readable json string.
+"""
+scalar Json

@@ -5,7 +5,7 @@ defmodule Sage.MixProject do
     [
       app: :sage,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -33,28 +33,30 @@ defmodule Sage.MixProject do
   defp deps do
     [
       {:absinthe_plug, "~> 1.5"},
-      {:ash_admin, "~> 0.8"},
+      {:ash_admin, "~> 0.9"},
       {:ash_archival, "~> 0.1"},
-      {:ash_authentication_phoenix, "~> 1.7"},
-      {:ash_authentication, "~> 3.10"},
-      {:ash_graphql, "~> 0.23.2"},
+      {:ash_authentication_phoenix, "~> 1.8"},
+      {:ash_authentication, "~> 3.11"},
+      {:ash_graphql, "~> 0.26"},
       {:ash_postgres, "~> 1.3"},
-      {:ash, "~> 2.6"},
+      {:ash, "~> 2.16"},
       {:ecto_sql, "~> 3.6"},
       {:finch, "~> 0.13"},
       {:jason, "~> 1.2"},
       {:phoenix_ecto, "~> 4.4"},
-      {:phoenix_live_dashboard, "~> 0.7.2"},
-      {:phoenix_live_view, "0.18.16"},
-      {:phoenix, "~> 1.7.2"},
+      {:phoenix_live_dashboard, "~> 0.8.2"},
+      {:phoenix_live_view, "~> 0.20"},
+      {:phoenix, "~> 1.7"},
       {:plug_cowboy, "~> 2.5"},
       {:postgrex, ">= 0.0.0"},
-      {:swoosh, "~> 1.3"},
+      {:swoosh, "~> 1.14"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
-      {:uniq, "~> 0.5.4"},
+      {:uniq, "~> 0.6"},
+      {:atomic_map, "~> 0.9.3", only: [:dev, :test]},
+      {:matcher, "~> 0.3", only: [:dev, :test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.3", only: [:dev, :test], runtime: false}
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 

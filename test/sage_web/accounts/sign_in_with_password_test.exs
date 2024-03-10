@@ -27,13 +27,22 @@ defmodule SageWeb.Accounts.SignInWithPasswordTest do
         }
       """)
 
-    assert not is_map_key(response, "errors")
-
-    user = response["data"]["signInWithPassword"]
-
-    assert byte_size(user["token"]) > 0
-    assert byte_size(user["id"]) > 0
-    assert user["name"] == "Lorem Ipsum"
-    assert user["email"] == email
+    assert matches?(
+             %{
+               data: %{
+                 errors: [],
+                 sign_in_with_password: %{
+                   metadata: %{
+                     token: predicate(fn t -> byte_size(t) > 0 end)
+                   },
+                   user: %{
+                     name: "Lorem Ipsum",
+                     email: email
+                   }
+                 }
+               }
+             },
+             response
+           )
   end
 end

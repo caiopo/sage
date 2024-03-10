@@ -7,6 +7,7 @@ defmodule SageWeb.GraphqlHelpers do
         "variables" => unquote(variables)
       })
       |> json_response(200)
+      |> AtomicMap.convert()
     end
   end
 end

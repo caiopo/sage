@@ -1,6 +1,8 @@
 defmodule SageWeb.Accounts.RegisterWithPasswordTest do
   use SageWeb.ConnCase
 
+  import Matcher
+
   test "registerWithPassword", %{conn: conn} do
     email = "lorem@ipsum.com"
 
@@ -35,18 +37,22 @@ defmodule SageWeb.Accounts.RegisterWithPasswordTest do
         }
       """)
 
-    assert not is_map_key(response, "errors")
-
-    register = response["data"]["registerWithPassword"]
-
-    assert Enum.empty?(register["errors"])
-    assert byte_size(register["metadata"]["token"]) > 0
-
-    user = register["result"]
-
-    assert byte_size(user["id"]) > 0
-
-    assert user["name"] == "Lorem Ipsum"
-    assert user["email"] == email
+    assert matches?(
+             %{
+               data: %{
+                 errors: [],
+                 register_with_password: %{
+                   metadata: %{
+                     token: predicate(fn t -> byte_size(t) > 0 end)
+                   },
+                   user: %{
+                     name: "Lorem Ipsum",
+                     email: email
+                   }
+                 }
+               }
+             },
+             response
+           )
   end
 end
