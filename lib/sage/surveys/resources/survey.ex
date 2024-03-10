@@ -55,8 +55,7 @@ defmodule Sage.Surveys.Survey do
     end
 
     managed_relationships do
-      managed_relationship :create, :questions
-      managed_relationship :update, :questions
+      auto? true
     end
   end
 

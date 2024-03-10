@@ -10,6 +10,7 @@ defmodule Sage.Accounts do
   end
 
   resources do
-    registry Sage.Accounts.Registry
+    resource Sage.Accounts.User
+    resource Sage.Accounts.Token
   end
 end

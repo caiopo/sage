@@ -10,6 +10,9 @@ defmodule Sage.Surveys do
   end
 
   resources do
-    registry Sage.Surveys.Registry
+    resource Sage.Surveys.Survey
+    resource Sage.Surveys.Question
+    resource Sage.Surveys.SurveyAnswer
+    resource Sage.Surveys.QuestionAnswer
   end
 end

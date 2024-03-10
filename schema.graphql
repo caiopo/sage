@@ -122,6 +122,145 @@ type MutationError {
   fields: [String!]
 }
 
+enum QuestionAnswerSortField {
+  ID
+  VALUE
+  QUESTION_ID
+}
+
+input QuestionAnswerFilterQuestionId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+input QuestionAnswerFilterValue {
+  isNil: Boolean
+  eq: String
+  notEq: String
+  in: [String]
+  lessThan: String
+  greaterThan: String
+  lessThanOrEqual: String
+  greaterThanOrEqual: String
+  like: String
+  ilike: String
+}
+
+input QuestionAnswerFilterId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+input QuestionAnswerFilterInput {
+  and: [QuestionAnswerFilterInput!]
+  or: [QuestionAnswerFilterInput!]
+  not: [QuestionAnswerFilterInput!]
+  id: QuestionAnswerFilterId
+  value: QuestionAnswerFilterValue
+  questionId: QuestionAnswerFilterQuestionId
+  surveyAnswer: SurveyAnswerFilterInput
+  question: QuestionFilterInput
+}
+
+input QuestionAnswerSortInput {
+  order: SortOrder
+  field: QuestionAnswerSortField!
+}
+
+type QuestionAnswer {
+  id: ID!
+  value: String
+  questionId: ID!
+  surveyAnswer: SurveyAnswer!
+  question: Question!
+}
+
+"The result of the :archive_answer mutation"
+type ArchiveAnswerResult {
+  "The record that was successfully deleted"
+  result: SurveyAnswer
+
+  "Any errors generated, if the mutation failed"
+  errors: [MutationError!]
+}
+
+"The result of the :create_answer mutation"
+type CreateAnswerResult {
+  "The successful result of the mutation"
+  result: SurveyAnswer
+
+  "Any errors generated, if the mutation failed"
+  errors: [MutationError!]
+}
+
+input CreateAnswerInput {
+  questionAnswers: [SurveyAnswerCreateQuestionAnswersInput!]
+}
+
+input SurveyAnswerCreateQuestionAnswersInput {
+  value: String
+  questionId: ID!
+}
+
+enum SurveyAnswerSortField {
+  ID
+}
+
+input SurveyAnswerFilterId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+input SurveyAnswerFilterInput {
+  and: [SurveyAnswerFilterInput!]
+  or: [SurveyAnswerFilterInput!]
+  not: [SurveyAnswerFilterInput!]
+  id: SurveyAnswerFilterId
+  survey: SurveyFilterInput
+  questionAnswers: QuestionAnswerFilterInput
+}
+
+input SurveyAnswerSortInput {
+  order: SortOrder
+  field: SurveyAnswerSortField!
+}
+
+type SurveyAnswer {
+  id: ID!
+  survey: Survey
+  questionAnswers(
+    "How to sort the records in the response"
+    sort: [QuestionAnswerSortInput]
+
+    "A filter to limit the results"
+    filter: QuestionAnswerFilterInput
+
+    "The number of records to return."
+    limit: Int
+
+    "The number of records to skip."
+    offset: Int
+  ): [QuestionAnswer!]!
+}
+
 enum QuestionType {
   SINGLE
   MULTI
@@ -151,13 +290,13 @@ input QuestionFilterType {
 
 input QuestionFilterAttributes {
   isNil: Boolean
-  eq: JsonString
-  notEq: JsonString
-  in: [JsonString!]
-  lessThan: JsonString
-  greaterThan: JsonString
-  lessThanOrEqual: JsonString
-  greaterThanOrEqual: JsonString
+  eq: Json
+  notEq: Json
+  in: [Json!]
+  lessThan: Json
+  greaterThan: Json
+  lessThanOrEqual: Json
+  greaterThanOrEqual: Json
 }
 
 input QuestionFilterRequired {
@@ -230,7 +369,7 @@ type Question {
   title: String!
   description: String!
   required: Boolean!
-  attributes: JsonString!
+  attributes: Json!
   type: QuestionType!
 }
 
@@ -272,7 +411,7 @@ input CreateSurveyInput {
 }
 
 input SurveyUpdateQuestionsInput {
-  attributes: JsonString
+  attributes: Json
   id: ID
   type: QuestionType
   description: String
@@ -281,7 +420,7 @@ input SurveyUpdateQuestionsInput {
 }
 
 input SurveyCreateQuestionsInput {
-  attributes: JsonString
+  attributes: Json
   id: ID
   type: QuestionType
   description: String
@@ -364,17 +503,32 @@ type RootQueryType {
     "A filter to limit the results"
     filter: SurveyFilterInput
   ): [Survey!]!
+  getAnswer(
+    "The id of the record"
+    id: ID!
+  ): SurveyAnswer
+  listAnswers(
+    "How to sort the records in the response"
+    sort: [SurveyAnswerSortInput]
+
+    "A filter to limit the results"
+    filter: SurveyAnswerFilterInput
+  ): [SurveyAnswer!]!
 }
 
 type RootMutationType {
-  createSurvey(input: CreateSurveyInput): CreateSurveyResult!
+  createSurvey(input: CreateSurveyInput!): CreateSurveyResult!
 
-  updateSurvey(id: ID, input: UpdateSurveyInput): UpdateSurveyResult!
+  updateSurvey(id: ID!, input: UpdateSurveyInput): UpdateSurveyResult!
 
-  archiveSurvey(id: ID): ArchiveSurveyResult!
+  archiveSurvey(id: ID!): ArchiveSurveyResult!
+
+  createAnswer(input: CreateAnswerInput): CreateAnswerResult!
+
+  archiveAnswer(id: ID!): ArchiveAnswerResult!
 
   "Register a new user with a username and password."
-  registerWithPassword(input: RegisterWithPasswordInput): RegisterWithPasswordResult!
+  registerWithPassword(input: RegisterWithPasswordInput!): RegisterWithPasswordResult!
 
   "Attempt to sign in using a username and password."
   signInWithPassword(
@@ -385,13 +539,6 @@ type RootMutationType {
     password: String!
   ): UserWithToken
 }
-
-"""
-The `Json` scalar type represents arbitrary json string data, represented as UTF-8
-character sequences. The Json type is most often used to represent a free-form
-human-readable json string.
-"""
-scalar JsonString
 
 """
 The `Json` scalar type represents arbitrary json string data, represented as UTF-8

@@ -42,6 +42,8 @@ config :phoenix, :json_library, Jason
 config :ash, :use_all_identities_in_manage_relationship?, false
 
 config :ash_graphql, :default_managed_relationship_type_name_template, :action_name
+config :ash_graphql, :allow_non_null_mutation_arguments?, true
+config :ash_graphql, :json_type, :json
 
 config :sage,
   ash_apis: [Sage.Accounts, Sage.Surveys],
