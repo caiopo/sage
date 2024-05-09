@@ -16,7 +16,7 @@ defmodule Sage.Accounts.User do
 
     attribute :email, :string, allow_nil?: false, public?: true
 
-    attribute :name, :string, allow_nil?: false
+    attribute :name, :string, allow_nil?: false, public?: true
 
     attribute :hashed_password, :string do
       allow_nil? false

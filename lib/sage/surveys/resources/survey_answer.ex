@@ -10,8 +10,6 @@ defmodule Sage.Surveys.SurveyAnswer do
   attributes do
     sage_primary_key()
 
-    attribute :value2, :string, public?: true
-
     timestamps()
   end
 

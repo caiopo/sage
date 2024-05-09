@@ -32,52 +32,6 @@ input RegisterWithPasswordInput {
   passwordConfirmation: String!
 }
 
-input UserFilterName {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-  like: String
-  ilike: String
-}
-
-input UserFilterEmail {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-  like: String
-  ilike: String
-}
-
-input UserFilterId {
-  isNil: Boolean
-  eq: ID
-  notEq: ID
-  in: [ID!]
-  lessThan: ID
-  greaterThan: ID
-  lessThanOrEqual: ID
-  greaterThanOrEqual: ID
-}
-
-input UserFilterInput {
-  and: [UserFilterInput!]
-  or: [UserFilterInput!]
-  not: [UserFilterInput!]
-  id: UserFilterId
-  email: UserFilterEmail
-  name: UserFilterName
-}
-
 type UserWithToken {
   id: ID!
 
@@ -125,10 +79,22 @@ type MutationError {
 enum QuestionAnswerSortField {
   ID
   VALUE
+  SURVEY_ANSWER_ID
   QUESTION_ID
 }
 
 input QuestionAnswerFilterQuestionId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID!]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
+}
+
+input QuestionAnswerFilterSurveyAnswerId {
   isNil: Boolean
   eq: ID
   notEq: ID
@@ -169,6 +135,7 @@ input QuestionAnswerFilterInput {
   not: [QuestionAnswerFilterInput!]
   id: QuestionAnswerFilterId
   value: QuestionAnswerFilterValue
+  surveyAnswerId: QuestionAnswerFilterSurveyAnswerId
   questionId: QuestionAnswerFilterQuestionId
   surveyAnswer: SurveyAnswerFilterInput
   question: QuestionFilterInput
@@ -182,6 +149,7 @@ input QuestionAnswerSortInput {
 type QuestionAnswer {
   id: ID!
   value: String
+  surveyAnswerId: ID!
   questionId: ID!
   surveyAnswer: SurveyAnswer!
   question: Question!
@@ -210,12 +178,38 @@ input CreateAnswerInput {
 }
 
 input SurveyAnswerCreateQuestionAnswersInput {
-  value: String
-  questionId: ID!
+  id: ID
 }
 
 enum SurveyAnswerSortField {
   ID
+  SURVEY_ID
+}
+
+"A keyset page of :survey_answer"
+type KeysetPageOfSurveyAnswer {
+  "Total count on all pages"
+  count: Int
+
+  "The records contained in the page"
+  results: [SurveyAnswer!]
+
+  "The first keyset in the results"
+  startKeyset: String
+
+  "The last keyset in the results"
+  endKeyset: String
+}
+
+input SurveyAnswerFilterSurveyId {
+  isNil: Boolean
+  eq: ID
+  notEq: ID
+  in: [ID]
+  lessThan: ID
+  greaterThan: ID
+  lessThanOrEqual: ID
+  greaterThanOrEqual: ID
 }
 
 input SurveyAnswerFilterId {
@@ -234,6 +228,7 @@ input SurveyAnswerFilterInput {
   or: [SurveyAnswerFilterInput!]
   not: [SurveyAnswerFilterInput!]
   id: SurveyAnswerFilterId
+  surveyId: SurveyAnswerFilterSurveyId
   survey: SurveyFilterInput
   questionAnswers: QuestionAnswerFilterInput
 }
@@ -245,6 +240,7 @@ input SurveyAnswerSortInput {
 
 type SurveyAnswer {
   id: ID!
+  surveyId: ID
   survey: Survey
   questionAnswers(
     "How to sort the records in the response"
@@ -259,81 +255,6 @@ type SurveyAnswer {
     "The number of records to skip."
     offset: Int
   ): [QuestionAnswer!]!
-}
-
-enum QuestionType {
-  SINGLE
-  MULTI
-  TEXT
-  NUMBER
-}
-
-enum QuestionSortField {
-  ID
-  TITLE
-  DESCRIPTION
-  REQUIRED
-  ATTRIBUTES
-  TYPE
-}
-
-input QuestionFilterType {
-  isNil: Boolean
-  eq: QuestionType
-  notEq: QuestionType
-  in: [QuestionType!]
-  lessThan: QuestionType
-  greaterThan: QuestionType
-  lessThanOrEqual: QuestionType
-  greaterThanOrEqual: QuestionType
-}
-
-input QuestionFilterAttributes {
-  isNil: Boolean
-  eq: Json
-  notEq: Json
-  in: [Json!]
-  lessThan: Json
-  greaterThan: Json
-  lessThanOrEqual: Json
-  greaterThanOrEqual: Json
-}
-
-input QuestionFilterRequired {
-  isNil: Boolean
-  eq: Boolean
-  notEq: Boolean
-  in: [Boolean!]
-  lessThan: Boolean
-  greaterThan: Boolean
-  lessThanOrEqual: Boolean
-  greaterThanOrEqual: Boolean
-}
-
-input QuestionFilterDescription {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-  like: String
-  ilike: String
-}
-
-input QuestionFilterTitle {
-  isNil: Boolean
-  eq: String
-  notEq: String
-  in: [String!]
-  lessThan: String
-  greaterThan: String
-  lessThanOrEqual: String
-  greaterThanOrEqual: String
-  like: String
-  ilike: String
 }
 
 input QuestionFilterId {
@@ -352,25 +273,10 @@ input QuestionFilterInput {
   or: [QuestionFilterInput!]
   not: [QuestionFilterInput!]
   id: QuestionFilterId
-  title: QuestionFilterTitle
-  description: QuestionFilterDescription
-  required: QuestionFilterRequired
-  attributes: QuestionFilterAttributes
-  type: QuestionFilterType
-}
-
-input QuestionSortInput {
-  order: SortOrder
-  field: QuestionSortField!
 }
 
 type Question {
   id: ID!
-  title: String!
-  description: String!
-  required: Boolean!
-  attributes: Json!
-  type: QuestionType!
 }
 
 "The result of the :archive_survey mutation"
@@ -392,7 +298,6 @@ type UpdateSurveyResult {
 }
 
 input UpdateSurveyInput {
-  title: String
   questions: [SurveyUpdateQuestionsInput!]
 }
 
@@ -406,31 +311,35 @@ type CreateSurveyResult {
 }
 
 input CreateSurveyInput {
-  title: String!
   questions: [SurveyCreateQuestionsInput!]
 }
 
 input SurveyUpdateQuestionsInput {
-  attributes: Json
   id: ID
-  type: QuestionType
-  description: String
-  title: String
-  required: Boolean
 }
 
 input SurveyCreateQuestionsInput {
-  attributes: Json
   id: ID
-  type: QuestionType
-  description: String
-  title: String
-  required: Boolean
 }
 
 enum SurveySortField {
   ID
   TITLE
+}
+
+"A keyset page of :survey"
+type KeysetPageOfSurvey {
+  "Total count on all pages"
+  count: Int
+
+  "The records contained in the page"
+  results: [Survey!]
+
+  "The first keyset in the results"
+  startKeyset: String
+
+  "The last keyset in the results"
+  endKeyset: String
 }
 
 input SurveyFilterTitle {
@@ -463,8 +372,6 @@ input SurveyFilterInput {
   not: [SurveyFilterInput!]
   id: SurveyFilterId
   title: SurveyFilterTitle
-  owner: UserFilterInput
-  questions: QuestionFilterInput
 }
 
 input SurveySortInput {
@@ -475,20 +382,6 @@ input SurveySortInput {
 type Survey {
   id: ID!
   title: String!
-  owner: User!
-  questions(
-    "How to sort the records in the response"
-    sort: [QuestionSortInput]
-
-    "A filter to limit the results"
-    filter: QuestionFilterInput
-
-    "The number of records to return."
-    limit: Int
-
-    "The number of records to skip."
-    offset: Int
-  ): [Question!]!
 }
 
 type RootQueryType {
@@ -502,7 +395,19 @@ type RootQueryType {
 
     "A filter to limit the results"
     filter: SurveyFilterInput
-  ): [Survey!]!
+
+    "The number of records to return from the beginning. Maximum 250"
+    first: Int
+
+    "Show records before the specified keyset."
+    before: String
+
+    "Show records after the specified keyset."
+    after: String
+
+    "The number of records to return to the end. Maximum 250"
+    last: Int
+  ): KeysetPageOfSurvey
   getAnswer(
     "The id of the record"
     id: ID!
@@ -513,11 +418,23 @@ type RootQueryType {
 
     "A filter to limit the results"
     filter: SurveyAnswerFilterInput
-  ): [SurveyAnswer!]!
+
+    "The number of records to return from the beginning. Maximum 250"
+    first: Int
+
+    "Show records before the specified keyset."
+    before: String
+
+    "Show records after the specified keyset."
+    after: String
+
+    "The number of records to return to the end. Maximum 250"
+    last: Int
+  ): KeysetPageOfSurveyAnswer
 }
 
 type RootMutationType {
-  createSurvey(input: CreateSurveyInput!): CreateSurveyResult!
+  createSurvey(input: CreateSurveyInput): CreateSurveyResult!
 
   updateSurvey(id: ID!, input: UpdateSurveyInput): UpdateSurveyResult!
 
