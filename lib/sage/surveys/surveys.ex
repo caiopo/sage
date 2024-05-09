@@ -1,6 +1,6 @@
 defmodule Sage.Surveys do
-  use Ash.Api,
-    extensions: [AshAdmin.Api, AshGraphql.Api]
+  use Ash.Domain,
+    extensions: [AshAdmin.Domain, AshGraphql.Domain]
 
   admin do
     show? true

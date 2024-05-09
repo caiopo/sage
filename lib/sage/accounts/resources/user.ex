@@ -1,5 +1,6 @@
 defmodule Sage.Accounts.User do
   use Ash.Resource,
+    domain: Sage.Accounts,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
     extensions: [
@@ -13,20 +14,18 @@ defmodule Sage.Accounts.User do
   attributes do
     sage_primary_key()
 
-    attribute :email, :string, allow_nil?: false
+    attribute :email, :string, allow_nil?: false, public?: true
 
     attribute :name, :string, allow_nil?: false
 
     attribute :hashed_password, :string do
       allow_nil? false
       sensitive? true
-      private? true
     end
 
     attribute :admin, :boolean do
       allow_nil? false
       default false
-      private? true
     end
 
     timestamps()
@@ -41,7 +40,7 @@ defmodule Sage.Accounts.User do
   end
 
   authentication do
-    api Sage.Accounts
+    domain Sage.Accounts
 
     strategies do
       password :password do

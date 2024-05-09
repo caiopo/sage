@@ -1,5 +1,6 @@
 defmodule Sage.Surveys.Survey do
   use Ash.Resource,
+    domain: Sage.Surveys,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshArchival.Resource, AshGraphql.Resource]
@@ -9,14 +10,14 @@ defmodule Sage.Surveys.Survey do
   attributes do
     sage_primary_key()
 
-    attribute :title, :string, allow_nil?: false
+    attribute :title, :string, allow_nil?: false, public?: true
 
     timestamps()
   end
 
   relationships do
     belongs_to :owner, Sage.Accounts.User do
-      api Sage.Accounts
+      domain Sage.Accounts
       allow_nil? false
     end
 
@@ -38,6 +39,17 @@ defmodule Sage.Surveys.Survey do
     end
   end
 
+  policies do
+    policy action_type(:create) do
+      authorize_if actor_present()
+    end
+
+    policy action_type([:read, :update, :destroy]) do
+      authorize_if ActorIsAdmin
+      authorize_if relates_to_actor_via(:owner)
+    end
+  end
+
   graphql do
     type :survey
 
@@ -56,17 +68,6 @@ defmodule Sage.Surveys.Survey do
 
     managed_relationships do
       auto? true
-    end
-  end
-
-  policies do
-    policy action_type(:create) do
-      authorize_if actor_present()
-    end
-
-    policy action_type([:read, :update, :destroy]) do
-      authorize_if ActorIsAdmin
-      authorize_if relates_to_actor_via(:owner)
     end
   end
 

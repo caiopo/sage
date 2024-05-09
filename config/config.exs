@@ -46,7 +46,7 @@ config :ash_graphql, :allow_non_null_mutation_arguments?, true
 config :ash_graphql, :json_type, :json
 
 config :sage,
-  ash_apis: [Sage.Accounts, Sage.Surveys],
+  ash_domains: [Sage.Accounts, Sage.Surveys],
   ecto_repos: [Sage.Repo],
   token_signing_secret: "sage"
 

@@ -33,6 +33,12 @@ defmodule SageWeb.ConnCase do
       alias Sage.{Accounts, Surveys}
       alias Sage.Surveys.{Survey, Question}
       alias Sage.Accounts.User
+
+      import Matcher
+
+      import Sage.Utils.User
+
+      use Assertions.AbsintheCase, schema: Sage.Schema
     end
   end
 

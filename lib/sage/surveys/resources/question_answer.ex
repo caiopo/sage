@@ -1,5 +1,6 @@
 defmodule Sage.Surveys.QuestionAnswer do
   use Ash.Resource,
+    domain: Sage.Surveys,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshArchival.Resource, AshGraphql.Resource]
@@ -9,17 +10,18 @@ defmodule Sage.Surveys.QuestionAnswer do
   attributes do
     sage_primary_key()
 
-    attribute :value, :string
+    attribute :value, :string, public?: true
 
     timestamps()
   end
 
   relationships do
-    belongs_to :survey_answer, Sage.Surveys.SurveyAnswer, allow_nil?: false
+    belongs_to :survey_answer, Sage.Surveys.SurveyAnswer, allow_nil?: false, public?: true
 
     belongs_to :question, Sage.Surveys.Question do
       allow_nil? false
       attribute_writable? true
+      public? true
     end
   end
 

@@ -1,5 +1,6 @@
 defmodule Sage.Surveys.Question do
   use Ash.Resource,
+    domain: Sage.Surveys,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshArchival.Resource, AshGraphql.Resource]
@@ -24,7 +25,7 @@ defmodule Sage.Surveys.Question do
 
   relationships do
     belongs_to :survey, Sage.Surveys.Survey do
-      private? true
+      # private? true
     end
   end
 

@@ -1,9 +1,9 @@
 defmodule Sage.Schema do
   use Absinthe.Schema
 
-  @apis [Sage.Accounts, Sage.Surveys]
+  @domains [Sage.Accounts, Sage.Surveys]
 
-  use AshGraphql, apis: @apis
+  use AshGraphql, domains: @domains
 
   query do
   end

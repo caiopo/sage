@@ -1,5 +1,6 @@
 defmodule Sage.Surveys.SurveyAnswer do
   use Ash.Resource,
+    domain: Sage.Surveys,
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshArchival.Resource, AshGraphql.Resource]
@@ -9,12 +10,14 @@ defmodule Sage.Surveys.SurveyAnswer do
   attributes do
     sage_primary_key()
 
+    attribute :value2, :string, public?: true
+
     timestamps()
   end
 
   relationships do
-    belongs_to :survey, Sage.Surveys.Survey
-    has_many :question_answers, Sage.Surveys.QuestionAnswer
+    belongs_to :survey, Sage.Surveys.Survey, public?: true
+    has_many :question_answers, Sage.Surveys.QuestionAnswer, public?: true
   end
 
   actions do
@@ -23,7 +26,7 @@ defmodule Sage.Surveys.SurveyAnswer do
     create :create do
       argument :question_answers, {:array, :map}
       change relate_actor(:owner)
-      change manage_relationship(:question_answers, type: :create)
+      change manage_relationship(:question_answers, type: :direct_control)
     end
   end
 
@@ -42,9 +45,9 @@ defmodule Sage.Surveys.SurveyAnswer do
       destroy :archive_answer, :destroy
     end
 
-    managed_relationships do
-      auto? true
-    end
+    # managed_relationships do
+    #   auto? true
+    # end
   end
 
   postgres do

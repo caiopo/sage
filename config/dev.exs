@@ -68,6 +68,6 @@ config :swoosh, :api_client, false
 config :ash, :policies, show_policy_breakdowns?: true
 config :ash, :policies, log_policy_breakdowns: :info
 # config :ash, :policies, log_successful_policy_breakdowns: :error
-# config :ash_authentication, debug_authentication_failures?: true
+config :ash_authentication, debug_authentication_failures?: true
 
 config :sage, token_signing_secret: "secret"

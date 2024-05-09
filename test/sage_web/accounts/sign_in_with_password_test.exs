@@ -18,16 +18,19 @@ defmodule SageWeb.Accounts.SignInWithPasswordTest do
 
     response =
       conn
-      |> send_query("""
-        mutation {
-          signInWithPassword(email: "#{email}", password: "#{password}") {
-            id
-            email
-            name
-            token
+      |> send_query(
+        """
+          mutation($email: String!, $password: String!) {
+            signInWithPassword(email: $email, password: $password) {
+              #{document_for(:user_with_token)}
+            }
           }
+        """,
+        %{
+          email: email,
+          password: password
         }
-      """)
+      )
 
     assert matches?(
              %{

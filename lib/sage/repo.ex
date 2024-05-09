@@ -2,6 +2,9 @@ defmodule Sage.Repo do
   use AshPostgres.Repo, otp_app: :sage
 
   def installed_extensions do
-    ["citext"]
+    [
+      "ash-functions",
+      "citext"
+    ]
   end
 end
