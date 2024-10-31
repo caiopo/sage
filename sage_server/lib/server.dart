@@ -1,7 +1,8 @@
+import 'package:sage_server/auth.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as auth;
 
 import 'package:sage_server/src/web/routes/root.dart';
-
 import 'src/generated/protocol.dart';
 import 'src/generated/endpoints.dart';
 
@@ -15,6 +16,7 @@ void run(List<String> args) async {
     args,
     Protocol(),
     Endpoints(),
+    authenticationHandler: auth.authenticationHandler, // Add this line
   );
 
   // If you are using any future calls, they need to be registered here.
@@ -28,6 +30,8 @@ void run(List<String> args) async {
     RouteStaticDirectory(serverDirectory: 'static', basePath: '/'),
     '/*',
   );
+
+  auth.AuthConfig.set(authConfig);
 
   // Start the server.
   await pod.start();
