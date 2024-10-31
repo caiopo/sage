@@ -30,6 +30,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.3"
+  animations:
+    dependency: "direct main"
+    description:
+      name: animations
+      sha256: d3d6dcfb218225bbe68e87ccf6378bbb2e32a94900722c5f81611dad089911cb
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.11"
   archive:
     dependency: transitive
     description:
@@ -54,6 +62,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  auto_route:
+    dependency: "direct main"
+    description:
+      name: auto_route
+      sha256: b83e8ce46da7228cdd019b5a11205454847f0a971bca59a7529b98df9876889b
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.2.2"
+  auto_route_generator:
+    dependency: "direct dev"
+    description:
+      name: auto_route_generator
+      sha256: c9086eb07271e51b44071ad5cff34e889f3156710b964a308c2ab590769e79e6
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -199,7 +223,7 @@ packages:
     source: hosted
     version: "4.10.1"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
@@ -387,8 +411,16 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_form_builder:
+    dependency: "direct main"
+    description:
+      name: flutter_form_builder
+      sha256: c278ef69b08957d484f83413f0e77b656a39b7a7bb4eb8a295da3a820ecc6545
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.5.0"
   flutter_hooks:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_hooks
       sha256: cde36b12f7188c85286fba9b38cc5a902e7279f36dd676967106c041dc9dde70
@@ -403,6 +435,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  flutter_localizations:
+    dependency: transitive
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -419,6 +456,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.1"
+  flutter_staggered_grid_view:
+    dependency: transitive
+    description:
+      name: flutter_staggered_grid_view
+      sha256: "19e7abb550c96fbfeb546b23f3ff356ee7c59a019a651f8f102a4ba9b7349395"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -429,6 +474,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  form_builder_validators:
+    dependency: "direct main"
+    description:
+      name: form_builder_validators
+      sha256: c61ed7b1deecf0e1ebe49e2fa79e3283937c5a21c7e48e3ed9856a4a14e1191a
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.0.0"
   freezed_annotation:
     dependency: transitive
     description:
@@ -597,6 +650,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
+  infinite_scroll_pagination:
+    dependency: "direct main"
+    description:
+      name: infinite_scroll_pagination
+      sha256: b68bce20752fcf36c7739e60de4175494f74e99e9a69b4dd2fe3a1dd07a7f16a
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
   io:
     dependency: transitive
     description:
@@ -1009,6 +1078,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sliver_tools:
+    dependency: transitive
+    description:
+      name: sliver_tools
+      sha256: eae28220badfb9d0559207badcbbc9ad5331aac829a88cb0964d330d2a4636a6
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.12"
   source_gen:
     dependency: transitive
     description:

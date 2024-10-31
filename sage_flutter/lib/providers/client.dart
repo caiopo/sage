@@ -16,18 +16,3 @@ Client client(Ref ref) {
   )..connectivityMonitor = FlutterConnectivityMonitor();
   return client;
 }
-
-@Riverpod(keepAlive: true)
-Future<SessionManager> sessionManager(Ref ref) async {
-  final client = ref.watch(clientProvider);
-
-  final sessionManager = SessionManager(
-    caller: client.modules.auth,
-  );
-
-  await sessionManager.initialize();
-
-  ref.onDispose(sessionManager.dispose);
-
-  return sessionManager;
-}

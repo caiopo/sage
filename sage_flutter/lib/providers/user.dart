@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:sage_flutter/providers/client.dart';
+import 'package:sage_flutter/providers/auth.dart';
 import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 
 part 'user.g.dart';
