@@ -1,0 +1,3 @@
+exception: SurveyCreateError
+fields:
+  message: String

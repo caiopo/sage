@@ -11,8 +11,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i3;
-import 'protocol.dart' as _i4;
+import 'package:sage_client/src/protocol/survey.dart' as _i3;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i4;
+import 'protocol.dart' as _i5;
 
 /// {@category Endpoint}
 class EndpointExample extends _i1.EndpointRef {
@@ -28,12 +29,34 @@ class EndpointExample extends _i1.EndpointRef {
       );
 }
 
+/// {@category Endpoint}
+class EndpointSurvey extends _i1.EndpointRef {
+  EndpointSurvey(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'survey';
+
+  _i2.Future<_i3.Survey> createSurvey(_i3.Survey newSurvey) =>
+      caller.callServerEndpoint<_i3.Survey>(
+        'survey',
+        'createSurvey',
+        {'newSurvey': newSurvey},
+      );
+
+  _i2.Future<List<_i3.Survey>> listSurveys() =>
+      caller.callServerEndpoint<List<_i3.Survey>>(
+        'survey',
+        'listSurveys',
+        {},
+      );
+}
+
 class _Modules {
   _Modules(Client client) {
-    auth = _i3.Caller(client);
+    auth = _i4.Caller(client);
   }
 
-  late final _i3.Caller auth;
+  late final _i4.Caller auth;
 }
 
 class Client extends _i1.ServerpodClientShared {
@@ -52,7 +75,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i4.Protocol(),
+          _i5.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -63,15 +86,21 @@ class Client extends _i1.ServerpodClientShared {
               disconnectStreamsOnLostInternetConnection,
         ) {
     example = EndpointExample(this);
+    survey = EndpointSurvey(this);
     modules = _Modules(this);
   }
 
   late final EndpointExample example;
 
+  late final EndpointSurvey survey;
+
   late final _Modules modules;
 
   @override
-  Map<String, _i1.EndpointRef> get endpointRefLookup => {'example': example};
+  Map<String, _i1.EndpointRef> get endpointRefLookup => {
+        'example': example,
+        'survey': survey,
+      };
 
   @override
   Map<String, _i1.ModuleEndpointCaller> get moduleLookup =>

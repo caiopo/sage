@@ -1,0 +1,11 @@
+class: Survey
+
+table: survey
+
+fields:
+  title: String
+  description: String
+
+  owner: module:auth:UserInfo?, relation
+
+  questions: List<Question>

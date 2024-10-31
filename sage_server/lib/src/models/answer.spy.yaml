@@ -1,0 +1,6 @@
+class: Answer
+table: answer
+fields:
+  survey: Survey?, relation
+  answers: List<AnswerQuestion>
+  createdAt: DateTime, default=now

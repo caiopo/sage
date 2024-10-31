@@ -1,0 +1,7 @@
+enum: QuestionType
+serialized: byName
+values:
+  - single
+  - multi
+  - text
+  - number 

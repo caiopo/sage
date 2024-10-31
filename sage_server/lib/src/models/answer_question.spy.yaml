@@ -1,0 +1,6 @@
+class: AnswerQuestion
+fields:
+  questionId: UuidValue
+
+  value: String?
+  optionId: UuidValue?

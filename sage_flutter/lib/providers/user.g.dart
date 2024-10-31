@@ -6,11 +6,11 @@ part of 'user.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentUserFutureHash() => r'a9d192659806a8dd500c1feba6c37e92d285407e';
+String _$currentUserFutureHash() => r'18791b878f81ec45e5422e2b52b1255ce3d26298';
 
 /// See also [currentUserFuture].
 @ProviderFor(currentUserFuture)
-final currentUserFutureProvider = AutoDisposeFutureProvider<UserInfo?>.internal(
+final currentUserFutureProvider = FutureProvider<UserInfo?>.internal(
   currentUserFuture,
   name: r'currentUserFutureProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,8 +22,8 @@ final currentUserFutureProvider = AutoDisposeFutureProvider<UserInfo?>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef CurrentUserFutureRef = AutoDisposeFutureProviderRef<UserInfo?>;
-String _$currentUserHash() => r'b1861d548f49be622db6b15cd8d1246c393e08f4';
+typedef CurrentUserFutureRef = FutureProviderRef<UserInfo?>;
+String _$currentUserHash() => r'4d79b4e65b068845350fd5c7bdcc927be5506993';
 
 /// See also [currentUser].
 @ProviderFor(currentUser)

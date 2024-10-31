@@ -11,7 +11,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/example_endpoint.dart' as _i2;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
+import '../endpoints/survey_endpoint.dart' as _i3;
+import 'package:sage_server/src/generated/survey.dart' as _i4;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i5;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -22,7 +24,13 @@ class Endpoints extends _i1.EndpointDispatch {
           server,
           'example',
           null,
-        )
+        ),
+      'survey': _i3.SurveyEndpoint()
+        ..initialize(
+          server,
+          'survey',
+          null,
+        ),
     };
     connectors['example'] = _i1.EndpointConnector(
       name: 'example',
@@ -48,6 +56,39 @@ class Endpoints extends _i1.EndpointDispatch {
         )
       },
     );
-    modules['serverpod_auth'] = _i3.Endpoints()..initializeEndpoints(server);
+    connectors['survey'] = _i1.EndpointConnector(
+      name: 'survey',
+      endpoint: endpoints['survey']!,
+      methodConnectors: {
+        'createSurvey': _i1.MethodConnector(
+          name: 'createSurvey',
+          params: {
+            'newSurvey': _i1.ParameterDescription(
+              name: 'newSurvey',
+              type: _i1.getType<_i4.Survey>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['survey'] as _i3.SurveyEndpoint).createSurvey(
+            session,
+            params['newSurvey'],
+          ),
+        ),
+        'listSurveys': _i1.MethodConnector(
+          name: 'listSurveys',
+          params: {},
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['survey'] as _i3.SurveyEndpoint).listSurveys(session),
+        ),
+      },
+    );
+    modules['serverpod_auth'] = _i5.Endpoints()..initializeEndpoints(server);
   }
 }

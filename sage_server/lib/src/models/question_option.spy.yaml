@@ -1,0 +1,5 @@
+class: QuestionOption
+fields:
+  optionId: UuidValue
+  value: String
+

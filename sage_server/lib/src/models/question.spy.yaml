@@ -1,0 +1,16 @@
+class: Question
+
+fields:
+  id: UuidValue, default=random
+  title: String
+  description: String, default=""
+  type: QuestionType
+  required: bool
+
+  options: List<QuestionOption>?
+
+  minValue: int?
+  maxValue: int?
+
+  minLength: int?
+  maxLength: int?

@@ -16,6 +16,8 @@ class ExampleEndpoint extends Endpoint {
   // supported. The `session` object provides access to the database, logging,
   // passwords, and information about the request being made to the server.
   Future<String> hello(Session session, String name) async {
-    return 'Hello $name';
+    final authInfo = await session.authenticated;
+
+    return 'Hello $name by ${authInfo?.userId}';
   }
 }

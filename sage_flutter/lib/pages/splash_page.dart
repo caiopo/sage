@@ -11,19 +11,18 @@ class SplashPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentUserFutureProvider);
-
-    useAsyncEffect(() async {
-      await Future.delayed(Duration(seconds: 3));
-
-      if (context.mounted && !user.isLoading) {
-        if (user.valueOrNull == null) {
-          context.router.replaceNamed('/login');
-        } else {
-          context.router.replaceNamed('/home');
+    ref.listen(
+      currentUserFutureProvider,
+      (_, user) {
+        if (!user.isLoading) {
+          if (user.valueOrNull == null) {
+            context.router.replaceNamed('/auth');
+          } else {
+            context.router.replaceNamed('/home');
+          }
         }
-      }
-    }, null);
+      },
+    );
 
     return Scaffold(
       body: Center(child: CircularProgressIndicator()),

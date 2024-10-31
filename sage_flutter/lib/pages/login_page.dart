@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,96 +17,99 @@ class LoginPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final authController = ref.watch(authControllerProvider);
 
     final loading = useState(false);
     final globalKey = useGlobalKey<FormBuilderState>();
 
     void onLoginPressed() async {
-      final form = globalKey.currentState!;
-      final valid = form.saveAndValidate();
+      if (loading.value) return;
+      loading.value = true;
+      try {
+        final form = globalKey.currentState!;
+        final valid = form.saveAndValidate();
 
-      if (valid) {
-        loading.value = true;
-        final userInfo = await authController.signIn(
-          form.value['email'],
-          form.value['password'],
-        );
+        if (valid) {
+          final userInfo = await ref.read(authControllerProvider).signIn(
+                form.value['email'],
+                form.value['password'],
+              );
 
-        if (context.mounted) {
-          if (userInfo == null) {
-            loading.value = false;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Error login blabla'),
-              ),
-            );
-          } else {
-            // context.pushReplacement('/home');
+          if (context.mounted) {
+            if (userInfo == null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error login blabla'),
+                ),
+              );
+            } else {
+              context.router.replaceNamed('/home');
+            }
           }
         }
+      } finally {
+        loading.value = false;
       }
     }
 
     return Scaffold(
       appBar: AppBar(),
-      body: Body(
-        bottom: ButtonBottomBar(
-          children: [
-            FilledButton(
-              onPressed: loading.value ? null : onLoginPressed,
-              child: loading.value
-                  ? const SizedBox(
-                      height: 16,
-                      width: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      ),
-                    )
-                  : const Text('Log in'),
-            ),
-          ],
-        ),
-        child: FormBuilder(
-          key: globalKey,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text(
-                    'Lorem ipsum',
+      body: SafeArea(
+        child: Body(
+          bottom: ButtonBottomBar(
+            children: [
+              FilledButton(
+                onPressed: loading.value ? null : onLoginPressed,
+                child: loading.value
+                    ? const SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text('Log in'),
+              ),
+            ],
+          ),
+          child: FormBuilder(
+            key: globalKey,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  Text(
+                    'Welcome back!',
                     style: theme.textTheme.headlineLarge,
                   ),
-                ),
-                const SizedBox(height: 24),
-                FormBuilderTextField(
-                  name: 'email',
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.email(),
-                  ]),
-                ),
-                const SizedBox(height: 24),
-                FormBuilderTextField(
-                  name: 'password',
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                  ]),
-                ),
-                const SizedBox(height: 8),
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text('Forgot password?'),
+                  const SizedBox(height: 24),
+                  FormBuilderTextField(
+                    name: 'email',
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                      FormBuilderValidators.email(),
+                    ]),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 24),
+                  FormBuilderTextField(
+                    name: 'password',
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                    onSubmitted: (_) => onLoginPressed(),
+                  ),
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text('Forgot password?'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
