@@ -22,6 +22,5 @@ Future<UserInfo?> currentUserFuture(Ref ref) async {
 @Riverpod(keepAlive: false)
 UserInfo? currentUser(Ref ref) {
   final user = ref.watch(currentUserFutureProvider);
-  print('HELLO $user');
   return user.valueOrNull;
 }

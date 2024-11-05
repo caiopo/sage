@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -24,11 +23,12 @@ class LoginPage extends HookConsumerWidget {
     void onLoginPressed() async {
       if (loading.value) return;
       loading.value = true;
+      await Future.delayed(Duration(seconds: 1));
+
       try {
         final form = globalKey.currentState!;
-        final valid = form.saveAndValidate();
 
-        if (valid) {
+        if (form.saveAndValidate()) {
           final userInfo = await ref.read(authControllerProvider).signIn(
                 form.value['email'],
                 form.value['password'],
@@ -37,9 +37,7 @@ class LoginPage extends HookConsumerWidget {
           if (context.mounted) {
             if (userInfo == null) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Error login blabla'),
-                ),
+                SnackBar(content: Text('Invalid credentials')),
               );
             } else {
               context.router.replaceNamed('/home');
@@ -52,7 +50,9 @@ class LoginPage extends HookConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Welcome back!'),
+      ),
       body: SafeArea(
         child: Body(
           bottom: ButtonBottomBar(
@@ -77,9 +77,18 @@ class LoginPage extends HookConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 children: [
-                  Text(
-                    'Welcome back!',
-                    style: theme.textTheme.headlineLarge,
+                  const SizedBox(height: 8),
+                  Container(
+                    decoration: ShapeDecoration(
+                      color: theme.colorScheme.surfaceContainer,
+                      shape: CircleBorder(),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: Image.asset(
+                        'assets/images/ginger-cat/logged-out.png',
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 24),
                   FormBuilderTextField(
@@ -108,6 +117,7 @@ class LoginPage extends HookConsumerWidget {
                       child: const Text('Forgot password?'),
                     ),
                   ),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),

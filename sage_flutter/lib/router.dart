@@ -11,6 +11,9 @@ class AppRouter extends RootStackRouter {
         AutoRoute(path: '/auth', page: AuthRoute.page),
         AutoRoute(path: '/login', page: LoginRoute.page),
         AutoRoute(path: '/home', page: HomeRoute.page),
+        AutoRoute(path: '/surveys/create', page: SurveyFormRoute.page),
+        AutoRoute(path: '/surveys/:id/edit', page: SurveyFormRoute.page),
+        AutoRoute(path: '/questions/edit', page: QuestionFormRoute.page),
       ];
 
   @override

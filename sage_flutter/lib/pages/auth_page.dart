@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sage_flutter/router.gr.dart';
@@ -19,22 +18,26 @@ class AuthPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-              SizedBox(height: 48),
-              Container(
-                decoration: ShapeDecoration(
-                  color: Colors.white,
-                  shape: CircleBorder(),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Image.asset(
-                    'assets/images/ginger-cat/track-statistics.png',
+              Spacer(flex: 1),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 300),
+                child: Container(
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: CircleBorder(),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: Image.asset(
+                      'assets/images/ginger-cat/track-statistics.png',
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: 24),
               Text(
                 'Sage Survey',
+                textAlign: TextAlign.center,
                 style: theme.textTheme.displayMedium
                     ?.copyWith(color: theme.colorScheme.onPrimary),
               ),

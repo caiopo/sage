@@ -33,9 +33,14 @@ ThemeData createTheme(BuildContext context, Brightness brightness) {
 
   return theme.copyWith(
     inputDecorationTheme: InputDecorationTheme(
-      border: OutlineInputBorder(),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
     ),
     filledButtonTheme: FilledButtonThemeData(style: largerButtonStyle),
     elevatedButtonTheme: ElevatedButtonThemeData(style: largerButtonStyle),
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+    ),
   );
 }

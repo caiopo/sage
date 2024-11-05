@@ -1,9 +1,7 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sage_flutter/providers/user.dart';
-import 'package:sage_flutter/utils/hooks.dart';
 
 @RoutePage()
 class SplashPage extends HookConsumerWidget {
@@ -24,8 +22,7 @@ class SplashPage extends HookConsumerWidget {
       },
     );
 
-    return Scaffold(
-      body: Center(child: CircularProgressIndicator()),
-    );
+    final theme = Theme.of(context);
+    return Scaffold(backgroundColor: theme.colorScheme.primary);
   }
 }

@@ -13,7 +13,11 @@ class ButtonBottomBar extends StatelessWidget {
     return Center(
       heightFactor: 1,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: const EdgeInsets.only(
+          left: 16,
+          right: 16,
+          top: 8,
+        ),
         child: SafeArea(
           top: false,
           minimum: const EdgeInsets.only(bottom: 24),

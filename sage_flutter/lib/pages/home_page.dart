@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sage_flutter/providers/auth.dart';
 import 'package:sage_flutter/providers/user.dart';
 import 'package:sage_flutter/router.gr.dart';
-import 'package:serverpod_auth_client/src/protocol/user_info.dart';
+import 'package:serverpod_auth_client/serverpod_auth_client.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
 
 @RoutePage()
@@ -37,7 +37,9 @@ class HomePage extends HookConsumerWidget {
         onSignOut: signOut,
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          context.router.push(SurveyFormRoute());
+        },
         label: Text('New survey'),
         icon: Icon(Icons.add),
       ),
